@@ -27,11 +27,13 @@ const INITIAL_STATE: FormState = {
 
 type SubmitStatus = 'idle' | 'submitting' | 'success' | 'error'
 
-const fieldClass = (hasError: boolean) =>
-  `neu-inset flex h-[52px] items-center rounded-xl ${hasError ? '!border-red-400' : ''}`
+const fieldWrapClass = (hasError: boolean) =>
+  `flex h-[50px] items-center rounded-2xl border bg-white/70 shadow-[0_1px_2px_rgba(15,23,42,0.05)] backdrop-blur-sm transition-all duration-200 focus-within:border-accent/60 focus-within:shadow-[0_0_0_3px_rgba(var(--accent-rgb),0.16)] ${
+    hasError ? 'border-red-400' : 'border-accent/20'
+  }`
 
 const inputClass =
-  'h-full w-full rounded-xl border-0 bg-transparent px-4 text-sm text-text-main placeholder:text-text-muted outline-none'
+  'h-full w-full rounded-2xl border-0 bg-transparent px-4 text-sm text-text-main placeholder:text-text-muted/70 outline-none'
 
 export default function LeadForm() {
   const [form, setForm] = useState<FormState>(INITIAL_STATE)
@@ -90,7 +92,7 @@ export default function LeadForm() {
       <div className="container-px">
         <div className="neu-panel-accent relative overflow-hidden p-3 sm:p-4 lg:p-5">
           <div className="grid grid-cols-1 gap-3 sm:gap-4 lg:grid-cols-[0.82fr_1.18fr] lg:gap-5">
-            <div className="relative overflow-hidden rounded-[24px] bg-[#1f252b] p-6 sm:p-9 lg:p-10">
+            <div className="relative overflow-hidden rounded-[24px] bg-[#1f252b] p-5 sm:p-9 lg:p-10">
               <WaveLines className="pointer-events-none absolute -bottom-16 -right-16 h-64 w-96 opacity-[0.16]" />
               <div className="relative z-10">
                 <span className="inline-flex items-center gap-2 rounded-full border border-accent/35 bg-accent/10 px-3 py-1.5 text-xs font-bold uppercase tracking-[0.14em] text-accent">
@@ -107,7 +109,10 @@ export default function LeadForm() {
               </div>
             </div>
 
-            <div className="rounded-[24px] border border-white/70 bg-[rgba(255,255,255,0.52)] p-5 sm:p-8 lg:p-9">
+            <div className="relative overflow-hidden rounded-[28px] border border-accent/25 bg-white/55 p-5 shadow-[0_24px_60px_rgba(15,23,42,0.14)] backdrop-blur-xl sm:p-7 lg:p-8">
+              <div className="pointer-events-none absolute -right-16 -top-16 h-48 w-48 rounded-full bg-accent/20 blur-3xl" />
+              <div className="pointer-events-none absolute -bottom-20 -left-10 h-40 w-40 rounded-full bg-accent/10 blur-3xl" />
+              <div className="relative">
               {status === 'success' ? (
                 <div className="flex h-full min-h-[420px] flex-col items-center justify-center py-10 text-center">
                   <div className="neu-chip flex h-16 w-16 items-center justify-center text-accent">
@@ -130,14 +135,14 @@ export default function LeadForm() {
                       ≈ 2 минуты
                     </span>
                   </div>
-                  <div className="mb-5 mt-4 h-px w-full bg-gradient-to-r from-transparent via-[rgba(var(--accent-rgb),0.28)] to-transparent" />
+                  <div className="mb-4 mt-3 h-px w-full bg-gradient-to-r from-transparent via-[rgba(var(--accent-rgb),0.28)] to-transparent" />
 
-                  <div className="grid gap-3.5 sm:gap-4 sm:grid-cols-2">
+                  <div className="grid gap-3 sm:gap-3.5 sm:grid-cols-2">
                     <div>
-                      <label htmlFor="name" className="mb-1.5 block text-sm font-medium text-text-main">
+                      <label htmlFor="name" className="mb-1 block text-[13px] font-medium text-text-main">
                         Имя
                       </label>
-                      <div className={fieldClass(nameError)}>
+                      <div className={fieldWrapClass(nameError)}>
                         <input
                           id="name"
                           type="text"
@@ -152,10 +157,10 @@ export default function LeadForm() {
                     </div>
 
                     <div>
-                      <label htmlFor="contact" className="mb-1.5 block text-sm font-medium text-text-main">
+                      <label htmlFor="contact" className="mb-1 block text-[13px] font-medium text-text-main">
                         Телефон / Telegram
                       </label>
-                      <div className={fieldClass(contactError)}>
+                      <div className={fieldWrapClass(contactError)}>
                         <input
                           id="contact"
                           type="text"
@@ -170,10 +175,10 @@ export default function LeadForm() {
                     </div>
 
                     <div>
-                      <label htmlFor="businessType" className="mb-1.5 block text-sm font-medium text-text-main">
+                      <label htmlFor="businessType" className="mb-1 block text-[13px] font-medium text-text-main">
                         Сфера / вид бизнеса
                       </label>
-                      <div className={fieldClass(businessTypeError)}>
+                      <div className={fieldWrapClass(businessTypeError)}>
                         <input
                           id="businessType"
                           type="text"
@@ -188,10 +193,10 @@ export default function LeadForm() {
                     </div>
 
                     <div>
-                      <label htmlFor="link" className="mb-1.5 block text-sm font-medium text-text-main">
+                      <label htmlFor="link" className="mb-1 block text-[13px] font-medium text-text-main">
                         Ссылка <span className="font-normal text-text-muted">· необязательно</span>
                       </label>
-                      <div className={fieldClass(false)}>
+                      <div className={fieldWrapClass(false)}>
                         <input
                           id="link"
                           type="text"
@@ -204,17 +209,17 @@ export default function LeadForm() {
                     </div>
 
                     <div className="sm:col-span-2">
-                      <label htmlFor="message" className="mb-1.5 block text-sm font-medium text-text-main">
+                      <label htmlFor="message" className="mb-1 block text-[13px] font-medium text-text-main">
                         Что нужно улучшить <span className="font-normal text-text-muted">· необязательно</span>
                       </label>
-                      <div className="neu-inset rounded-xl">
+                      <div className="rounded-2xl border border-accent/20 bg-white/70 shadow-[0_1px_2px_rgba(15,23,42,0.05)] backdrop-blur-sm transition-all duration-200 focus-within:border-accent/60 focus-within:shadow-[0_0_0_3px_rgba(var(--accent-rgb),0.16)]">
                         <textarea
                           id="message"
                           rows={3}
                           value={form.message}
                           onChange={handleChange('message')}
                           placeholder="Например: больше заявок, свой бот, порядок в базе клиентов"
-                          className="min-h-[108px] w-full resize-none rounded-xl border-0 bg-transparent px-4 py-3 text-sm text-text-main placeholder:text-text-muted outline-none"
+                          className="min-h-[100px] w-full resize-none rounded-2xl border-0 bg-transparent px-4 py-3 text-sm text-text-main placeholder:text-text-muted/70 outline-none"
                         />
                       </div>
                     </div>
@@ -234,7 +239,7 @@ export default function LeadForm() {
                     />
                   </div>
 
-                  <label htmlFor="consent" className="mt-5 flex cursor-pointer items-start gap-3 text-xs leading-relaxed text-text-muted">
+                  <label htmlFor="consent" className="mt-4 flex cursor-pointer items-start gap-2.5 text-[11.5px] leading-relaxed text-text-muted">
                     <span className="relative mt-0.5 flex h-5 w-5 shrink-0 items-center justify-center">
                       <input
                         id="consent"
@@ -245,12 +250,12 @@ export default function LeadForm() {
                         className="peer sr-only"
                       />
                       <span
-                        className={`h-5 w-5 rounded-[6px] border-2 transition-all duration-200 ${
+                        className={`h-5 w-5 rounded-[7px] border-2 transition-all duration-200 ${
                           form.consent
-                            ? 'border-accent bg-accent'
+                            ? 'border-accent bg-gradient-to-br from-accent to-accent-dark'
                             : consentError
                               ? 'border-red-400 bg-white'
-                              : 'border-[rgba(var(--accent-rgb),0.4)] bg-white'
+                              : 'border-accent/35 bg-white'
                         } peer-focus-visible:ring-2 peer-focus-visible:ring-accent/40 peer-focus-visible:ring-offset-1`}
                       />
                       <IconCheckSmall
@@ -273,7 +278,7 @@ export default function LeadForm() {
                   <button
                     type="submit"
                     disabled={status === 'submitting'}
-                    className="btn-primary mt-5 w-full disabled:cursor-not-allowed disabled:opacity-60 sm:text-base"
+                    className="btn-primary mt-4 w-full bg-gradient-to-r from-accent to-accent-dark shadow-[0_10px_24px_rgba(0,183,200,0.28)] disabled:cursor-not-allowed disabled:opacity-60 sm:text-base"
                   >
                     {status === 'submitting' ? 'Отправляем…' : 'Отправить заявку'}
                   </button>
@@ -288,14 +293,15 @@ export default function LeadForm() {
                     </p>
                   )}
 
-                  <div className="mt-4 h-px w-full bg-gradient-to-r from-transparent via-[rgba(var(--accent-rgb),0.2)] to-transparent" />
+                  <div className="mt-3 h-px w-full bg-gradient-to-r from-transparent via-[rgba(var(--accent-rgb),0.2)] to-transparent" />
 
-                  <p className="mt-3 text-center text-[11px] leading-relaxed text-text-muted">
+                  <p className="mt-2 text-center text-[11px] leading-relaxed text-text-muted">
                     Отправка заявки не означает заключение договора и не гарантирует конкретный коммерческий
                     результат.
                   </p>
                 </form>
               )}
+              </div>
             </div>
           </div>
         </div>

@@ -187,17 +187,26 @@ export default function NicheCases() {
         </div>
 
         <div className="relative -mx-5 mt-8 sm:mx-0">
-          <div className="no-scrollbar flex snap-x snap-mandatory gap-3 overflow-x-auto scroll-pl-5 px-5 pb-3 sm:grid sm:grid-cols-4 sm:gap-3 sm:overflow-visible sm:px-0 sm:pb-0">
+          <div className="no-scrollbar flex snap-x snap-mandatory gap-3 overflow-x-auto scroll-pl-5 px-5 py-3 sm:grid sm:grid-cols-4 sm:gap-3 sm:overflow-visible sm:px-0 sm:py-0">
             {projectCases.map((project) => {
               const isActive = project.id === activeId
               return (
                 <button
                   key={project.id}
                   type="button"
-                  onClick={() => setActiveId(project.id)}
+                  onClick={(e) => {
+                    setActiveId(project.id)
+                    // On mobile the tab strip scrolls horizontally — selecting a
+                    // peeking card must bring it fully into view, or it stays
+                    // half off-screen while showing as "active". No-ops on
+                    // desktop, where the grid is already fully visible.
+                    e.currentTarget.scrollIntoView({ behavior: 'smooth', inline: 'nearest', block: 'nearest' })
+                  }}
                   aria-pressed={isActive}
-                  className={`neu-card min-w-[176px] shrink-0 snap-start p-4 text-left backdrop-blur-sm transition-all duration-300 sm:min-w-0 ${
-                    isActive ? 'accent-glow -translate-y-1' : 'hover:-translate-y-1'
+                  className={`neu-card w-[clamp(260px,78vw,320px)] shrink-0 snap-start p-4 text-left backdrop-blur-sm transition-all duration-300 sm:w-auto sm:min-w-0 ${
+                    isActive
+                      ? 'border-2 border-accent/70 bg-white/85 shadow-[0_8px_18px_rgba(0,183,200,0.18)] sm:border-0 sm:bg-transparent sm:accent-glow sm:-translate-y-1'
+                      : 'sm:hover:-translate-y-1'
                   }`}
                 >
                   <span
@@ -214,9 +223,10 @@ export default function NicheCases() {
             })}
           </div>
 
-          {/* Edge fades hint that the strip scrolls — mobile only, purely decorative */}
-          <div className="pointer-events-none absolute inset-y-0 left-0 w-8 bg-gradient-to-r from-bg-section to-transparent sm:hidden" />
-          <div className="pointer-events-none absolute inset-y-0 right-0 w-8 bg-gradient-to-l from-bg-section to-transparent sm:hidden" />
+          {/* Edge fades hint that the strip scrolls — sized to exactly match the
+              scroll gutter (px-5/scroll-pl-5) so they never overlap card pixels. */}
+          <div className="pointer-events-none absolute inset-y-0 left-0 w-5 bg-gradient-to-r from-bg-section to-transparent sm:hidden" />
+          <div className="pointer-events-none absolute inset-y-0 right-0 w-5 bg-gradient-to-l from-bg-section to-transparent sm:hidden" />
         </div>
 
         <div key={activeCase.id} className="case-fade-in mt-8">
