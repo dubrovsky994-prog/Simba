@@ -1,4 +1,5 @@
 import { useEffect } from 'react'
+import { createPortal } from 'react-dom'
 import { IconClose } from './icons'
 
 type ImageModalProps = {
@@ -21,9 +22,13 @@ export default function ImageModal({ src, alt, onClose }: ImageModalProps) {
     }
   }, [onClose])
 
-  return (
+  // Rendered into document.body via a portal so the overlay's `fixed`
+  // positioning is always relative to the viewport — a transformed/animated
+  // ancestor (e.g. the case panel's entrance animation) would otherwise
+  // become its containing block and break full-screen centering.
+  return createPortal(
     <div
-      className="fixed inset-0 z-[70] flex items-center justify-center bg-[#14181c]/85 p-4 backdrop-blur-sm sm:p-8"
+      className="fixed inset-0 z-[100] flex items-center justify-center bg-[#14181c]/85 p-4 backdrop-blur-sm sm:p-8"
       onClick={onClose}
       role="dialog"
       aria-modal="true"
@@ -41,8 +46,9 @@ export default function ImageModal({ src, alt, onClose }: ImageModalProps) {
         src={src}
         alt={alt}
         onClick={(e) => e.stopPropagation()}
-        className="max-h-[85vh] max-w-full rounded-2xl object-contain shadow-2xl"
+        className="max-h-[85vh] max-w-[90vw] rounded-2xl object-contain shadow-2xl"
       />
-    </div>
+    </div>,
+    document.body,
   )
 }
