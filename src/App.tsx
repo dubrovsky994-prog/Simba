@@ -1,4 +1,5 @@
 import { Analytics } from '@vercel/analytics/react'
+import { useEffect } from 'react'
 import FAQ from './components/FAQ'
 import Footer from './components/Footer'
 import NicheCases from './components/NicheCases'
@@ -24,6 +25,15 @@ const LEGAL_PAGES: Record<string, () => JSX.Element> = {
 }
 
 function HomePage() {
+  // Links from the legal pages (and any full page load) arrive as /#section —
+  // the browser can't scroll to a fragment that doesn't exist in the DOM yet,
+  // since React renders it only after this component mounts.
+  useEffect(() => {
+    if (!window.location.hash) return
+    const id = window.location.hash.slice(1)
+    document.getElementById(id)?.scrollIntoView({ behavior: 'smooth' })
+  }, [])
+
   return (
     <div className="min-h-screen bg-bg-main text-text-main">
       <Header />

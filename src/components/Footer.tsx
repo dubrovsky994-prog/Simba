@@ -10,10 +10,11 @@ const CONTACTS = [
 ]
 
 const NAV_LINKS = [
-  { label: 'Возможности', href: '#features' },
-  { label: 'Для кого', href: '#for-whom' },
-  { label: 'Тарифы', href: '#pricing' },
-  { label: 'Как работает', href: '#how-it-works' },
+  { label: 'Возможности', href: '/#features' },
+  { label: 'Для кого', href: '/#for-whom' },
+  { label: 'Тарифы', href: '/#pricing' },
+  { label: 'Как работает', href: '/#how-it-works' },
+  { label: 'Контакты', href: '/#contacts' },
 ]
 
 const DOC_LINKS = [
@@ -39,7 +40,7 @@ export default function Footer() {
             <p className="mt-4 max-w-xs text-sm leading-relaxed text-text-muted">
               Цифровые системы продаж для малого и среднего бизнеса.
             </p>
-            <a href="#audit" className="btn-primary mt-6">
+            <a href="/#audit" className="btn-primary mt-6">
               Получить бесплатный разбор
             </a>
           </div>
