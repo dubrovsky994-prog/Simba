@@ -1,0 +1,19 @@
+{
+  "status": "provisional-reference-derived",
+  "source": "SIMBA brandboard supplied in conversation",
+  "brand": {
+    "graphite": "#1F252B",
+    "turquoise": "#00B7C8",
+    "lightBackground": "#EEF1F2"
+  },
+  "logos": {
+    "mark": { "file": "brand/simba-mark.svg", "width": 640, "height": 360 },
+    "markMono": { "file": "brand/simba-mark-mono.svg", "width": 640, "height": 360 },
+    "wordmarkCompact": { "file": "brand/simba-wordmark-compact.svg", "width": 760, "height": 240 },
+    "wordmark": { "file": "brand/simba-wordmark-horizontal.svg", "width": 1040, "height": 360 },
+    "wordmarkDark": { "file": "brand/simba-wordmark-dark.svg", "width": 1040, "height": 360 }
+  },
+  "pattern": "brand/simba-flow-pattern.svg",
+  "icons": ["site", "bot", "mini-app", "automation", "analytics", "customers", "goods", "food", "production", "services", "handmade", "furniture", "flowers", "local-brand"],
+  "sizes": [16, 32, 48, 64, 128, 180, 192, 256, 512]
+}
