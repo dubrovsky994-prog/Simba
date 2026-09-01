@@ -186,31 +186,37 @@ export default function NicheCases() {
           </p>
         </div>
 
-        <div className="mt-8 flex gap-3 overflow-x-auto pb-2 sm:grid sm:grid-cols-4 sm:overflow-visible sm:pb-0">
-          {projectCases.map((project) => {
-            const isActive = project.id === activeId
-            return (
-              <button
-                key={project.id}
-                type="button"
-                onClick={() => setActiveId(project.id)}
-                aria-pressed={isActive}
-                className={`neu-card min-w-[172px] shrink-0 p-4 text-left transition-all duration-300 sm:min-w-0 ${
-                  isActive ? 'accent-glow -translate-y-1' : 'hover:-translate-y-1'
-                }`}
-              >
-                <span
-                  className={`text-[11px] font-bold uppercase tracking-wider transition-colors duration-300 ${
-                    isActive ? 'text-accent' : 'text-accent-dark'
+        <div className="relative -mx-5 mt-8 sm:mx-0">
+          <div className="no-scrollbar flex snap-x snap-mandatory gap-3 overflow-x-auto scroll-pl-5 px-5 pb-3 sm:grid sm:grid-cols-4 sm:gap-3 sm:overflow-visible sm:px-0 sm:pb-0">
+            {projectCases.map((project) => {
+              const isActive = project.id === activeId
+              return (
+                <button
+                  key={project.id}
+                  type="button"
+                  onClick={() => setActiveId(project.id)}
+                  aria-pressed={isActive}
+                  className={`neu-card min-w-[176px] shrink-0 snap-start p-4 text-left backdrop-blur-sm transition-all duration-300 sm:min-w-0 ${
+                    isActive ? 'accent-glow -translate-y-1' : 'hover:-translate-y-1'
                   }`}
                 >
-                  {project.tag}
-                </span>
-                <h3 className="mt-1.5 text-base font-semibold text-text-main">{project.title}</h3>
-                <p className="mt-0.5 text-sm leading-relaxed text-text-muted">{project.category}</p>
-              </button>
-            )
-          })}
+                  <span
+                    className={`text-[11px] font-bold uppercase tracking-wider transition-colors duration-300 ${
+                      isActive ? 'text-accent' : 'text-accent-dark'
+                    }`}
+                  >
+                    {project.tag}
+                  </span>
+                  <h3 className="mt-1.5 text-base font-semibold text-text-main">{project.title}</h3>
+                  <p className="mt-0.5 text-sm leading-relaxed text-text-muted">{project.category}</p>
+                </button>
+              )
+            })}
+          </div>
+
+          {/* Edge fades hint that the strip scrolls — mobile only, purely decorative */}
+          <div className="pointer-events-none absolute inset-y-0 left-0 w-8 bg-gradient-to-r from-bg-section to-transparent sm:hidden" />
+          <div className="pointer-events-none absolute inset-y-0 right-0 w-8 bg-gradient-to-l from-bg-section to-transparent sm:hidden" />
         </div>
 
         <div key={activeCase.id} className="case-fade-in mt-8">

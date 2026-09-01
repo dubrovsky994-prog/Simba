@@ -1,5 +1,5 @@
 import { ChangeEvent, FormEvent, useState } from 'react'
-import { IconCheck } from './icons'
+import { IconCheck, IconCheckSmall } from './icons'
 import WaveLines from './WaveLines'
 import { CONTACT_TELEGRAM, CONTACT_TELEGRAM_URL } from '../legal/content'
 
@@ -27,9 +27,16 @@ const INITIAL_STATE: FormState = {
 
 type SubmitStatus = 'idle' | 'submitting' | 'success' | 'error'
 
+const fieldClass = (hasError: boolean) =>
+  `neu-inset flex h-[52px] items-center rounded-xl ${hasError ? '!border-red-400' : ''}`
+
+const inputClass =
+  'h-full w-full rounded-xl border-0 bg-transparent px-4 text-sm text-text-main placeholder:text-text-muted outline-none'
+
 export default function LeadForm() {
   const [form, setForm] = useState<FormState>(INITIAL_STATE)
   const [status, setStatus] = useState<SubmitStatus>('idle')
+  const [submitAttempted, setSubmitAttempted] = useState(false)
 
   const handleChange =
     (field: 'name' | 'contact' | 'businessType' | 'link' | 'message' | 'company') =>
@@ -41,9 +48,18 @@ export default function LeadForm() {
     setForm((prev) => ({ ...prev, consent: e.target.checked }))
   }
 
+  const nameError = submitAttempted && !form.name.trim()
+  const contactError = submitAttempted && !form.contact.trim()
+  const businessTypeError = submitAttempted && !form.businessType.trim()
+  const consentError = submitAttempted && !form.consent
+
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault()
-    if (!form.consent) return
+    setSubmitAttempted(true)
+
+    if (!form.name.trim() || !form.contact.trim() || !form.businessType.trim() || !form.consent) {
+      return
+    }
 
     setStatus('submitting')
 
@@ -74,7 +90,7 @@ export default function LeadForm() {
       <div className="container-px">
         <div className="neu-panel-accent relative overflow-hidden p-3 sm:p-4 lg:p-5">
           <div className="grid grid-cols-1 gap-3 sm:gap-4 lg:grid-cols-[0.82fr_1.18fr] lg:gap-5">
-            <div className="relative overflow-hidden rounded-[24px] bg-[#1f252b] p-7 sm:p-9 lg:p-10">
+            <div className="relative overflow-hidden rounded-[24px] bg-[#1f252b] p-6 sm:p-9 lg:p-10">
               <WaveLines className="pointer-events-none absolute -bottom-16 -right-16 h-64 w-96 opacity-[0.16]" />
               <div className="relative z-10">
                 <span className="inline-flex items-center gap-2 rounded-full border border-accent/35 bg-accent/10 px-3 py-1.5 text-xs font-bold uppercase tracking-[0.14em] text-accent">
@@ -91,7 +107,7 @@ export default function LeadForm() {
               </div>
             </div>
 
-            <div className="rounded-[24px] border border-white/70 bg-[rgba(255,255,255,0.52)] p-6 sm:p-8 lg:p-9">
+            <div className="rounded-[24px] border border-white/70 bg-[rgba(255,255,255,0.52)] p-5 sm:p-8 lg:p-9">
               {status === 'success' ? (
                 <div className="flex h-full min-h-[420px] flex-col items-center justify-center py-10 text-center">
                   <div className="neu-chip flex h-16 w-16 items-center justify-center text-accent">
@@ -104,8 +120,8 @@ export default function LeadForm() {
                   </p>
                 </div>
               ) : (
-                <form onSubmit={handleSubmit}>
-                  <div className="mb-6 flex items-end justify-between gap-4 border-b border-border pb-5">
+                <form onSubmit={handleSubmit} noValidate>
+                  <div className="flex items-end justify-between gap-4">
                     <div>
                       <span className="text-xs font-bold uppercase tracking-[0.14em] text-accent-dark">Шаг 1 из 1</span>
                       <h3 className="mt-1 text-xl font-semibold text-text-main">Расскажите о задаче</h3>
@@ -114,71 +130,75 @@ export default function LeadForm() {
                       ≈ 2 минуты
                     </span>
                   </div>
+                  <div className="mb-5 mt-4 h-px w-full bg-gradient-to-r from-transparent via-[rgba(var(--accent-rgb),0.28)] to-transparent" />
 
-                  <div className="grid gap-4 sm:grid-cols-2">
+                  <div className="grid gap-3.5 sm:gap-4 sm:grid-cols-2">
                     <div>
                       <label htmlFor="name" className="mb-1.5 block text-sm font-medium text-text-main">
                         Имя
                       </label>
-                      <div className="neu-inset rounded-xl">
+                      <div className={fieldClass(nameError)}>
                         <input
                           id="name"
                           type="text"
-                          required
                           value={form.name}
                           onChange={handleChange('name')}
                           placeholder="Как к вам обращаться"
-                          className="w-full rounded-xl border-0 bg-transparent px-4 py-3 text-sm text-text-main placeholder:text-text-muted outline-none"
+                          aria-invalid={nameError}
+                          className={inputClass}
                         />
                       </div>
+                      {nameError && <p className="mt-1 text-[11px] text-red-500">Заполните это поле</p>}
                     </div>
 
                     <div>
                       <label htmlFor="contact" className="mb-1.5 block text-sm font-medium text-text-main">
                         Телефон / Telegram
                       </label>
-                      <div className="neu-inset rounded-xl">
+                      <div className={fieldClass(contactError)}>
                         <input
                           id="contact"
                           type="text"
-                          required
                           value={form.contact}
                           onChange={handleChange('contact')}
                           placeholder="@username или удобный контакт"
-                          className="w-full rounded-xl border-0 bg-transparent px-4 py-3 text-sm text-text-main placeholder:text-text-muted outline-none"
+                          aria-invalid={contactError}
+                          className={inputClass}
                         />
                       </div>
+                      {contactError && <p className="mt-1 text-[11px] text-red-500">Заполните это поле</p>}
                     </div>
 
                     <div>
                       <label htmlFor="businessType" className="mb-1.5 block text-sm font-medium text-text-main">
                         Сфера / вид бизнеса
                       </label>
-                      <div className="neu-inset rounded-xl">
+                      <div className={fieldClass(businessTypeError)}>
                         <input
                           id="businessType"
                           type="text"
-                          required
                           value={form.businessType}
                           onChange={handleChange('businessType')}
-                          placeholder="Например: доставка еды"
-                          className="w-full rounded-xl border-0 bg-transparent px-4 py-3 text-sm text-text-main placeholder:text-text-muted outline-none"
+                          placeholder="Например: доставка еды, мебель, салон, услуги"
+                          aria-invalid={businessTypeError}
+                          className={inputClass}
                         />
                       </div>
+                      {businessTypeError && <p className="mt-1 text-[11px] text-red-500">Заполните это поле</p>}
                     </div>
 
                     <div>
                       <label htmlFor="link" className="mb-1.5 block text-sm font-medium text-text-main">
                         Ссылка <span className="font-normal text-text-muted">· необязательно</span>
                       </label>
-                      <div className="neu-inset rounded-xl">
+                      <div className={fieldClass(false)}>
                         <input
                           id="link"
                           type="text"
                           value={form.link}
                           onChange={handleChange('link')}
                           placeholder="Сайт, соцсеть или маркетплейс"
-                          className="w-full rounded-xl border-0 bg-transparent px-4 py-3 text-sm text-text-main placeholder:text-text-muted outline-none"
+                          className={inputClass}
                         />
                       </div>
                     </div>
@@ -190,11 +210,11 @@ export default function LeadForm() {
                       <div className="neu-inset rounded-xl">
                         <textarea
                           id="message"
-                          rows={2}
+                          rows={3}
                           value={form.message}
                           onChange={handleChange('message')}
                           placeholder="Например: больше заявок, свой бот, порядок в базе клиентов"
-                          className="w-full resize-none rounded-xl border-0 bg-transparent px-4 py-3 text-sm text-text-main placeholder:text-text-muted outline-none"
+                          className="min-h-[108px] w-full resize-none rounded-xl border-0 bg-transparent px-4 py-3 text-sm text-text-main placeholder:text-text-muted outline-none"
                         />
                       </div>
                     </div>
@@ -214,15 +234,31 @@ export default function LeadForm() {
                     />
                   </div>
 
-                  <label htmlFor="consent" className="mt-5 flex items-start gap-3 text-xs leading-relaxed text-text-muted">
-                    <input
-                      id="consent"
-                      type="checkbox"
-                      required
-                      checked={form.consent}
-                      onChange={handleConsentChange}
-                      className="mt-0.5 h-4 w-4 shrink-0 accent-accent"
-                    />
+                  <label htmlFor="consent" className="mt-5 flex cursor-pointer items-start gap-3 text-xs leading-relaxed text-text-muted">
+                    <span className="relative mt-0.5 flex h-5 w-5 shrink-0 items-center justify-center">
+                      <input
+                        id="consent"
+                        type="checkbox"
+                        checked={form.consent}
+                        onChange={handleConsentChange}
+                        aria-invalid={consentError}
+                        className="peer sr-only"
+                      />
+                      <span
+                        className={`h-5 w-5 rounded-[6px] border-2 transition-all duration-200 ${
+                          form.consent
+                            ? 'border-accent bg-accent'
+                            : consentError
+                              ? 'border-red-400 bg-white'
+                              : 'border-[rgba(var(--accent-rgb),0.4)] bg-white'
+                        } peer-focus-visible:ring-2 peer-focus-visible:ring-accent/40 peer-focus-visible:ring-offset-1`}
+                      />
+                      <IconCheckSmall
+                        className={`pointer-events-none absolute h-3.5 w-3.5 text-white transition-opacity duration-150 ${
+                          form.consent ? 'opacity-100' : 'opacity-0'
+                        }`}
+                      />
+                    </span>
                     <span>
                       Я согласен на обработку моих персональных данных для обработки заявки, связи со мной и
                       подготовки предложения. Я ознакомился с{' '}
@@ -232,11 +268,12 @@ export default function LeadForm() {
                       .
                     </span>
                   </label>
+                  {consentError && <p className="ml-8 mt-1 text-[11px] text-red-500">Нужно подтвердить согласие</p>}
 
                   <button
                     type="submit"
-                    disabled={!form.consent || status === 'submitting'}
-                    className="btn-primary mt-5 w-full disabled:cursor-not-allowed disabled:opacity-50 sm:text-base"
+                    disabled={status === 'submitting'}
+                    className="btn-primary mt-5 w-full disabled:cursor-not-allowed disabled:opacity-60 sm:text-base"
                   >
                     {status === 'submitting' ? 'Отправляем…' : 'Отправить заявку'}
                   </button>
@@ -250,6 +287,8 @@ export default function LeadForm() {
                       .
                     </p>
                   )}
+
+                  <div className="mt-4 h-px w-full bg-gradient-to-r from-transparent via-[rgba(var(--accent-rgb),0.2)] to-transparent" />
 
                   <p className="mt-3 text-center text-[11px] leading-relaxed text-text-muted">
                     Отправка заявки не означает заключение договора и не гарантирует конкретный коммерческий

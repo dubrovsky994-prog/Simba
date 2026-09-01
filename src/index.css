@@ -75,6 +75,19 @@ body {
   animation: case-fade-in 0.45s ease both;
 }
 
+/* Horizontal carousels (case tabs, etc.): scrollable by touch/drag, but the
+   native scrollbar is hidden so it reads as a swipeable strip, not a
+   scrolled-off table. */
+.no-scrollbar {
+  scrollbar-width: none; /* Firefox */
+  -ms-overflow-style: none; /* legacy Edge / IE */
+  -webkit-overflow-scrolling: touch; /* momentum scroll on iOS */
+}
+
+.no-scrollbar::-webkit-scrollbar {
+  display: none; /* Chrome / Safari */
+}
+
 /* Reusable component classes */
 @layer components {
   .container-px {
