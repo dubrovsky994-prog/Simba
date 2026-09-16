@@ -147,10 +147,12 @@ const projectCases: ProjectCase[] = [
 ]
 
 const DEFAULT_ACTIVE_ID = 'sweet-mommy'
+const FEATURED_CASE_IDS = new Set(['sweet-mommy', 'shashlyk-jan', 'kirmebel', 'aura'])
+const featuredCases = projectCases.filter((project) => FEATURED_CASE_IDS.has(project.id))
 
 export default function NicheCases() {
   const [activeId, setActiveId] = useState(DEFAULT_ACTIVE_ID)
-  const activeCase = projectCases.find((project) => project.id === activeId) ?? projectCases[0]
+  const activeCase = featuredCases.find((project) => project.id === activeId) ?? featuredCases[0]
 
   return (
     <section id="for-whom" className="bg-bg-section py-12 sm:py-16">
@@ -165,8 +167,8 @@ export default function NicheCases() {
         </div>
 
         <div className="relative -mx-5 mt-8 sm:mx-0">
-          <div className="no-scrollbar flex snap-x snap-mandatory gap-3 overflow-x-auto scroll-pl-5 px-5 py-3 sm:grid sm:grid-cols-3 sm:gap-3 sm:overflow-visible sm:px-0 sm:py-0">
-            {projectCases.map((project) => {
+          <div className="no-scrollbar flex snap-x snap-mandatory gap-3 overflow-x-auto scroll-pl-5 px-5 py-3 sm:grid sm:grid-cols-4 sm:gap-3 sm:overflow-visible sm:px-0 sm:py-0">
+            {featuredCases.map((project) => {
               const isActive = project.id === activeId
               return (
                 <button

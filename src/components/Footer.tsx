@@ -39,9 +39,6 @@ export default function Footer() {
             <p className="mt-4 max-w-xs text-sm leading-relaxed text-text-muted">
               Цифровые системы продаж для малого и среднего бизнеса.
             </p>
-            <a href="/#business-audit" className="btn-primary mt-6">
-              Посчитать потери
-            </a>
           </div>
 
           <div>

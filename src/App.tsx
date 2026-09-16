@@ -8,12 +8,10 @@ import Hero from './components/Hero'
 import PublicTransition from './components/PublicTransition'
 import PublicLeadMagnetIntro from './components/PublicLeadMagnetIntro'
 import PublicAiSection from './components/PublicAiSection'
-import BeautyPartnerSection from './components/BeautyPartnerSection'
 import PublicFinalCta from './components/PublicFinalCta'
 import PublicFaq from './components/PublicFaq'
 import HowWeHelp from './components/HowWeHelp'
-import LossCalculator from './components/LossCalculator'
-import IdeaLeadMagnet from './components/IdeaLeadMagnet'
+import PublicConversion from './components/PublicConversion'
 import Consent from './legal/Consent'
 import Cookies from './legal/Cookies'
 import Privacy from './legal/Privacy'
@@ -47,9 +45,8 @@ function HomePage() {
         <div className="public-v2-how"><HowWeHelp /></div>
         <div className="public-v2-cases"><NicheCases /></div>
         <PublicAiSection />
-        <BeautyPartnerSection />
         <PublicFinalCta />
-        <section className="public-v2-lead-zone"><div className="container-px"><PublicLeadMagnetIntro /></div><LossCalculator /><IdeaLeadMagnet /></section>
+        <section className="public-v2-lead-zone"><div className="container-px"><PublicLeadMagnetIntro /></div><PublicConversion /></section>
         <PublicFaq />
       </main>
       <Footer />
