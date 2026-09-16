@@ -4,7 +4,7 @@ import simbaMark from '../assets/simba/brand/simba-mark-original.png'
 
 const NAV_LINKS = [
   { label: 'Решения', href: '#solutions' }, { label: 'Как это работает', href: '#how-we-help' },
-  { label: 'Кейсы', href: '#for-whom' }, { label: 'SIMBA AI', href: '#simba-ai' }, { label: 'Контакты', href: '#contacts' },
+  { label: 'Кейсы', href: '#for-whom' }, { label: 'SIMBA AI', href: '#public-simba-ai' }, { label: 'Контакты', href: '#contacts' },
 ]
 
 export default function Header() {

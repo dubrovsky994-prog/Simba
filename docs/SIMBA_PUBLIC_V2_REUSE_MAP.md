@@ -1,4 +1,4 @@
-# SIMBA Public Website V2 — Reuse Map (Task 02, Phase A–C)
+# SIMBA Public Website V2 — Reuse Map (Task 02.1)
 
 | Block / capability | Current source | Decision | Phase A–C treatment |
 | --- | --- | --- | --- |
@@ -10,13 +10,14 @@
 | Beauty public demo | `src/components/BeautyCoreDemo.tsx` | CONNECT | Existing modal opener remains in Hero. No LAILA/Beauty backend is moved. |
 | Product family | none | BUILD_NEW | Presentation-only family strip for Systems, Beauty, AI and Partner; no new product logic. |
 | Problem → result transition | none | BUILD_NEW | Static commercial transition section; no data/API dependencies. |
-| Cases + case modal | `src/components/NicheCases.tsx`, `src/components/CaseGallery.tsx`, `src/components/ImageModal.tsx` | REUSE | Untouched; later phase can rework presentation with approved case data only. |
+| Cases + case modal | `src/components/NicheCases.tsx`, `src/components/CaseGallery.tsx`, `src/components/ImageModal.tsx` | REWORK + REUSE | The existing picker, gallery and case data remain one implementation; its content hierarchy is now Context → What changed → What we did. |
 | Lead modal / form | `src/components/LeadForm.tsx`, `api/lead.ts` | REUSE | Untouched; no new lead form or backend. |
-| FAQ / contacts / footer / legal | `src/components/Footer.tsx`, `src/legal/*` | REUSE | Untouched in this stop point. |
+| FAQ | none | BUILD_NEW | Static native disclosure list only; no API, lead capture or invented commercial results. |
+| Contacts / footer / legal | `src/components/Footer.tsx`, `src/legal/*` | REWORK + REUSE | Visual shell aligns with V2; contact and legal source content remains unchanged. |
 | Cookie banner / UTM / analytics | `src/components/CookieBanner.tsx`, `src/lib/audit/*`, `@vercel/analytics/react` | REUSE | Untouched. |
 
 ## Guardrail
 
-Phase A–C changes public presentation only. The existing calculator, lead paths,
-Beauty demo, avatar renderer, cases, legal documents, CookieBanner, UTM capture
-and analytics hooks remain the single implementations.
+Task 02.1 changes public presentation only. The existing calculator, Idea flow,
+Beauty demo, avatar renderer, case gallery, lead path, legal documents,
+CookieBanner, UTM capture and analytics hooks remain the single implementations.

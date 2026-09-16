@@ -8,6 +8,11 @@ import Header from './components/Header'
 import Hero from './components/Hero'
 import PublicTransition from './components/PublicTransition'
 import ProductArchitecture from './components/ProductArchitecture'
+import PublicLeadMagnetIntro from './components/PublicLeadMagnetIntro'
+import PublicAiSection from './components/PublicAiSection'
+import BeautyPartnerSection from './components/BeautyPartnerSection'
+import PublicFinalCta from './components/PublicFinalCta'
+import PublicFaq from './components/PublicFaq'
 import HowWeHelp from './components/HowWeHelp'
 import Pricing from './components/Pricing'
 import ProcessComparison from './components/ProcessComparison'
@@ -40,17 +45,19 @@ function HomePage() {
   return (
     <div className="public-v2 min-h-screen bg-bg-main text-text-main">
       <Header />
-      <main>
+      <main id="top">
         <Hero />
         <PublicTransition />
         <ProductArchitecture />
-        <Pricing />
-        <ProcessComparison />
-        <HowWeHelp />
-        <NicheCases />
-        <LossCalculator />
-        <IdeaLeadMagnet />
-        <LeadForm />
+        <div className="public-v2-how"><HowWeHelp /></div>
+        <div className="public-v2-commercial"><Pricing /><ProcessComparison /></div>
+        <section className="public-v2-lead-zone"><div className="container-px"><PublicLeadMagnetIntro /></div><LossCalculator /><IdeaLeadMagnet /></section>
+        <div className="public-v2-cases"><NicheCases /></div>
+        <PublicAiSection />
+        <BeautyPartnerSection />
+        <PublicFaq />
+        <PublicFinalCta />
+        <div className="public-v2-lead-form"><LeadForm /></div>
       </main>
       <Footer />
     </div>

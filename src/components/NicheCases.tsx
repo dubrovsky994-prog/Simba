@@ -219,11 +219,19 @@ export default function NicheCases() {
                 <h3 className="mt-5 text-2xl font-bold leading-tight text-text-main sm:text-3xl">
                   {activeCase.title}
                 </h3>
-                <p className="mt-2 text-base font-medium text-accent-dark">{activeCase.shortText}</p>
-                <p className="mt-4 text-base leading-relaxed text-text-muted">{activeCase.description}</p>
+                <div className="mt-5 grid gap-4 sm:grid-cols-2">
+                  <div>
+                    <h4 className="text-xs font-bold uppercase tracking-wider text-text-main">Контекст</h4>
+                    <p className="mt-2 text-base font-medium text-accent-dark">{activeCase.shortText}</p>
+                  </div>
+                  <div>
+                    <h4 className="text-xs font-bold uppercase tracking-wider text-text-main">Что изменилось</h4>
+                    <p className="mt-2 text-sm leading-relaxed text-text-muted">{activeCase.description}</p>
+                  </div>
+                </div>
 
                 <div className="mt-6">
-                  <h4 className="text-xs font-bold uppercase tracking-wider text-text-main">Главное</h4>
+                  <h4 className="text-xs font-bold uppercase tracking-wider text-text-main">Что сделали</h4>
                   <ul className="mt-3 flex flex-col gap-2.5">
                     {activeCase.highlights.map((item) => (
                       <li key={item} className="flex items-start gap-2 text-sm text-text-main">
