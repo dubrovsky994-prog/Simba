@@ -6,10 +6,8 @@ import CookieBanner from './components/CookieBanner'
 import Header from './components/Header'
 import Hero from './components/Hero'
 import PublicTransition from './components/PublicTransition'
-import PublicLeadMagnetIntro from './components/PublicLeadMagnetIntro'
 import PublicAiSection from './components/PublicAiSection'
 import PublicFinalCta from './components/PublicFinalCta'
-import PublicFaq from './components/PublicFaq'
 import HowWeHelp from './components/HowWeHelp'
 import PublicConversion from './components/PublicConversion'
 import Consent from './legal/Consent'
@@ -46,8 +44,7 @@ function HomePage() {
         <div className="public-v2-cases"><NicheCases /></div>
         <PublicAiSection />
         <PublicFinalCta />
-        <section className="public-v2-lead-zone"><div className="container-px"><PublicLeadMagnetIntro /></div><PublicConversion /></section>
-        <PublicFaq />
+        <section className="public-v2-lead-zone"><PublicConversion /></section>
       </main>
       <Footer />
     </div>

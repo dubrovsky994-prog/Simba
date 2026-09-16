@@ -1,7 +1,6 @@
 import { useState } from 'react'
 import { IconCheckSmall } from './icons'
 import CaseGallery, { type CaseScreenshot } from './CaseGallery'
-import { trackAuditEvent } from '../lib/audit/analytics'
 
 type ProjectCase = {
   id: string
@@ -244,32 +243,6 @@ export default function NicheCases() {
                   </ul>
                 </div>
 
-                <div className="mt-7 flex flex-wrap gap-3">
-                  <a href="#business-audit" className="btn-primary">
-                    Посчитать потери
-                  </a>
-                  {activeCase.projectUrl ? (
-                    <a
-                      href={activeCase.projectUrl}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="btn-secondary"
-                    >
-                      Посмотреть пример
-                    </a>
-                  ) : (
-                    <a href="#business-audit" className="btn-secondary">
-                      Посчитать потери
-                    </a>
-                  )}
-                  <a
-                    href="#business-audit"
-                    onClick={() => trackAuditEvent('niche_audit_click')}
-                    className="inline-flex items-center px-2 text-sm font-semibold text-accent-dark underline underline-offset-2 hover:text-accent"
-                  >
-                    Узнать, где теряются клиенты
-                  </a>
-                </div>
               </div>
 
               <CaseGallery screenshots={activeCase.screenshots} resetKey={activeCase.id} />
@@ -277,18 +250,6 @@ export default function NicheCases() {
           </div>
         </div>
 
-        <div className="mt-8 flex flex-col items-start justify-between gap-5 rounded-[24px] bg-[#1f252b] p-6 sm:flex-row sm:items-center sm:p-8">
-          <div>
-            <h3 className="text-xl font-bold text-white sm:text-2xl">Хотите похожую систему под свой бизнес?</h3>
-            <p className="mt-2 max-w-xl text-sm leading-relaxed text-white/65 sm:text-base">
-              Покажем, как можно упаковать вашу нишу: сайт, заявки, каталог, бот, клиентская база и повторные
-              продажи.
-            </p>
-          </div>
-          <a href="#business-audit" className="btn-primary shrink-0">
-            Посчитать потери
-          </a>
-        </div>
       </div>
     </section>
   )
