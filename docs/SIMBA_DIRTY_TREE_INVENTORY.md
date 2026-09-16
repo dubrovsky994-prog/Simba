@@ -6,7 +6,7 @@ Classification captured before snapshot commits. `PRODUCTION_RELEVANT` means sou
 
 | Path | Category | Purpose / dependencies | Safe to commit | Safe for production | Review |
 | --- | --- | --- | --- | --- | --- |
-| `.claude/launch.json` | I_PROTOTYPE | Local Claude launch configuration | Yes, separately | No | Yes |
+| `.claude/launch.json` | K_UNKNOWN | Local Claude launch configuration with absolute workspace paths | No | No | Keep LOCAL_ONLY and unstaged |
 | `api/lead.ts` | B_LEAD_INFRA | Plain/calculator/idea kinds; consent, honeypot, Telegram | Yes | No | Security/E2E |
 | `src/App.tsx` | A_PUBLIC_LANDING | Public composition, routes, UTM and DEV owner gate | Yes | No | Yes |
 | `src/components/CaseGallery.tsx` | A_PUBLIC_LANDING | Case gallery/modal | Yes | No | Visual/mobile |
@@ -51,3 +51,5 @@ No non-ignored untracked files were classified as GENERATED or TEMP. Generated/l
 ## Secret scan result
 
 No secret-risk patterns were found in the staged candidate groups (public landing, lead, calculator, idea, avatar, Beauty, owner, assets, proxy). `SECRET_RISK` candidates occur only under excluded Agent Bridge paths. `.env.example` files contain placeholders; ignored real `.env*` values were not opened or reported.
+
+`.claude/launch.json` has no credential pattern but does contain absolute local workspace paths; it is intentionally not a staged candidate.

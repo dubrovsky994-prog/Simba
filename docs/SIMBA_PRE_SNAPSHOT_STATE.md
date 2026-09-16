@@ -29,9 +29,9 @@ Captured: 2026-09-16 (Europe/Moscow), immediately before creation of the local s
 - `src/owner/`: DEV-only localStorage owner MVP, no public production route.
 - `public/avatar/` and `src/components/avatar/`: public-avatar source/assets; approved artifact provenance must be preserved and no visual rewrite belongs in this task.
 - `public/api/lead.php` and `.htaccess`: hosting-specific REG.RU proxy draft; source may be preserved separately but is not approved production routing.
+- `.claude/launch.json`: local launcher entries contain absolute paths to LAILA and FRAME58 workspaces; keep it local and unstaged.
 - All ignored `.env*`, `.vercel`, `node_modules`, `dist` and caches remain unmodified and unstaged.
 
 ## Production gate
 
 The live domain is known to be served by B's Vercel project, but local Vercel metadata does not reveal the production branch, deployment commit or automatic deploy rule. No push is authorized or performed.
-
