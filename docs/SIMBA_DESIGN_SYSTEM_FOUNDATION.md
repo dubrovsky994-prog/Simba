@@ -30,7 +30,7 @@ All interactive controls retain visible `:focus-visible` styling. Motion is limi
 
 ## Responsive rules
 
-The space is designed mobile-first. Its content grid collapses at 1024px and 720px; the compact utility row and project/result grids adapt to single-column reading on narrow screens. No horizontal scrolling is used for application content.
+The space is designed mobile-first. The desktop rail is visible from 1101px and hidden at 1100px and below; the content grid adapts at 1100px and 720px. The compact utility row and project/result grids adapt to single-column reading on narrow screens. No horizontal scrolling is used for application content.
 
 ## 01B.1 visual refinement
 
@@ -39,6 +39,8 @@ The space is designed mobile-first. Its content grid collapses at 1024px and 720
   a turquoise marker and a restrained handwritten note.
 - Business Pulse uses compact demo business indicators; Growth makes remaining
   maturity criteria visible rather than presenting a game mechanic.
+- The five desktop Pulse metrics use an intentional asymmetric five-column grid;
+  the global `DEMO DATA` marker remains the sole demo disclosure for that block.
 - Today distinguishes one primary focus, while the purple AI block uses four
   operational states: doing, found, recommends, decision required.
 - The journey becomes a route metaphor, and Code of Lion is a persistent
