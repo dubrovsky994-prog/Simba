@@ -1,0 +1,21 @@
+.simba-avatar{--simba-accent:#57bdc5;--simba-halo:rgba(69,178,187,.13);--simba-glow:.65;display:inline-block;position:relative;width:var(--simba-size);height:var(--simba-size);max-width:100%;flex:none;isolation:isolate;vertical-align:middle;transition:width .42s ease,height .42s ease;color:var(--simba-accent)}
+.simba-avatar[data-tone=violet]{--simba-accent:#8a72a3;--simba-halo:rgba(115,94,142,.17)}
+.simba-avatar[data-state=hover]{--simba-accent:#76d1d7;--simba-halo:rgba(69,178,187,.19);--simba-glow:.85}
+.simba-avatar[data-tone=error]{--simba-accent:#bc8c88;--simba-halo:rgba(167,112,109,.13)}
+.simba-surface{display:block;position:relative;width:100%;height:100%;border:0;padding:0;margin:0;background:transparent;color:inherit;border-radius:50%;-webkit-tap-highlight-color:transparent;touch-action:manipulation;transition:transform .42s cubic-bezier(.2,.8,.2,1),color .42s ease;outline-offset:5px}
+button.simba-surface{cursor:pointer}button.simba-surface[aria-disabled=true]{cursor:progress}.simba-surface:focus-visible{outline:2px solid var(--simba-accent)}
+.simba-avatar[data-state=hover] .simba-surface{transform:scale(1.015)}.simba-avatar[data-state=pressed] .simba-surface{transform:scale(.974)}
+.simba-field,.simba-core{position:absolute;inset:0;width:100%;height:100%;overflow:visible;pointer-events:none}.simba-core{filter:drop-shadow(0 3px 3px #0003)}
+.simba-halo{position:absolute;inset:13%;border-radius:50%;background:radial-gradient(ellipse,var(--simba-halo),transparent 69%);opacity:.8;transition:background .42s,opacity .42s;pointer-events:none}
+.simba-field path,.simba-field circle{vector-effect:non-scaling-stroke}.simba-arc-heavy{stroke:currentColor;stroke-width:1.7;opacity:.64}.simba-arc{stroke:currentColor;stroke-width:.85;opacity:.6}.simba-arc-faint{stroke:currentColor;stroke-width:.65;opacity:.22}
+.simba-rotation{transform-origin:160px 160px;animation:simba-orbit 72s linear infinite}.simba-orbit-inner{animation-duration:104s;animation-direction:reverse}.simba-orbit-nodes{animation-duration:48s}
+.simba-node{fill:currentColor;filter:drop-shadow(0 0 2px currentColor);opacity:.8}.simba-node-dim{fill:currentColor;opacity:.38}.simba-trails{stroke:currentColor;stroke-width:.6;opacity:.24}
+.simba-eyes{fill:currentColor;filter:drop-shadow(0 0 10px currentColor);opacity:var(--simba-glow);animation:simba-breathe 6s ease-in-out infinite;transition:opacity .42s}
+.simba-energy{stroke:currentColor;fill:currentColor;stroke-width:1.7;opacity:0;animation-duration:3.8s;transition:opacity .42s}.simba-energy path{fill:none}.simba-avatar[data-state=thinking] .simba-energy{opacity:.7}.simba-avatar[data-state=thinking] .simba-halo{animation:simba-halo-breathe 3.8s ease-in-out infinite}.simba-avatar[data-state=thinking] .simba-trails{opacity:.42;transform:scale(.98);transform-origin:center;transition:transform .6s,opacity .6s}
+.simba-avatar[data-activating=true] .simba-energy{opacity:.8;animation-duration:.48s}.simba-avatar[data-state=error] .simba-orbit-outer{animation-play-state:paused}.simba-avatar[data-state=error] .simba-node{opacity:.55}
+.simba-success-echo{stroke:#66c2c8;stroke-width:1.1;opacity:0;transform-origin:center}.simba-avatar[data-state=success] .simba-success-echo{animation:simba-success 1.15s ease-out both}.simba-avatar[data-state=success] .simba-halo{animation:simba-halo-breathe 1.15s ease-out}
+.simba-avatar[data-paused=true] *{animation-play-state:paused!important}
+@keyframes simba-orbit{to{transform:rotate(360deg)}}@keyframes simba-breathe{50%{opacity:.45}}@keyframes simba-halo-breathe{50%{opacity:1;transform:scale(1.035)}}@keyframes simba-success{0%{opacity:0;transform:scale(.97)}28%{opacity:.65}100%{opacity:0;transform:scale(1.06)}}
+@media(prefers-reduced-motion:reduce){.simba-avatar *{animation:none!important}.simba-avatar .simba-surface{transform:none!important}.simba-avatar[data-state=success] .simba-success-echo{opacity:.35}.simba-avatar{transition:none}.simba-energy{transition:opacity .42s}}
+@media(hover:none){button.simba-surface{cursor:default}}
+.simba-digital-canvas{display:block;width:100%;height:100%;pointer-events:none}.simba-digital-fallback{position:absolute;inset:15%;width:70%;height:70%;object-fit:contain}.simba-avatar[data-variant=digital]{aspect-ratio:1;height:auto;max-width:100%}.simba-avatar[data-variant=digital] .simba-surface{aspect-ratio:1}

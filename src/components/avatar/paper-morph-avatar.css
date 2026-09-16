@@ -1,0 +1,7 @@
+.simba-paper-avatar{--paper-avatar-size:380px;display:block;position:relative;width:min(var(--paper-avatar-size),100%);aspect-ratio:1;flex:none;overflow:hidden;border-radius:50%;isolation:isolate;background:transparent;color:#137d80}
+.simba-paper-avatar::before{content:"";position:absolute;inset:13.5%;z-index:0;border:1px solid rgba(255,255,255,.72);border-radius:50%;background:radial-gradient(ellipse at 36% 27%,rgba(255,255,255,.66),rgba(221,250,246,.24) 43%,rgba(137,218,212,.13) 78%,rgba(255,255,255,.24));box-shadow:inset 0 1px 2px rgba(255,255,255,.92),inset 0 -8px 20px rgba(67,168,160,.12),0 8px 25px rgba(47,147,140,.12);backdrop-filter:blur(16px) saturate(145%);-webkit-backdrop-filter:blur(16px) saturate(145%);pointer-events:none}
+.simba-paper-avatar iframe{position:absolute;inset:0;z-index:1;width:100%;height:100%;border:0;border-radius:50%;background:transparent}
+.simba-paper-avatar[data-ready=true] .simba-paper-avatar-loading{opacity:0;pointer-events:none}
+.simba-paper-avatar-loading{position:absolute;inset:28%;z-index:2;border:1px solid rgba(32,177,168,.16);border-top-color:#51c9bd;border-radius:50%;animation:simba-avatar-load 1.5s linear infinite;transition:opacity .3s;pointer-events:none}
+@keyframes simba-avatar-load{to{transform:rotate(360deg)}}
+@media(prefers-reduced-motion:reduce){.simba-paper-avatar-loading{animation:none}}
