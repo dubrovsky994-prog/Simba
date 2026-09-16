@@ -11,13 +11,15 @@
 | Product family | none | BUILD_NEW | Presentation-only family strip for Systems, Beauty, AI and Partner; no new product logic. |
 | Problem → result transition | none | BUILD_NEW | Static commercial transition section; no data/API dependencies. |
 | Cases + case modal | `src/components/NicheCases.tsx`, `src/components/CaseGallery.tsx`, `src/components/ImageModal.tsx` | REWORK + REUSE | The existing picker, gallery and case data remain one implementation; its content hierarchy is now Context → What changed → What we did. |
-| Lead modal / form | `src/components/LeadForm.tsx`, `api/lead.ts` | REUSE | Untouched; no new lead form or backend. |
+| Legacy lead form / API | `src/components/LeadForm.tsx`, `api/lead.ts` | LEGACY / NOT PRIMARY | Retained in source for other scenarios, but not rendered by the Public V2 landing. |
 | FAQ | none | BUILD_NEW | Static native disclosure list only; no API, lead capture or invented commercial results. |
 | Contacts / footer / legal | `src/components/Footer.tsx`, `src/legal/*` | REWORK + REUSE | Visual shell aligns with V2; contact and legal source content remains unchanged. |
 | Cookie banner / UTM / analytics | `src/components/CookieBanner.tsx`, `src/lib/audit/*`, `@vercel/analytics/react` | REUSE | Untouched. |
 
 ## Guardrail
 
-Task 02.1 changes public presentation only. The existing calculator, Idea flow,
+Public V2 uses the existing calculator for an operating business and the
+existing Idea flow for a new idea. The legacy Simba review is not deleted, but
+is not a primary CTA or landing section. The existing calculator, Idea flow,
 Beauty demo, avatar renderer, case gallery, lead path, legal documents,
 CookieBanner, UTM capture and analytics hooks remain the single implementations.

@@ -2,20 +2,16 @@ import { Analytics } from '@vercel/analytics/react'
 import { useEffect } from 'react'
 import Footer from './components/Footer'
 import NicheCases from './components/NicheCases'
-import LeadForm from './components/LeadForm'
 import CookieBanner from './components/CookieBanner'
 import Header from './components/Header'
 import Hero from './components/Hero'
 import PublicTransition from './components/PublicTransition'
-import ProductArchitecture from './components/ProductArchitecture'
 import PublicLeadMagnetIntro from './components/PublicLeadMagnetIntro'
 import PublicAiSection from './components/PublicAiSection'
 import BeautyPartnerSection from './components/BeautyPartnerSection'
 import PublicFinalCta from './components/PublicFinalCta'
 import PublicFaq from './components/PublicFaq'
 import HowWeHelp from './components/HowWeHelp'
-import Pricing from './components/Pricing'
-import ProcessComparison from './components/ProcessComparison'
 import LossCalculator from './components/LossCalculator'
 import IdeaLeadMagnet from './components/IdeaLeadMagnet'
 import Consent from './legal/Consent'
@@ -48,16 +44,13 @@ function HomePage() {
       <main id="top">
         <Hero />
         <PublicTransition />
-        <ProductArchitecture />
         <div className="public-v2-how"><HowWeHelp /></div>
-        <div className="public-v2-commercial"><Pricing /><ProcessComparison /></div>
-        <section className="public-v2-lead-zone"><div className="container-px"><PublicLeadMagnetIntro /></div><LossCalculator /><IdeaLeadMagnet /></section>
         <div className="public-v2-cases"><NicheCases /></div>
         <PublicAiSection />
         <BeautyPartnerSection />
-        <PublicFaq />
         <PublicFinalCta />
-        <div className="public-v2-lead-form"><LeadForm /></div>
+        <section className="public-v2-lead-zone"><div className="container-px"><PublicLeadMagnetIntro /></div><LossCalculator /><IdeaLeadMagnet /></section>
+        <PublicFaq />
       </main>
       <Footer />
     </div>

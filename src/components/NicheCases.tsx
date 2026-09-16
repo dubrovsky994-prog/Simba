@@ -243,8 +243,8 @@ export default function NicheCases() {
                 </div>
 
                 <div className="mt-7 flex flex-wrap gap-3">
-                  <a href="#audit" className="btn-primary">
-                    Хочу похожую систему
+                  <a href="#business-audit" className="btn-primary">
+                    Посчитать потери
                   </a>
                   {activeCase.projectUrl ? (
                     <a
@@ -256,8 +256,8 @@ export default function NicheCases() {
                       Посмотреть пример
                     </a>
                   ) : (
-                    <a href="#audit" className="btn-secondary">
-                      Обсудить проект
+                    <a href="#business-audit" className="btn-secondary">
+                      Посчитать потери
                     </a>
                   )}
                   <a
@@ -283,8 +283,8 @@ export default function NicheCases() {
               продажи.
             </p>
           </div>
-          <a href="#audit" className="btn-primary shrink-0">
-            Оставить заявку
+          <a href="#business-audit" className="btn-primary shrink-0">
+            Посчитать потери
           </a>
         </div>
       </div>

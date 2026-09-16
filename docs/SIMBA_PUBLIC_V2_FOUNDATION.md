@@ -2,9 +2,10 @@
 
 ## Scope
 
-The landing now extends the approved Header/Hero/transition/Product Architecture
-foundation through the existing sales flows, cases, AI/Beauty/Partner
-presentation, FAQ, final CTA and footer. It reuses the visual DNA of `/space`
+The landing now uses a compact sequence: Hero, interactive problem/solution,
+cases, AI/Beauty/Partner presentation, calculator-or-idea CTA, existing flows,
+FAQ and footer. Product Architecture, Pricing, ProcessComparison and the
+legacy lead form remain available in source but do not render in Public V2. It reuses the visual DNA of `/space`
 while remaining 80% commercial clarity and 20% editorial character.
 
 ## Public tokens

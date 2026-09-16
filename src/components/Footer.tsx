@@ -10,7 +10,7 @@ const CONTACTS = [
 ]
 
 const NAV_LINKS = [
-  { label: 'Тарифы', href: '/#pricing' },
+  { label: 'Калькулятор потерь', href: '/#business-audit' },
   { label: 'Как это работает', href: '/#how-we-help' },
   { label: 'Кейсы', href: '/#for-whom' },
   { label: 'Контакты', href: '/#contacts' },
@@ -40,7 +40,7 @@ export default function Footer() {
               Цифровые системы продаж для малого и среднего бизнеса.
             </p>
             <a href="/#business-audit" className="btn-primary mt-6">
-              Бесплатная диагностика
+              Посчитать потери
             </a>
           </div>
 
