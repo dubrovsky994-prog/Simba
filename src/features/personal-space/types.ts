@@ -1,6 +1,6 @@
-export type Rank = { title: string; nextTitle: string; current: number; target: number; description: string };
+export type Rank = { title: string; nextTitle: string; current: number; target: number; description: string; remaining: string[] };
 export type PulseMetric = { label: string; value: string; delta: string; tone: 'steady' | 'focus' | 'attention' };
-export type TodayTask = { title: string; impact: string; owner: string; status: 'now' | 'planned' | 'waiting' };
+export type TodayTask = { title: string; impact: string; owner: string; status: 'now' | 'planned' | 'waiting'; area: 'Продажи' | 'Система' | 'Клиент' | 'Продукт' };
 export type JourneyStep = { moment: 'was' | 'now' | 'future'; eyebrow: string; title: string; detail: string };
 export type Project = { name: string; role: string; status: string; nextMove: string; tone: 'paper' | 'ink' | 'turquoise' };
 export type ClientResult = { client: string; signal: string; value: string; note: string };
