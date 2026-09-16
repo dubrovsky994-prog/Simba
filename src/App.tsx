@@ -6,6 +6,8 @@ import LeadForm from './components/LeadForm'
 import CookieBanner from './components/CookieBanner'
 import Header from './components/Header'
 import Hero from './components/Hero'
+import PublicTransition from './components/PublicTransition'
+import ProductArchitecture from './components/ProductArchitecture'
 import HowWeHelp from './components/HowWeHelp'
 import Pricing from './components/Pricing'
 import ProcessComparison from './components/ProcessComparison'
@@ -16,6 +18,7 @@ import Cookies from './legal/Cookies'
 import Privacy from './legal/Privacy'
 import Terms from './legal/Terms'
 import { captureUtmFromUrl } from './lib/audit/utm'
+import './public-v2.css'
 
 const LEGAL_PAGES: Record<string, () => JSX.Element> = {
   '/privacy': Privacy,
@@ -35,10 +38,12 @@ function HomePage() {
   }, [])
 
   return (
-    <div className="min-h-screen bg-bg-main text-text-main">
+    <div className="public-v2 min-h-screen bg-bg-main text-text-main">
       <Header />
       <main>
         <Hero />
+        <PublicTransition />
+        <ProductArchitecture />
         <Pricing />
         <ProcessComparison />
         <HowWeHelp />
