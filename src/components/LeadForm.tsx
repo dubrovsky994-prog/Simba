@@ -77,6 +77,9 @@ export default function LeadForm() {
           message: form.message,
           company: form.company,
           page: window.location.pathname,
+          // Reached only after the guard above confirmed the checkbox is
+          // checked — never send this as true without a real, current consent.
+          consent: true,
         }),
       })
 
@@ -174,7 +177,7 @@ export default function LeadForm() {
                       {contactError && <p className="mt-1 text-[11px] text-red-500">Заполните это поле</p>}
                     </div>
 
-                    <div>
+                    <div className="sm:col-span-2">
                       <label htmlFor="businessType" className="mb-1 block text-[13px] font-medium text-text-main">
                         Сфера / вид бизнеса
                       </label>
