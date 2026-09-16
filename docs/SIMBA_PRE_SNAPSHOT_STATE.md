@@ -35,3 +35,10 @@ Captured: 2026-09-16 (Europe/Moscow), immediately before creation of the local s
 ## Production gate
 
 The live domain is known to be served by B's Vercel project, but local Vercel metadata does not reveal the production branch, deployment commit or automatic deploy rule. No push is authorized or performed.
+
+## Post-snapshot verification
+
+- Eight local commits preserve the classified source groups above the initial HEAD.
+- Remaining intentional dirty state: `.claude/launch.json` (local absolute workspace paths) and 79 untracked Agent Bridge paths (external project).
+- Targeted public lint (`src`, `api`, `tests/owner.test.mjs`) passed. Repository-wide lint still has the documented two Agent Bridge failures.
+- `git fsck --no-reflogs` returned many dangling objects but no reported missing or broken object. Their provenance predates this audit's ability to attribute it; no `git gc`, prune or cleanup was run.

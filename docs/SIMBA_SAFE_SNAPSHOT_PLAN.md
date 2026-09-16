@@ -26,3 +26,7 @@ Every source commit must be followed by `npm.cmd run build`, relevant tests wher
 ## Commit stop conditions
 
 Stop before staging a group if a new secret-risk path appears, build fails, a file has unclear ownership, or an untracked nested project would be included. Leave unknown files untracked; `UNKNOWN > DELETE`.
+
+## Snapshot outcome
+
+The classified public source groups were preserved as eight local commits. The branch is intentionally ahead of `origin/main` and remains unpushed until Vercel deployment behavior is manually confirmed.
