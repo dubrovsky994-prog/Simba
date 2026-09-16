@@ -10,10 +10,9 @@ const CONTACTS = [
 ]
 
 const NAV_LINKS = [
-  { label: 'Возможности', href: '/#features' },
-  { label: 'Для кого', href: '/#for-whom' },
   { label: 'Тарифы', href: '/#pricing' },
-  { label: 'Как работает', href: '/#how-it-works' },
+  { label: 'Как это работает', href: '/#how-we-help' },
+  { label: 'Кейсы', href: '/#for-whom' },
   { label: 'Контакты', href: '/#contacts' },
 ]
 
@@ -40,8 +39,8 @@ export default function Footer() {
             <p className="mt-4 max-w-xs text-sm leading-relaxed text-text-muted">
               Цифровые системы продаж для малого и среднего бизнеса.
             </p>
-            <a href="/#audit" className="btn-primary mt-6">
-              Получить бесплатный разбор
+            <a href="/#business-audit" className="btn-primary mt-6">
+              Бесплатная диагностика
             </a>
           </div>
 

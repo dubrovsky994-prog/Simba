@@ -1,21 +1,21 @@
 import { Analytics } from '@vercel/analytics/react'
 import { useEffect } from 'react'
-import FAQ from './components/FAQ'
 import Footer from './components/Footer'
 import NicheCases from './components/NicheCases'
 import LeadForm from './components/LeadForm'
 import CookieBanner from './components/CookieBanner'
 import Header from './components/Header'
 import Hero from './components/Hero'
-import HowItWorks from './components/HowItWorks'
+import HowWeHelp from './components/HowWeHelp'
 import Pricing from './components/Pricing'
-import StatusBar from './components/StatusBar'
-import WhatWeCreate from './components/WhatWeCreate'
-import WhyProfitable from './components/WhyProfitable'
+import ProcessComparison from './components/ProcessComparison'
+import LossCalculator from './components/LossCalculator'
+import IdeaLeadMagnet from './components/IdeaLeadMagnet'
 import Consent from './legal/Consent'
 import Cookies from './legal/Cookies'
 import Privacy from './legal/Privacy'
 import Terms from './legal/Terms'
+import { captureUtmFromUrl } from './lib/audit/utm'
 
 const LEGAL_PAGES: Record<string, () => JSX.Element> = {
   '/privacy': Privacy,
@@ -39,14 +39,13 @@ function HomePage() {
       <Header />
       <main>
         <Hero />
-        <StatusBar />
-        <WhatWeCreate />
-        <NicheCases />
-        <WhyProfitable />
-        <HowItWorks />
         <Pricing />
+        <ProcessComparison />
+        <HowWeHelp />
+        <NicheCases />
+        <LossCalculator />
+        <IdeaLeadMagnet />
         <LeadForm />
-        <FAQ />
       </main>
       <Footer />
     </div>
@@ -56,6 +55,24 @@ function HomePage() {
 function App() {
   const path = window.location.pathname.replace(/\/+$/, '') || '/'
   const LegalPage = LEGAL_PAGES[path]
+
+  // Captured once per load so a campaign link's UTM params survive into the
+  // calculator section and, later, into a submitted lead — even on pages that
+  // don't carry the query string themselves.
+  useEffect(() => {
+    captureUtmFromUrl()
+  }, [])
+
+  // The old audit used to live on its own /audit page; that section is now
+  // the loss calculator, still inline on the homepage — so old links redirect
+  // straight to it instead of 404ing.
+  useEffect(() => {
+    if (path === '/audit') {
+      window.location.replace('/#business-audit')
+    }
+  }, [path])
+
+  if (path === '/audit') return null
 
   return (
     <>

@@ -1,152 +1,207 @@
-import { IconBot, IconChart, IconCheck, IconGear, IconInbox } from './icons'
+import { useEffect, useState } from 'react'
+import BeautyCoreDemo from './BeautyCoreDemo'
+import PaperMorphAvatar from './avatar/PaperMorphAvatar'
 import WaveLines from './WaveLines'
 
+type HomePath = {
+  number: string
+  title: string
+  description: string
+  href?: string
+  opensDemo?: boolean
+}
+
+const HOME_PATHS = [
+  {
+    number: '01',
+    title: 'Калькулятор потерь',
+    description: 'Узнайте, где заявки и деньги уходят мимо.',
+    href: '#business-audit',
+  },
+  {
+    number: '02',
+    title: 'Реализовать идею',
+    description: 'Разберём идею, соберём MVP и план запуска.',
+    href: '#idea',
+  },
+  {
+    number: '03',
+    title: 'Beauty Core · демо',
+    description: 'Введите данные и попробуйте демо-версию.',
+    opensDemo: true,
+  },
+] satisfies HomePath[]
+
+function HomePathCard({ path, onOpenDemo }: { path: HomePath; onOpenDemo: () => void }) {
+  const className = 'neu-card group flex min-h-[118px] items-start gap-3 p-3.5 text-left transition-all duration-200 hover:-translate-y-1 hover:border-accent/35 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent/60 sm:min-h-[148px] sm:flex-col sm:justify-between sm:p-4'
+  const content = (
+    <>
+      <span className="neu-chip flex h-9 w-9 shrink-0 items-center justify-center text-[11px] font-bold text-accent-dark sm:h-8 sm:w-8">
+        {path.number}
+      </span>
+      <span className="min-w-0 flex-1 sm:flex-initial">
+        <span className="block text-sm font-bold leading-snug text-text-main sm:text-base">{path.title}</span>
+        <span className="mt-1 block text-xs leading-relaxed text-text-muted sm:mt-1.5">{path.description}</span>
+      </span>
+      <span aria-hidden="true" className="mt-1 text-lg leading-none text-accent transition-transform group-hover:translate-x-0.5 sm:hidden">
+        ↗
+      </span>
+      <span aria-hidden="true" className="hidden self-end text-lg leading-none text-accent transition-transform group-hover:translate-x-0.5 sm:block">
+        ↗
+      </span>
+    </>
+  )
+
+  if (path.opensDemo) {
+    return (
+      <button key={path.number} type="button" onClick={onOpenDemo} aria-haspopup="dialog" className={`${className} w-full`}>
+        {content}
+      </button>
+    )
+  }
+
+  return <a key={path.number} href={path.href} className={className}>{content}</a>
+}
+
 export default function Hero() {
+  const [assistantOpen, setAssistantOpen] = useState(false)
+  const [beautyDemoOpen, setBeautyDemoOpen] = useState(false)
+
+  useEffect(() => {
+    if (!assistantOpen) return
+    const closeOnEscape = (event: KeyboardEvent) => {
+      if (event.key === 'Escape') setAssistantOpen(false)
+    }
+    window.addEventListener('keydown', closeOnEscape)
+    return () => window.removeEventListener('keydown', closeOnEscape)
+  }, [assistantOpen])
+
+  const toggleAssistant = () => setAssistantOpen((open) => !open)
+
   return (
-    <section id="top" className="relative overflow-hidden pb-9 pt-8 sm:pb-11 sm:pt-11">
+    <section id="top" className="relative overflow-hidden pb-10 pt-8 sm:pb-12 sm:pt-10 lg:py-12">
       <div
-        className="pointer-events-none absolute -top-24 right-[-5%] hidden h-80 w-80 rounded-full opacity-50 blur-3xl lg:block"
-        style={{ background: 'radial-gradient(circle, var(--accent-soft), transparent 70%)' }}
+        className="pointer-events-none absolute -right-20 -top-28 hidden h-[30rem] w-[30rem] rounded-full opacity-60 blur-3xl lg:block"
+        style={{ background: 'radial-gradient(circle, var(--accent-soft), transparent 68%)' }}
       />
       <WaveLines
-        className="pointer-events-none absolute -bottom-6 -right-10 hidden h-72 w-[500px] lg:block"
+        className="pointer-events-none absolute -bottom-8 -right-10 hidden h-72 w-[500px] opacity-70 lg:block"
         style={{
           WebkitMaskImage: 'linear-gradient(315deg, transparent 0%, black 35%)',
           maskImage: 'linear-gradient(315deg, transparent 0%, black 35%)',
         }}
       />
 
-      <div className="container-px relative grid items-center gap-8 sm:gap-14 lg:grid-cols-[1.05fr_1fr] lg:gap-10">
-        <div>
-          <span className="section-badge">Цифровая система продаж</span>
+      <div className="container-px relative">
+        <div className="mx-auto grid max-w-7xl items-center gap-9 lg:grid-cols-2 lg:gap-12 xl:gap-16">
+          <div className="min-w-0">
+            <span className="section-badge">SIMBA</span>
 
-          <h1 className="mt-5 text-3xl font-bold leading-[1.15] text-text-main sm:text-5xl lg:text-[3.25rem]">
-            Бесплатно покажем, где ваш бизнес <span className="text-accent">теряет заявки</span>
-          </h1>
+            <h1 className="mt-5 max-w-[760px] text-center text-3xl font-bold leading-[1.12] text-text-main sm:text-5xl lg:text-left xl:text-[3.5rem]">
+              Цифровая система продаж для <span className="text-accent">вашего бизнеса</span>
+            </h1>
 
-          <p className="section-subtitle">
-            Проведём аудит ваших цифровых каналов и покажем точки роста продаж.
-          </p>
+            <p className="section-subtitle mx-auto lg:mx-0 lg:max-w-[700px] lg:text-left">
+              Соединяем сайт, заявки, запись, заказы, оплату, клиентскую базу и автоматизацию в одну систему.
+            </p>
 
-          <div className="mt-6 flex flex-col gap-4 sm:mt-9 sm:flex-row">
-            <a href="#audit" className="btn-primary">
-              Получить бесплатный разбор
-            </a>
-            <a href="#features" className="btn-secondary">
-              Узнать больше
-            </a>
+            <div className="mt-6 flex flex-col gap-3 sm:mt-8 sm:flex-row sm:justify-center lg:justify-start">
+              <a href="#business-audit" className="btn-primary">
+                Рассчитать потери бизнеса
+              </a>
+              <a href="#for-whom" className="btn-secondary">
+                Посмотреть кейсы
+              </a>
+            </div>
+
+            <div className="mt-8 sm:mt-10">
+              <div className="mb-3 text-center text-[10px] font-bold uppercase tracking-[0.16em] text-text-muted lg:text-left">
+                Выберите направление
+              </div>
+              <div className="grid grid-cols-1 gap-2.5 sm:grid-cols-3 sm:gap-3">
+                {HOME_PATHS.map((path) => <HomePathCard key={path.number} path={path} onOpenDemo={() => setBeautyDemoOpen(true)} />)}
+              </div>
+            </div>
           </div>
 
-          <div className="mt-6 grid grid-cols-3 gap-4 sm:mt-12 sm:gap-8">
-            <div>
-              <div className="text-xl font-bold text-text-main sm:text-2xl">+57%</div>
-              <div className="text-xs text-text-muted sm:text-sm">рост заявок у клиентов</div>
-            </div>
-            <div>
-              <div className="text-xl font-bold text-text-main sm:text-2xl">2,5x</div>
-              <div className="text-xs text-text-muted sm:text-sm">больше повторных продаж</div>
-            </div>
-            <div>
-              <div className="text-xl font-bold text-text-main sm:text-2xl">24/7</div>
-              <div className="text-xs text-text-muted sm:text-sm">обработка обращений</div>
-            </div>
-          </div>
-        </div>
-
-        <div className="relative mx-auto w-full max-w-[560px]">
-          {/* Laptop / dashboard mockup */}
-          <div className="neu-panel relative p-3 sm:p-4">
-            <div className="hidden items-center gap-1.5 pb-3 sm:flex">
-              <span className="h-2.5 w-2.5 rounded-full bg-black/10" />
-              <span className="h-2.5 w-2.5 rounded-full bg-black/10" />
-              <span className="h-2.5 w-2.5 rounded-full bg-black/10" />
+          <aside className="relative z-10 mx-auto flex w-full max-w-[360px] flex-col items-center lg:mx-0 lg:justify-self-end">
+            <div className="mb-1 flex items-center gap-2 rounded-full border border-accent/20 bg-white/60 px-3.5 py-1.5 text-[10px] font-bold uppercase tracking-[0.15em] text-text-muted shadow-soft backdrop-blur-sm">
+              <span className={`h-1.5 w-1.5 rounded-full bg-accent ${assistantOpen ? 'animate-pulse' : ''}`} />
+              {assistantOpen ? 'SIMBA активна' : 'SIMBA AI · рядом'}
             </div>
 
-            <div className="rounded-2xl border border-[rgba(var(--accent-rgb),0.18)] bg-bg-section p-3 sm:p-5">
-              <div className="flex items-center justify-between">
-                <div>
-                  <div className="text-xs text-text-muted">Панель управления</div>
-                  <div className="mt-1 text-sm font-semibold text-text-main">Симба · Продажи</div>
-                </div>
-                <div className="neu-chip flex h-8 w-8 items-center justify-center text-accent">
-                  <IconChart className="h-4 w-4" />
-                </div>
-              </div>
+            <PaperMorphAvatar
+              state={assistantOpen ? 'listening' : 'idle'}
+              size={336}
+              onActivate={toggleAssistant}
+              className="cursor-pointer transition-transform duration-300 hover:scale-[1.025]"
+            />
 
-              {/* fake chart */}
-              <div className="mt-3 flex h-14 items-end gap-1.5 sm:mt-5 sm:h-28">
-                {[40, 55, 35, 60, 50, 72, 58, 80, 66, 90].map((h, i) => (
-                  <div
-                    key={i}
-                    className="flex-1 rounded-t-sm bg-gradient-to-t from-accent/25 to-accent"
-                    style={{ height: `${h}%` }}
-                  />
-                ))}
-              </div>
-              <div className="mt-2 hidden text-[10px] text-text-muted sm:block">
-                Источники заявок: сайт, реклама, бот
-              </div>
+            <button
+              type="button"
+              onClick={toggleAssistant}
+              aria-expanded={assistantOpen}
+              aria-controls="simba-assistant-panel"
+              className="btn-primary mt-1 min-h-12 w-full max-w-[280px] gap-2"
+            >
+              {assistantOpen ? 'Свернуть SIMBA' : 'Вызвать SIMBA AI'}
+              <span aria-hidden="true" className="text-lg leading-none">{assistantOpen ? '−' : '↗'}</span>
+            </button>
 
-              <div className="mt-3 grid grid-cols-2 gap-2.5 sm:mt-4 sm:gap-3">
-                <div className="neu-card p-2.5 sm:p-3">
-                  <div className="flex items-center gap-2 text-accent">
-                    <IconInbox className="h-4 w-4" />
-                    <span className="text-xs text-text-muted">Новые заявки</span>
+            {assistantOpen && (
+              <div
+                id="simba-assistant-panel"
+                role="region"
+                aria-label="Быстрые действия SIMBA AI"
+                className="mt-4 w-full rounded-[22px] border border-accent/20 bg-white/80 p-4 shadow-soft backdrop-blur-xl sm:p-5"
+              >
+                <div className="flex items-start justify-between gap-3">
+                  <div>
+                    <h2 className="text-base font-bold text-text-main">Привет! С чего начнём?</h2>
+                    <p className="mt-1 text-xs leading-relaxed text-text-muted">Выберите сценарий — открою нужный раздел или демо.</p>
                   </div>
-                  <div className="mt-1.5 text-lg font-bold text-text-main">24</div>
+                  <button
+                    type="button"
+                    onClick={() => setAssistantOpen(false)}
+                    aria-label="Закрыть панель SIMBA AI"
+                    className="neu-chip flex h-8 w-8 shrink-0 items-center justify-center text-lg leading-none text-text-muted transition-colors hover:text-text-main focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent/60"
+                  >
+                    ×
+                  </button>
                 </div>
-                <div className="neu-card p-2.5 sm:p-3">
-                  <div className="flex items-center gap-2 text-accent">
-                    <IconGear className="h-4 w-4" />
-                    <span className="text-xs text-text-muted">Продажи</span>
-                  </div>
-                  <div className="mt-1.5 text-lg font-bold text-text-main">156</div>
+
+                <div className="mt-4 grid gap-2">
+                  <a
+                    href="#business-audit"
+                    onClick={() => setAssistantOpen(false)}
+                    className="flex min-h-10 items-center justify-between rounded-xl border border-border bg-white/60 px-3.5 py-2 text-left text-xs font-semibold text-text-main transition-colors hover:border-accent/40 hover:text-accent-dark focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent/60"
+                  >
+                    Рассчитать потери <span aria-hidden="true" className="text-base leading-none text-accent">→</span>
+                  </a>
+                  <a
+                    href="#idea"
+                    onClick={() => setAssistantOpen(false)}
+                    className="flex min-h-10 items-center justify-between rounded-xl border border-border bg-white/60 px-3.5 py-2 text-left text-xs font-semibold text-text-main transition-colors hover:border-accent/40 hover:text-accent-dark focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent/60"
+                  >
+                    Реализовать идею <span aria-hidden="true" className="text-base leading-none text-accent">→</span>
+                  </a>
+                  <button
+                    type="button"
+                    onClick={() => {
+                      setAssistantOpen(false)
+                      setBeautyDemoOpen(true)
+                    }}
+                    className="flex min-h-10 w-full items-center justify-between rounded-xl border border-border bg-white/60 px-3.5 py-2 text-left text-xs font-semibold text-text-main transition-colors hover:border-accent/40 hover:text-accent-dark focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent/60"
+                  >
+                    Открыть Beauty Core <span aria-hidden="true" className="text-base leading-none text-accent">→</span>
+                  </button>
                 </div>
               </div>
-            </div>
-
-            {/* laptop base */}
-            <div className="mx-auto -mt-1 hidden h-3 w-[70%] rounded-b-xl bg-black/5 sm:block" />
-          </div>
-
-          {/* floating stat card */}
-          <div className="neu-card absolute -left-4 -top-6 hidden w-40 p-3 sm:-left-8 sm:-top-8 sm:block">
-            <div className="text-xs text-text-muted">Повторные продажи</div>
-            <div className="mt-1 text-lg font-bold text-accent-dark">+38%</div>
-          </div>
-
-          {/* phone with bot */}
-          <div className="neu-panel absolute -bottom-8 -right-2 hidden w-[150px] p-2 sm:block sm:-right-6 sm:w-[170px]">
-            <div className="rounded-[1.1rem] bg-bg-section p-2.5">
-              <div className="flex items-center gap-1.5 border-b border-border pb-2">
-                <div className="neu-chip flex h-6 w-6 items-center justify-center text-accent">
-                  <IconBot className="h-3.5 w-3.5" />
-                </div>
-                <span className="text-[10px] font-semibold text-text-main">Симба Бот</span>
-              </div>
-
-              <div className="mt-2 space-y-1.5">
-                <div className="w-[85%] rounded-md rounded-tl-sm bg-bg-card-soft px-2 py-1.5 text-[9px] leading-snug text-text-muted">
-                  Здравствуйте! Чем можем помочь вашему бизнесу?
-                </div>
-                <div className="ml-auto w-[70%] rounded-md rounded-tr-sm bg-accent px-2 py-1.5 text-[9px] leading-snug text-white">
-                  Узнать цены
-                </div>
-              </div>
-
-              <div className="mt-2 space-y-1">
-                <div className="rounded-md border border-accent/50 px-2 py-1 text-center text-[9px] text-accent-dark">
-                  Услуги и цены
-                </div>
-                <div className="flex items-center justify-center gap-1 rounded-md bg-accent-soft px-2 py-1 text-center text-[9px] font-medium text-accent-dark">
-                  <IconCheck className="h-2.5 w-2.5" />
-                  Заявка сохранена
-                </div>
-              </div>
-            </div>
-          </div>
+            )}
+          </aside>
         </div>
       </div>
+      {beautyDemoOpen && <BeautyCoreDemo onClose={() => setBeautyDemoOpen(false)} />}
     </section>
   )
 }

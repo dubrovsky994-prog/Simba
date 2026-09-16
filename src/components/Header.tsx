@@ -3,10 +3,9 @@ import { IconClose, IconMenu } from './icons'
 import simbaMark from '../assets/simba/brand/simba-mark-original.png'
 
 const NAV_LINKS = [
-  { label: 'Возможности', href: '#features' },
-  { label: 'Для кого', href: '#for-whom' },
   { label: 'Тарифы', href: '#pricing' },
-  { label: 'Как работает', href: '#how-it-works' },
+  { label: 'Как это работает', href: '#how-we-help' },
+  { label: 'Кейсы', href: '#for-whom' },
   { label: 'Контакты', href: '#contacts' },
 ]
 
@@ -60,8 +59,8 @@ export default function Header() {
         </nav>
 
         <div className="flex items-center justify-self-end">
-          <a href="#audit" className="hidden btn-primary lg:inline-flex lg:whitespace-nowrap lg:px-4 xl:px-6">
-            Получить бесплатный разбор
+          <a href="#business-audit" className="hidden btn-primary lg:inline-flex lg:whitespace-nowrap lg:px-4 xl:px-6">
+            Рассчитать потери
           </a>
 
           <button
@@ -108,8 +107,8 @@ export default function Header() {
               ))}
             </nav>
 
-            <a href="#audit" onClick={handleLinkClick} className="btn-primary mt-8 w-full">
-              Получить бесплатный разбор
+            <a href="#business-audit" onClick={handleLinkClick} className="btn-primary mt-8 w-full">
+              Рассчитать потери
             </a>
           </div>
         </div>

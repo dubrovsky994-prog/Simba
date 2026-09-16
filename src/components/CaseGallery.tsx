@@ -36,6 +36,10 @@ function PlaceholderTile({ label, compact = false }: { label: string; compact?: 
 export default function CaseGallery({ screenshots, resetKey }: CaseGalleryProps) {
   const [activeIndex, setActiveIndex] = useState(0)
   const [brokenSrcs, setBrokenSrcs] = useState<Set<string>>(new Set())
+  // Large case photos can take a moment on a real mobile connection — track
+  // load completion so the dark phone frame shows a loading hint instead of
+  // sitting empty until the image paints in.
+  const [loadedSrcs, setLoadedSrcs] = useState<Set<string>>(new Set())
   const [modalOpen, setModalOpen] = useState(false)
 
   useEffect(() => {
@@ -50,9 +54,18 @@ export default function CaseGallery({ screenshots, resetKey }: CaseGalleryProps)
       : Array.from({ length: PLACEHOLDER_COUNT }, (_, i) => ({ src: '', alt: `Скриншот ${i + 1}` }))
 
   const isBroken = (src: string) => src === '' || brokenSrcs.has(src)
+  const isLoaded = (src: string) => loadedSrcs.has(src)
 
   const handleError = (src: string) => {
     setBrokenSrcs((prev) => {
+      const next = new Set(prev)
+      next.add(src)
+      return next
+    })
+  }
+
+  const handleLoad = (src: string) => {
+    setLoadedSrcs((prev) => {
       const next = new Set(prev)
       next.add(src)
       return next
@@ -71,14 +84,24 @@ export default function CaseGallery({ screenshots, resetKey }: CaseGalleryProps)
           activeIsImage ? 'group cursor-zoom-in' : 'cursor-default'
         }`}
       >
-        <div className="h-full w-full overflow-hidden rounded-[1.3rem] bg-[#1f252b]">
+        <div className="relative h-full w-full overflow-hidden rounded-[1.3rem] bg-[#1f252b]">
           {activeIsImage ? (
-            <img
-              src={active.src}
-              alt={active.alt}
-              onError={() => handleError(active.src)}
-              className="h-full w-full object-cover transition-transform duration-300 group-hover:scale-[1.02]"
-            />
+            <>
+              {!isLoaded(active.src) && (
+                <div className="absolute inset-0 flex items-center justify-center">
+                  <PlaceholderIcon className="h-7 w-7 animate-pulse text-white/40" />
+                </div>
+              )}
+              <img
+                src={active.src}
+                alt={active.alt}
+                onError={() => handleError(active.src)}
+                onLoad={() => handleLoad(active.src)}
+                className={`h-full w-full object-cover transition-opacity duration-300 group-hover:scale-[1.02] ${
+                  isLoaded(active.src) ? 'opacity-100' : 'opacity-0'
+                }`}
+              />
+            </>
           ) : (
             <PlaceholderTile label={`Скриншот ${activeIndex + 1}`} />
           )}
@@ -107,7 +130,10 @@ export default function CaseGallery({ screenshots, resetKey }: CaseGalleryProps)
                       src={shot.src}
                       alt={shot.alt}
                       onError={() => handleError(shot.src)}
-                      className="h-full w-full object-cover"
+                      onLoad={() => handleLoad(shot.src)}
+                      className={`h-full w-full object-cover transition-opacity duration-300 ${
+                        isLoaded(shot.src) ? 'opacity-100' : 'opacity-0'
+                      }`}
                     />
                   ) : (
                     <PlaceholderTile label={`${index + 1}`} compact />
