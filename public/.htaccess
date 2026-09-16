@@ -1,0 +1,9 @@
+RewriteEngine On
+
+# Keep the lead form on the same origin after moving the static frontend to REG.RU.
+RewriteRule ^api/lead/?$ api/lead.php [L,QSA]
+
+# Vite's client-side entry point should handle unknown non-file paths.
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteRule ^ index.html [L]
