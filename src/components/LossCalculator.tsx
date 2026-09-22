@@ -221,7 +221,7 @@ export default function LossCalculator() {
   }, [step])
 
   return (
-    <section id="business-audit" className="overflow-hidden bg-bg-section pb-12 pt-4 sm:pb-16 sm:pt-6">
+    <section id="business-audit" className="public-v2-calc-section overflow-hidden bg-bg-section pb-12 pt-4 sm:pb-16 sm:pt-6">
       <div className="container-px">
         {step > 0 && !isCalculating && (
           <div className="mx-auto mb-3 flex max-w-2xl items-center justify-center gap-2" data-calculator-presence>

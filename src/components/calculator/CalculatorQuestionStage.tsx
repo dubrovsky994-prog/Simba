@@ -48,7 +48,7 @@ export default function CalculatorQuestionStage({
   onNext,
 }: CalculatorQuestionStageProps) {
   return (
-    <div className="mx-auto max-w-2xl rounded-[28px] border border-black/[0.04] bg-white/60 p-5 shadow-[0_20px_50px_rgba(31,37,43,0.06)] backdrop-blur-sm sm:p-8">
+    <div className="public-v2-calc-question mx-auto max-w-2xl rounded-[28px] border border-black/[0.04] bg-white/60 p-5 shadow-[0_20px_50px_rgba(31,37,43,0.06)] backdrop-blur-sm sm:p-8">
       <CalculatorProgress step={step} total={total} stageLabel={stageLabel} />
 
       <div key={step} className="mt-6 animate-calc-step" role="radiogroup" aria-labelledby="calculator-question">

@@ -8,7 +8,7 @@ function scrollToCalculator() {
 
 export default function Hero() {
   return <section className="public-v2-hero">
-    <div className="public-v2-hero__paper" aria-hidden="true" /><div className="public-v2-hero__mountain" aria-hidden="true" /><div className="public-v2-hero__marker" aria-hidden="true" />
+    <div className="public-v2-hero__paper" aria-hidden="true" /><div className="public-v2-hero__paper public-v2-hero__paper--back" aria-hidden="true" /><div className="public-v2-hero__mountain" aria-hidden="true" /><div className="public-v2-hero__marker" aria-hidden="true" />
     <div className="container-px public-v2-hero__grid">
       <div className="public-v2-hero__copy">
         <p className="public-v2-kicker">Калькулятор потерь</p>
@@ -21,6 +21,7 @@ export default function Hero() {
       </div>
       <div className="public-v2-hero__visual">
         <span className="public-v2-note public-v2-note--rotate-right public-v2-hero__visual-note">Больше заявок. Больше свободы.</span>
+        <span className="public-v2-hero__route" aria-hidden="true"><i /><b /></span>
         <div className="public-v2-hero__fragment public-v2-hero__fragment--1" aria-hidden="true" />
         <div className="public-v2-hero__fragment public-v2-hero__fragment--2" aria-hidden="true" />
         <div className="public-v2-hero__fragment public-v2-hero__fragment--3" aria-hidden="true" />

@@ -30,6 +30,57 @@
 .public-v2-conversion__switch { display:flex; gap:8px; margin-bottom:14px; }.public-v2-conversion__switch button { border:1px solid var(--v2-line); border-radius:999px; padding:9px 13px; background:transparent; color:var(--v2-ink); font-size:11px; font-weight:900; }.public-v2-conversion__switch button[aria-pressed="true"] { background:var(--v2-ink); color:var(--v2-paper); }.public-v2-conversion > section { padding-block:20px 34px!important; }
 @media (max-width:900px) { .public-v2-ecosystem__head { display:block; }.public-v2-ecosystem__tabs { overflow-x:auto; flex-wrap:nowrap; padding-bottom:4px; }.public-v2-ecosystem__tabs button { white-space:nowrap; }.public-v2-cases .neu-card { min-height:0; } }
 
+/* Visual rebuild 03: desktop Hero + calculator only. The components keep their
+   existing state machine and handlers; these rules merely place them on one paper sheet. */
+@media (min-width:1025px) {
+  .public-v2 { background:#f7f3ea; }
+  .public-v2-hero { min-height:336px; padding:30px 0 0; background:linear-gradient(105deg,#fbf8f0 0 62%,#f1ede4 62% 100%); }
+  .public-v2-hero::before { position:absolute; inset:0; opacity:.18; background-image:repeating-radial-gradient(circle at 13% 19%,rgba(20,24,24,.42) 0 1px,transparent 1px 5px); background-size:8px 8px; content:""; mix-blend-mode:multiply; pointer-events:none; }
+  .public-v2-hero__grid { min-height:300px; grid-template-columns:1.03fr .97fr; gap:12px; align-items:center; max-width:1240px; }
+  .public-v2-hero__copy { position:relative; z-index:4; align-self:center; padding:6px 0 24px; }
+  .public-v2-hero .public-v2-kicker { margin-bottom:8px; color:#57787a; font-size:9px; letter-spacing:.2em; }
+  .public-v2-hero h1 { max-width:620px; font:800 clamp(46px,4.3vw,66px)/.82 "Arial Narrow",Arial,sans-serif; letter-spacing:-.075em; }
+  .public-v2-hero h1 span { color:#11aeb7; }
+  .public-v2-hero__lead { max-width:478px; margin:13px 0 13px; color:#40433f; font-size:14px; line-height:1.35; }
+  .public-v2-hero__chips { gap:6px; margin:0; }
+  .public-v2-hero__chips span { border-color:rgba(25,27,27,.18); border-radius:2px; padding:5px 8px; background:rgba(255,255,255,.5); font-size:9px; }
+  .public-v2-hero__copy>.public-v2-note { position:absolute; right:4%; bottom:-2px; max-width:155px; margin:0; font-size:11px; line-height:1.13; }
+  .public-v2-note::before { width:19px; margin-right:4px; border-width:2px; }
+  .public-v2-hero__visual { min-height:310px; align-self:stretch; justify-content:center; overflow:visible; }
+  .public-v2-hero__visual .simba-paper-avatar { position:absolute; z-index:2; top:-76px; left:20px; width:470px; height:470px; filter:drop-shadow(18px 19px 13px rgba(31,27,20,.17)); }
+  .public-v2-hero__visual .simba-paper-avatar iframe { transform:scale(1.13); transform-origin:48% 51%; }
+  .public-v2-hero__paper { z-index:0; top:20px; right:7%; width:430px; height:265px; border:0; background:linear-gradient(128deg,rgba(255,255,255,.84) 0 48%,#ded5c7 48.2% 57%,#eee8de 57.2%); box-shadow:0 14px 28px rgba(64,50,32,.09); transform:rotate(-4deg); }
+  .public-v2-hero__paper--back { top:60px; right:-3%; width:350px; height:248px; background:linear-gradient(142deg,#d5cec2 0 36%,#f9f6ef 36.3% 71%,#c4bcae 71.4%); transform:rotate(8deg); }
+  .public-v2-hero__mountain { z-index:1; right:-2%; bottom:10px; width:48%; height:133px; opacity:.38; background:linear-gradient(145deg,#252a2b,#838685); clip-path:polygon(0 100%,8% 65%,19% 78%,38% 10%,48% 63%,61% 35%,74% 72%,90% 27%,100% 100%); }
+  .public-v2-hero__marker { z-index:3; right:10%; bottom:61px; width:270px; border-top-width:3px; border-color:#12bcc4; box-shadow:9px 5px 0 rgba(18,188,196,.18); }
+  .public-v2-hero__route { position:absolute; z-index:3; right:17%; bottom:32px; display:block; width:120px; height:51px; border-left:2px solid #13bcc2; border-bottom:2px solid #13bcc2; transform:skew(-23deg) rotate(-9deg); }
+  .public-v2-hero__route::after { position:absolute; right:-4px; bottom:-5px; width:8px; height:8px; border-radius:50%; background:#13bcc2; content:""; }
+  .public-v2-hero__route i { position:absolute; left:30px; top:-18px; width:13px; height:13px; border:2px solid #13bcc2; border-radius:50%; background:#f7f3ea; }
+  .public-v2-hero__route b { position:absolute; left:58px; top:12px; width:6px; height:6px; border-radius:50%; background:#13bcc2; }
+  .public-v2-hero__visual-note { top:18px; right:0; max-width:88px; color:#4e3e9b; font-size:10px; line-height:1.1; }
+  .public-v2-hero__fragment { z-index:1; border:0; opacity:.85; box-shadow:5px 7px 12px rgba(42,35,25,.1); }
+  .public-v2-hero__fragment--1 { top:32px; left:15%; width:53px; height:41px; background:#20bec1; clip-path:polygon(0 0,100% 13%,70% 100%,7% 75%); transform:rotate(-18deg); }
+  .public-v2-hero__fragment--2 { right:2%; bottom:18px; width:75px; height:72px; background:#f8f4eb; clip-path:polygon(0 18%,100% 0,76% 100%,14% 76%); }
+  .public-v2-hero__fragment--3 { top:87px; right:12%; width:42px; height:42px; background:#d2c4a9; clip-path:polygon(0 0,100% 46%,38% 100%); }
+
+  .public-v2-calc-section#business-audit { position:relative; z-index:5; margin-top:-1px; padding:0 0 28px; background:#f7f3ea; }
+  .public-v2-calc-card { max-width:1240px; margin:0 auto; border:1px solid rgba(25,27,27,.15); border-radius:2px; background:#fffdfa; box-shadow:0 16px 34px rgba(55,45,31,.1); padding:0; overflow:hidden; }
+  .public-v2-calc-shell { display:grid; grid-template-columns:210px minmax(0,1fr) 246px; gap:0; align-items:stretch; min-height:308px; margin:0; }
+  .public-v2-calc-shell>div { display:flex; min-width:0; align-items:center; justify-content:center; border-right:1px solid rgba(25,27,27,.12); padding:18px 28px; }
+  .public-v2-step-nav { align-self:stretch; gap:0; border:0; padding:16px 0; background:#fcfaf5; }
+  .public-v2-step-nav__item { position:relative; min-height:34px; gap:9px; padding:0 14px 0 19px; font-size:10px; }
+  .public-v2-step-nav__item::before { position:absolute; left:29px; top:0; bottom:0; width:1px; background:rgba(25,27,27,.14); content:""; }
+  .public-v2-step-nav__item:first-child::before { top:50%; }.public-v2-step-nav__item:last-child::before { bottom:50%; }
+  .public-v2-step-nav__num { position:relative; z-index:1; width:21px; height:21px; border-color:rgba(25,27,27,.22); border-radius:50%; background:#fffdfa; font-size:9px; }
+  .public-v2-step-nav__item.is-current { color:#0d9da6; }.public-v2-step-nav__item.is-current .public-v2-step-nav__num { border-color:#16bec4; background:#16bec4; color:#fff; box-shadow:0 0 0 4px rgba(22,190,196,.14); }
+  .public-v2-step-nav__item.is-done .public-v2-step-nav__num { border-color:#16bec4; background:#16bec4; color:#fff; }
+  .public-v2-calc-shell .simba-paper-avatar { filter:drop-shadow(9px 10px 8px rgba(36,29,22,.12)); }
+  .public-v2-calc-shell .public-v2-calc-shell__explainer { align-self:stretch; border:0; border-radius:0; background:#f6f1e6; padding:27px 22px; }
+  .public-v2-calc-shell__explainer .public-v2-kicker { margin-bottom:8px; font-size:8px; color:#0c9299; }.public-v2-calc-shell__explainer h4 { margin:0; font-size:18px; line-height:1.02; }.public-v2-calc-shell__explainer ul { gap:10px; margin-top:18px; }.public-v2-calc-shell__explainer li { font-size:11px; }.public-v2-calc-shell__explainer li i { display:grid; width:15px; height:15px; place-items:center; border-radius:50%; background:#16bec4; color:#fff; font-size:9px; }
+  .public-v2-calc-question { width:100%; border:0; border-radius:0; box-shadow:none; background:transparent; padding:0; backdrop-filter:none; }
+  .public-v2-calc-question .btn-primary { border-radius:2px; background:#12b7bd; }.public-v2-calc-question .btn-secondary { border-radius:2px; }
+}
+
 /* Task 03 (SYS-V2-REDESIGN-01): editorial primitives, always-visible calculator shell, value cards, case carousel + overlay, standalone beauty widget. */
 .public-v2 { --v2-rose:#b6524f; --v2-blue:#3f6a9e; --v2-amber:#b8813a; }
 .public-v2-note { display:inline-block; color:#4d3a94; font:italic 16px/1.3 Georgia,serif; font-weight:600; }
