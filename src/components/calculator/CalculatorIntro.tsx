@@ -13,7 +13,7 @@ export default function CalculatorIntro({ onStart, variant = 'full' }: Calculato
     // Used inside the merged Hero+Calculator screen, where Hero already shows
     // the headline/markers — this only needs the click-to-start affordance.
     return (
-      <div className="relative mx-auto flex w-full max-w-xs flex-col items-center py-6 text-center">
+      <div className="reference-calc-intro relative mx-auto flex w-full max-w-xs flex-col items-center py-6 text-center">
         <button type="button" className="public-v2-calc-avatar-button" onClick={onStart} aria-label="Нажмите на льва, чтобы начать расчёт">
           <CalculatorAvatar size={260} onStart={onStart} />
           <img className="public-v2-calc-avatar-poster" src="/avatar/paper-morph/origami-lion-paper-v2.webp" alt="" />

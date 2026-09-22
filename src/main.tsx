@@ -2,6 +2,7 @@ import React from 'react'
 import ReactDOM from 'react-dom/client'
 import App from './App'
 import './index.css'
+import './public-v2-reference.css'
 
 const routePath = window.location.pathname.replace(/\/+$/, '') || '/'
 const isOwnerRoute = routePath === '/owner'

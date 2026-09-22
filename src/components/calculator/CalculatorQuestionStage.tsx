@@ -103,6 +103,7 @@ export default function CalculatorQuestionStage({
           {isLastQuestion ? 'Показать результат' : 'Продолжить'}
           <IconArrowRight className="h-4 w-4" />
         </button>
+        <span className="reference-question-note reference-hand" aria-hidden="true">Чем точнее ответы,<br />тем полезнее результат!</span>
       </div>
     </div>
   )
