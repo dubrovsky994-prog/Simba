@@ -14,7 +14,10 @@ export default function CalculatorIntro({ onStart, variant = 'full' }: Calculato
     // the headline/markers — this only needs the click-to-start affordance.
     return (
       <div className="relative mx-auto flex w-full max-w-xs flex-col items-center py-6 text-center">
-        <CalculatorAvatar size={260} onStart={onStart} />
+        <button type="button" className="public-v2-calc-avatar-button" onClick={onStart} aria-label="Нажмите на льва, чтобы начать расчёт">
+          <CalculatorAvatar size={260} onStart={onStart} />
+          <img className="public-v2-calc-avatar-poster" src="/avatar/paper-morph/origami-lion-paper-v2.webp" alt="" />
+        </button>
         <p className="-mt-2 text-sm font-medium text-accent-dark">Нажмите на льва, чтобы начать</p>
         <button type="button" onClick={onStart} className="btn-primary mt-5 inline-flex items-center gap-2">
           Начать расчёт
