@@ -7,6 +7,7 @@ import Header from './components/Header'
 import Hero from './components/Hero'
 import LossCalculator from './components/LossCalculator'
 import PublicValueCards from './components/PublicValueCards'
+import SolutionsShowcase from './components/SolutionsShowcase'
 import BeautyCoreSection from './components/BeautyCoreSection'
 import PublicFinalCta from './components/PublicFinalCta'
 import PublicConversion from './components/PublicConversion'
@@ -41,6 +42,7 @@ function HomePage() {
         <Hero />
         <LossCalculator />
         <PublicValueCards />
+        <SolutionsShowcase />
         <div className="public-v2-cases"><NicheCases /></div>
         <BeautyCoreSection />
         <PublicFinalCta />
