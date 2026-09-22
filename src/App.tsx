@@ -5,10 +5,10 @@ import NicheCases from './components/NicheCases'
 import CookieBanner from './components/CookieBanner'
 import Header from './components/Header'
 import Hero from './components/Hero'
-import PublicTransition from './components/PublicTransition'
-import PublicAiSection from './components/PublicAiSection'
+import LossCalculator from './components/LossCalculator'
+import PublicValueCards from './components/PublicValueCards'
+import BeautyCoreSection from './components/BeautyCoreSection'
 import PublicFinalCta from './components/PublicFinalCta'
-import HowWeHelp from './components/HowWeHelp'
 import PublicConversion from './components/PublicConversion'
 import Consent from './legal/Consent'
 import Cookies from './legal/Cookies'
@@ -39,10 +39,10 @@ function HomePage() {
       <Header />
       <main id="top">
         <Hero />
-        <PublicTransition />
-        <div className="public-v2-how"><HowWeHelp /></div>
+        <LossCalculator />
+        <PublicValueCards />
         <div className="public-v2-cases"><NicheCases /></div>
-        <PublicAiSection />
+        <BeautyCoreSection />
         <PublicFinalCta />
         <section className="public-v2-lead-zone"><PublicConversion /></section>
       </main>

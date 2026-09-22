@@ -1,25 +1,6 @@
 import { useEffect, useMemo, useRef, useState, type FormEvent } from 'react'
 import { createPortal } from 'react-dom'
-
-type DemoAppointment = {
-  id: number
-  client: string
-  service: string
-  time: string
-  price: number
-}
-
-const SERVICES = [
-  { name: 'Маникюр', duration: '1 ч 30 мин', price: 2800 },
-  { name: 'Уход за лицом', duration: '1 ч', price: 4500 },
-  { name: 'Окрашивание', duration: '2 ч', price: 7200 },
-]
-
-const INITIAL_APPOINTMENTS: DemoAppointment[] = [
-  { id: 1, client: 'Клиент 01', service: 'Маникюр', time: '10:00', price: 2800 },
-  { id: 2, client: 'Клиент 02', service: 'Уход за лицом', time: '12:30', price: 4500 },
-  { id: 3, client: 'Клиент 03', service: 'Окрашивание', time: '15:00', price: 7200 },
-]
+import { INITIAL_APPOINTMENTS, SERVICES } from '../lib/beauty/demoData'
 
 type DemoTab = 'schedule' | 'clients' | 'services'
 

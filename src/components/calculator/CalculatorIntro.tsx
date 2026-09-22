@@ -5,9 +5,28 @@ const MARKERS = ['1–2 минуты', 'Без регистрации', 'Рез�
 
 type CalculatorIntroProps = {
   onStart: () => void
+  variant?: 'full' | 'compact'
 }
 
-export default function CalculatorIntro({ onStart }: CalculatorIntroProps) {
+export default function CalculatorIntro({ onStart, variant = 'full' }: CalculatorIntroProps) {
+  if (variant === 'compact') {
+    // Used inside the merged Hero+Calculator screen, where Hero already shows
+    // the headline/markers — this only needs the click-to-start affordance.
+    return (
+      <div className="relative mx-auto flex w-full max-w-xs flex-col items-center py-6 text-center">
+        <CalculatorAvatar size={260} onStart={onStart} />
+        <p className="-mt-2 text-sm font-medium text-accent-dark">Нажмите на льва, чтобы начать</p>
+        <button type="button" onClick={onStart} className="btn-primary mt-5 inline-flex items-center gap-2">
+          Начать расчёт
+          <IconArrowRight className="h-4 w-4" />
+        </button>
+        <a href="/avatar-preview.html" className="mt-3 text-xs font-medium text-accent-dark underline decoration-accent/40 underline-offset-4 hover:text-accent">
+          Посмотреть все состояния аватара
+        </a>
+      </div>
+    )
+  }
+
   return (
     <div className="relative grid grid-cols-1 items-center gap-10 lg:grid-cols-[1.05fr_1fr] lg:gap-12">
       <div

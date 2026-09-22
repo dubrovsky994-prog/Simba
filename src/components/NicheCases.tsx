@@ -1,8 +1,9 @@
 import { useState } from 'react'
-import { IconCheckSmall } from './icons'
-import CaseGallery, { type CaseScreenshot } from './CaseGallery'
+import type { CaseScreenshot } from './CaseGallery'
+import CaseCarousel from './cases/CaseCarousel'
+import CaseDetailOverlay from './cases/CaseDetailOverlay'
 
-type ProjectCase = {
+export type ProjectCase = {
   id: string
   title: string
   category: string
@@ -151,106 +152,50 @@ const featuredCases = projectCases.filter((project) => FEATURED_CASE_IDS.has(pro
 
 export default function NicheCases() {
   const [activeId, setActiveId] = useState(DEFAULT_ACTIVE_ID)
-  const activeCase = featuredCases.find((project) => project.id === activeId) ?? featuredCases[0]
+  const [overlay, setOverlay] = useState<{ cases: ProjectCase[]; activeId: string } | null>(null)
 
   return (
     <section id="for-whom" className="bg-bg-section py-12 sm:py-16">
       <div className="container-px">
         <div className="max-w-2xl">
-          <span className="section-eyebrow">Кейсы</span>
-          <h2 className="section-title mt-4">Примеры систем под разные бизнесы</h2>
+          <span className="section-eyebrow">Кейсы клиентов</span>
+          <h2 className="section-title mt-4">Истории реального роста</h2>
           <p className="section-subtitle">
             Показываем на примерах систем, как сайт, каталог, заявки, бот и автоматизация превращаются в
             понятную систему продаж.
           </p>
         </div>
 
-        <div className="relative -mx-5 mt-8 sm:mx-0">
-          <div className="no-scrollbar flex snap-x snap-mandatory gap-3 overflow-x-auto scroll-pl-5 px-5 py-3 sm:grid sm:grid-cols-4 sm:gap-3 sm:overflow-visible sm:px-0 sm:py-0">
-            {featuredCases.map((project) => {
-              const isActive = project.id === activeId
-              return (
-                <button
-                  key={project.id}
-                  type="button"
-                  onClick={(e) => {
-                    setActiveId(project.id)
-                    // On mobile the tab strip scrolls horizontally — selecting a
-                    // peeking card must bring it fully into view, or it stays
-                    // half off-screen while showing as "active". No-ops on
-                    // desktop, where the grid is already fully visible.
-                    e.currentTarget.scrollIntoView({ behavior: 'smooth', inline: 'nearest', block: 'nearest' })
-                  }}
-                  aria-pressed={isActive}
-                  className={`neu-card w-[clamp(260px,78vw,320px)] shrink-0 snap-start p-4 text-left backdrop-blur-sm transition-all duration-300 sm:w-auto sm:min-w-0 ${
-                    isActive
-                      ? 'border-2 border-accent/70 bg-white/85 shadow-[0_8px_18px_rgba(0,183,200,0.18)] sm:border-0 sm:bg-transparent sm:accent-glow sm:-translate-y-1'
-                      : 'sm:hover:-translate-y-1'
-                  }`}
-                >
-                  <span
-                    className={`text-[11px] font-bold uppercase tracking-wider transition-colors duration-300 ${
-                      isActive ? 'text-accent' : 'text-accent-dark'
-                    }`}
-                  >
-                    {project.tag}
-                  </span>
-                  <h3 className="mt-1.5 text-base font-semibold text-text-main">{project.title}</h3>
-                  <p className="mt-0.5 text-sm leading-relaxed text-text-muted">{project.category}</p>
-                </button>
-              )
-            })}
-          </div>
+        <div className="public-v2-case-carousel">
+          <CaseCarousel
+            cases={featuredCases}
+            activeId={activeId}
+            onSelect={setActiveId}
+            onOpenCase={() => setOverlay({ cases: featuredCases, activeId })}
+            onOpenAll={() => setOverlay({ cases: projectCases, activeId })}
+          />
 
-          {/* Edge fades hint that the strip scrolls — sized to exactly match the
-              scroll gutter (px-5/scroll-pl-5) so they never overlap card pixels. */}
-          <div className="pointer-events-none absolute inset-y-0 left-0 w-5 bg-gradient-to-r from-bg-section to-transparent sm:hidden" />
-          <div className="pointer-events-none absolute inset-y-0 right-0 w-5 bg-gradient-to-l from-bg-section to-transparent sm:hidden" />
-        </div>
-
-        <div key={activeCase.id} className="case-fade-in mt-8">
-          <div className="neu-panel relative overflow-hidden p-5 sm:p-6 lg:p-8">
-            <div className="grid grid-cols-1 gap-8 lg:grid-cols-2 lg:gap-10">
-              <div>
-                <span className="inline-flex items-center gap-2 rounded-full border border-accent/35 bg-accent/10 px-3 py-1.5 text-xs font-bold uppercase tracking-[0.14em] text-accent-dark">
-                  <span className="h-1.5 w-1.5 rounded-full bg-accent" />
-                  {activeCase.category} · {activeCase.tag}
-                </span>
-
-                <h3 className="mt-5 text-2xl font-bold leading-tight text-text-main sm:text-3xl">
-                  {activeCase.title}
-                </h3>
-                <div className="mt-5 grid gap-4 sm:grid-cols-2">
-                  <div>
-                    <h4 className="text-xs font-bold uppercase tracking-wider text-text-main">Контекст</h4>
-                    <p className="mt-2 text-base font-medium text-accent-dark">{activeCase.shortText}</p>
-                  </div>
-                  <div>
-                    <h4 className="text-xs font-bold uppercase tracking-wider text-text-main">Что изменилось</h4>
-                    <p className="mt-2 text-sm leading-relaxed text-text-muted">{activeCase.description}</p>
-                  </div>
-                </div>
-
-                <div className="mt-6">
-                  <h4 className="text-xs font-bold uppercase tracking-wider text-text-main">Что сделали</h4>
-                  <ul className="mt-3 flex flex-col gap-2.5">
-                    {activeCase.highlights.map((item) => (
-                      <li key={item} className="flex items-start gap-2 text-sm text-text-main">
-                        <IconCheckSmall className="mt-0.5 h-4 w-4 shrink-0 text-accent" />
-                        <span>{item}</span>
-                      </li>
-                    ))}
-                  </ul>
-                </div>
-
-              </div>
-
-              <CaseGallery screenshots={activeCase.screenshots} resetKey={activeCase.id} />
-            </div>
+          <div className="public-v2-case-conversion">
+            <h3>Получите свой персональный расчёт</h3>
+            <p>Пройдите калькулятор потерь — он покажет, где именно теряются заявки и деньги в вашем бизнесе.</p>
+            <a href="#business-audit" className="public-v2-button">
+              Посчитать потери
+            </a>
+            <a href="#idea" className="public-v2-button public-v2-button--quiet">
+              Есть идея?
+            </a>
           </div>
         </div>
-
       </div>
+
+      {overlay && (
+        <CaseDetailOverlay
+          cases={overlay.cases}
+          activeId={overlay.activeId}
+          onSelect={(id) => setOverlay((prev) => (prev ? { ...prev, activeId: id } : prev))}
+          onClose={() => setOverlay(null)}
+        />
+      )}
     </section>
   )
 }

@@ -4,6 +4,8 @@ import CalculatorQuestionStage, { type StageOption } from './calculator/Calculat
 import CalculatorCalculating from './calculator/CalculatorCalculating'
 import CalculatorResult from './calculator/CalculatorResult'
 import CalculatorAvatar from './calculator/CalculatorAvatar'
+import CalculatorStepNav, { type StepNavItem } from './calculator/CalculatorStepNav'
+import CalculatorExplainerCard from './calculator/CalculatorExplainerCard'
 import {
   NICHE_CUSTOM_INPUT_LABEL,
   NICHE_CUSTOM_LABEL,
@@ -35,6 +37,19 @@ const STAGE_LABELS: Record<number, string> = {
   7: 'Время',
   8: 'Время',
 }
+
+// Short topic labels for the left step-nav, one per real question (1..8).
+// Visual only — see CalculatorStepNav.
+const STEP_NAV_ITEMS: StepNavItem[] = [
+  { step: 1, label: 'Ниша' },
+  { step: 2, label: 'Заявки' },
+  { step: 3, label: 'Средний чек' },
+  { step: 4, label: 'Без ответа' },
+  { step: 5, label: 'Конверсия' },
+  { step: 6, label: 'Отмены' },
+  { step: 7, label: 'Ручная работа' },
+  { step: 8, label: 'Стоимость часа' },
+]
 
 function prefersReducedMotion(): boolean {
   return typeof window !== 'undefined' && window.matchMedia?.('(prefers-reduced-motion: reduce)').matches === true
@@ -206,10 +221,8 @@ export default function LossCalculator() {
   }, [step])
 
   return (
-    <section id="business-audit" className="overflow-hidden bg-bg-section py-12 sm:py-16">
+    <section id="business-audit" className="overflow-hidden bg-bg-section pb-12 pt-4 sm:pb-16 sm:pt-6">
       <div className="container-px">
-        {step === 0 && <CalculatorIntro onStart={handleStart} />}
-
         {step > 0 && !isCalculating && (
           <div className="mx-auto mb-3 flex max-w-2xl items-center justify-center gap-2" data-calculator-presence>
             <CalculatorAvatar state={fieldError ? 'error' : step === RESULT_STEP ? 'success' : 'active'} size={84} />
@@ -219,27 +232,41 @@ export default function LossCalculator() {
           </div>
         )}
 
-        {step >= 1 && step <= TOTAL_STEPS && !isCalculating && (
-          <CalculatorQuestionStage
-            step={step}
-            total={TOTAL_STEPS}
-            stageLabel={STAGE_LABELS[step] ?? ''}
-            title={currentTitle}
-            hint={currentHint}
-            options={stepOptions}
-            answer={currentAnswer ?? { optionId: null, customText: '' }}
-            selectedOption={selectedOption}
-            fieldError={fieldError}
-            customFieldLabel={customFieldLabel}
-            customFieldInputMode={customFieldInputMode}
-            showLiveHint={step >= 5}
-            isLastQuestion={step === TOTAL_STEPS}
-            canProceed={canProceed}
-            onSelect={handleSelect}
-            onCustomTextChange={handleCustomTextChange}
-            onBack={handleBack}
-            onNext={handleNext}
-          />
+        {step <= TOTAL_STEPS && !isCalculating && (
+          <div className="public-v2-calc-card">
+          <div className="public-v2-calc-shell">
+            <CalculatorStepNav steps={STEP_NAV_ITEMS} currentStep={Math.max(step, 1)} />
+
+            <div>
+              {step === 0 && <CalculatorIntro onStart={handleStart} variant="compact" />}
+
+              {step >= 1 && (
+                <CalculatorQuestionStage
+                  step={step}
+                  total={TOTAL_STEPS}
+                  stageLabel={STAGE_LABELS[step] ?? ''}
+                  title={currentTitle}
+                  hint={currentHint}
+                  options={stepOptions}
+                  answer={currentAnswer ?? { optionId: null, customText: '' }}
+                  selectedOption={selectedOption}
+                  fieldError={fieldError}
+                  customFieldLabel={customFieldLabel}
+                  customFieldInputMode={customFieldInputMode}
+                  showLiveHint={step >= 5}
+                  isLastQuestion={step === TOTAL_STEPS}
+                  canProceed={canProceed}
+                  onSelect={handleSelect}
+                  onCustomTextChange={handleCustomTextChange}
+                  onBack={handleBack}
+                  onNext={handleNext}
+                />
+              )}
+            </div>
+
+            <CalculatorExplainerCard />
+          </div>
+          </div>
         )}
 
         {isCalculating && <CalculatorCalculating />}

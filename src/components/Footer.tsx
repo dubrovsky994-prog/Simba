@@ -10,7 +10,7 @@ const CONTACTS = [
 ]
 
 const NAV_LINKS = [
-  { label: 'Калькулятор потерь', href: '/#business-audit' },
+  { label: 'Посчитать потери', href: '/#business-audit' },
   { label: 'Как это работает', href: '/#how-we-help' },
   { label: 'Кейсы', href: '/#for-whom' },
   { label: 'Контакты', href: '/#contacts' },

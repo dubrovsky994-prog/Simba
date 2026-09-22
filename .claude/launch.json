@@ -7,6 +7,20 @@
       "runtimeArgs": ["run", "dev"],
       "port": 5173,
       "autoPort": true
+    },
+    {
+      "name": "laila-dev",
+      "runtimeExecutable": "npm",
+      "runtimeArgs": ["--prefix", "C:\\Users\\Administrator\\LAILA", "run", "dev"],
+      "port": 3000,
+      "autoPort": true
+    },
+    {
+      "name": "frame58-dev",
+      "runtimeExecutable": "npm",
+      "runtimeArgs": ["--prefix", "C:\\Users\\Administrator\\Documents\\ChatGPT\\ВидеоЛид", "run", "dev"],
+      "port": 5183,
+      "autoPort": true
     }
   ]
 }
