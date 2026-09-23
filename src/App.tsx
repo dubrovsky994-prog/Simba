@@ -1,5 +1,6 @@
 import { Analytics } from '@vercel/analytics/react'
-import { useEffect } from 'react'
+import { useEffect, useState } from 'react'
+import SimbaAppShell from './components/master/SimbaAppShell'
 import Footer from './components/Footer'
 import NicheCases from './components/NicheCases'
 import CookieBanner from './components/CookieBanner'
@@ -25,7 +26,7 @@ const LEGAL_PAGES: Record<string, () => JSX.Element> = {
   '/cookies': Cookies,
 }
 
-function HomePage() {
+function LegacyHomePage() {
   // Links from the legal pages (and any full page load) arrive as /#section —
   // the browser can't scroll to a fragment that doesn't exist in the DOM yet,
   // since React renders it only after this component mounts.
@@ -51,6 +52,19 @@ function HomePage() {
       <Footer />
     </div>
   )
+}
+
+// Desktop presentation only. Existing small-screen page and business modules
+// are retained; never mount two calculators/forms for one viewport.
+function HomePage() {
+  const [desktop, setDesktop] = useState(() => window.matchMedia('(min-width: 1025px)').matches)
+  useEffect(() => {
+    const media = window.matchMedia('(min-width: 1025px)')
+    const sync = () => setDesktop(media.matches)
+    media.addEventListener('change', sync)
+    return () => media.removeEventListener('change', sync)
+  }, [])
+  return desktop ? <SimbaAppShell /> : <LegacyHomePage />
 }
 
 function App() {
