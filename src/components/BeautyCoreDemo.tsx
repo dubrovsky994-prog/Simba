@@ -52,12 +52,12 @@ export default function BeautyCoreDemo({ onClose, entry = { mode: 'site', sectio
       <section className="beauty-live-window">
         <header className="beauty-live-bar">
           <div><strong>Beauty Core</strong><span>LIVE DEMO</span></div>
-          <a href={BEAUTY_DEMO_URL || undefined} target="_blank" rel="noopener noreferrer" onClick={openFull}>Открыть полный проект ↗</a>
+          <a className="beauty-full-demo-cta" href={BEAUTY_DEMO_URL || undefined} target="_blank" rel="noopener noreferrer" onClick={openFull}>Открыть полное демо ↗</a>
           <button type="button" onClick={close} aria-label="Закрыть демо">×</button>
         </header>
         <div className="beauty-live-stage">
           {state === 'loading' && <div className="beauty-live-loading" role="status"><span>BEAUTY CORE / LIVE</span><strong>Загружаем Beauty Core...</strong><i /></div>}
-          {state === 'error' && <div className="beauty-live-error" role="alert"><span>BEAUTY CORE / CONNECTION</span><strong>Beauty Core сейчас не удалось открыть внутри SIMBA.</strong><p>Главная страница продолжает работать — можно повторить загрузку или открыть проект отдельно.</p><div><button type="button" onClick={() => { setState('loading'); setAttempt((value) => value + 1) }}>Повторить</button><a href={BEAUTY_DEMO_URL || undefined} target="_blank" rel="noopener noreferrer" onClick={openFull}>Открыть полный проект ↗</a></div></div>}
+          {state === 'error' && <div className="beauty-live-error" role="alert"><span>BEAUTY CORE / CONNECTION</span><strong>Beauty Core сейчас не удалось открыть внутри SIMBA.</strong><p>Главная страница продолжает работать — можно повторить загрузку или открыть проект отдельно.</p><div><button type="button" onClick={() => { setState('loading'); setAttempt((value) => value + 1) }}>Повторить</button><a className="beauty-full-demo-cta" href={BEAUTY_DEMO_URL || undefined} target="_blank" rel="noopener noreferrer" onClick={openFull}>Открыть полное демо ↗</a></div></div>}
           {frameUrl && <iframe ref={frameRef} key={`${frameUrl}-${attempt}`} src={frameUrl} title="Beauty Core — интерактивное демо" loading="lazy" className={state === 'ready' ? 'is-ready' : ''} />}
         </div>
       </section>
