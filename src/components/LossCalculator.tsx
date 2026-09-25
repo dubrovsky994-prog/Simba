@@ -2,10 +2,12 @@ import { useEffect, useMemo, useState } from 'react'
 import CalculatorIntro from './calculator/CalculatorIntro'
 import CalculatorQuestionStage, { type StageOption } from './calculator/CalculatorQuestionStage'
 import CalculatorCalculating from './calculator/CalculatorCalculating'
+import CalculatorInsight from './calculator/CalculatorInsight'
 import CalculatorResult from './calculator/CalculatorResult'
 import CalculatorAvatar from './calculator/CalculatorAvatar'
 import CalculatorStepNav, { type StepNavItem } from './calculator/CalculatorStepNav'
 import CalculatorExplainerCard from './calculator/CalculatorExplainerCard'
+import CalculatorMemoryPanel from './calculator/CalculatorMemoryPanel'
 import {
   NICHE_CUSTOM_INPUT_LABEL,
   NICHE_CUSTOM_LABEL,
@@ -18,14 +20,20 @@ import {
   resolveQuestionTitle,
 } from '../lib/calculator/questions'
 import { resolveNicheAnswer, resolveNumericAnswer } from '../lib/calculator/validate'
-import { calculateLoss } from '../lib/calculator/calculate'
+import { calculateLoss, calculateInterimLoss } from '../lib/calculator/calculate'
 import { trackCalculatorEvent } from '../lib/calculator/analytics'
+import { formatMoney } from '../lib/calculator/format'
+import { buildMemoryItems } from '../lib/calculator/memory'
+import { getStageReaction } from '../lib/calculator/reactions'
 import { EMPTY_CALCULATOR_ANSWERS, type CalculatorAnswers, type NicheKey, type NumericQuestionId } from '../lib/calculator/types'
 
 const RESULT_STEP = TOTAL_STEPS + 1
 // Mirrors CalculatorCalculating's own caption cadence (3 captions, 360ms each)
 // plus a small buffer so the last caption is readable before the swap.
 const CALCULATING_MS = 1100
+// After cancelRate (step 6) is answered, SBA has enough to show one interim
+// number before the last two questions — see spec item 11.
+const INSIGHT_AFTER_STEP = 6
 
 const STAGE_LABELS: Record<number, string> = {
   1: 'О бизнесе',
@@ -51,29 +59,72 @@ const STEP_NAV_ITEMS: StepNavItem[] = [
   { step: 8, label: 'Стоимость часа' },
 ]
 
+const STORAGE_KEY = 'simba_sba_calculator_v1'
+
+type PersistedProgress = { step: number; answers: CalculatorAnswers; insightShown: boolean }
+
+// Session-only memory (spec item 15) — a full backend memory layer is out of
+// scope, but losing an in-progress diagnostic on an accidental reload isn't.
+function loadPersistedProgress(): PersistedProgress | null {
+  try {
+    const raw = sessionStorage.getItem(STORAGE_KEY)
+    if (!raw) return null
+    const parsed = JSON.parse(raw) as Partial<PersistedProgress>
+    if (typeof parsed.step !== 'number' || !parsed.answers) return null
+    return { step: parsed.step, answers: parsed.answers, insightShown: Boolean(parsed.insightShown) }
+  } catch {
+    return null
+  }
+}
+
 function prefersReducedMotion(): boolean {
   return typeof window !== 'undefined' && window.matchMedia?.('(prefers-reduced-motion: reduce)').matches === true
 }
 
+function resolvedNumericValue(id: NumericQuestionId, answers: CalculatorAnswers): number | null {
+  const question = NUMERIC_QUESTIONS.find((q) => q.id === id)
+  if (!question) return null
+  const resolved = resolveNumericAnswer(question, answers[id])
+  return resolved.valid ? resolved.value : null
+}
+
 export default function LossCalculator() {
-  const [step, setStep] = useState(0)
-  const [answers, setAnswers] = useState<CalculatorAnswers>(EMPTY_CALCULATOR_ANSWERS)
+  const [restored] = useState<PersistedProgress | null>(loadPersistedProgress)
+  const [step, setStep] = useState(restored?.step ?? 0)
+  const [answers, setAnswers] = useState<CalculatorAnswers>(restored?.answers ?? EMPTY_CALCULATOR_ANSWERS)
   const [fieldError, setFieldError] = useState<string | null>(null)
   const [isCalculating, setIsCalculating] = useState(false)
+  const [isInsight, setIsInsight] = useState(false)
+  const [insightShown, setInsightShown] = useState(Boolean(restored?.insightShown) || (restored?.step ?? 0) > INSIGHT_AFTER_STEP)
+  const [showRestoredNotice, setShowRestoredNotice] = useState(Boolean(restored && restored.step > 0))
 
   useEffect(() => {
     trackCalculatorEvent('calculator_view')
   }, [])
 
   useEffect(() => {
-    if (step < 1 || isCalculating) return
+    if (!showRestoredNotice) return
+    const timer = window.setTimeout(() => setShowRestoredNotice(false), 4000)
+    return () => window.clearTimeout(timer)
+  }, [showRestoredNotice])
+
+  useEffect(() => {
+    try {
+      sessionStorage.setItem(STORAGE_KEY, JSON.stringify({ step, answers, insightShown }))
+    } catch {
+      // sessionStorage unavailable (private mode, blocked storage) — progress just won't survive a reload
+    }
+  }, [step, answers, insightShown])
+
+  useEffect(() => {
+    if (step < 1 || isCalculating || isInsight) return
     const frame = window.requestAnimationFrame(() => {
       const heading = document.getElementById('calculator-question')
       heading?.focus({ preventScroll: true })
       document.getElementById('business-audit')?.scrollIntoView({ behavior: prefersReducedMotion() ? 'auto' : 'smooth', block: 'start' })
     })
     return () => window.cancelAnimationFrame(frame)
-  }, [step, isCalculating])
+  }, [step, isCalculating, isInsight])
 
   const nicheResolution = resolveNicheAnswer(answers.niche)
   const currentNiche: NicheKey = nicheResolution.valid ? nicheResolution.niche : 'custom'
@@ -112,6 +163,31 @@ export default function LossCalculator() {
   const currentHint = step === 1 ? NICHE_QUESTION.hint : numericQuestion?.hint ?? ''
   const customFieldLabel = step === 1 ? NICHE_CUSTOM_INPUT_LABEL : 'Ваше значение'
   const customFieldInputMode: 'text' | 'decimal' = step === 1 ? 'text' : 'decimal'
+  const reaction = step >= 1 && step <= TOTAL_STEPS ? getStageReaction(step, answers) : null
+  const nextLabel = step === TOTAL_STEPS ? 'Собрать вывод' : undefined
+
+  const memoryItems = useMemo(() => buildMemoryItems(answers, Math.max(0, step - 1)), [answers, step])
+
+  // Shared by the one-time interstitial and, afterwards, by the living memory
+  // panel — both must show the exact same number (spec item 9 + item 11).
+  const interimLoss = useMemo(() => {
+    const inquiries = resolvedNumericValue('inquiries', answers)
+    const avgCheck = resolvedNumericValue('avgCheck', answers)
+    const missedRate = resolvedNumericValue('missedRate', answers)
+    const conversionRate = resolvedNumericValue('conversionRate', answers)
+    const cancelRate = resolvedNumericValue('cancelRate', answers)
+    if (inquiries === null || avgCheck === null || missedRate === null || conversionRate === null || cancelRate === null) return null
+    return calculateInterimLoss({ inquiries, avgCheck, missedRate, conversionRate, cancelRate })
+  }, [answers])
+
+  const memoryInsight = useMemo(() => {
+    if (step <= INSIGHT_AFTER_STEP || !interimLoss) return null
+    return {
+      title: 'Первый вывод',
+      text: `Даже ${Math.round(interimLoss.missedCount)} потерянных заявок могут стоить бизнесу примерно ${formatMoney(interimLoss.lostLeads + interimLoss.cancellationLoss)} в месяц.`,
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [step, interimLoss])
 
   const handleStart = () => {
     trackCalculatorEvent('calculator_start')
@@ -172,9 +248,17 @@ export default function LossCalculator() {
           setStep(RESULT_STEP)
         }, CALCULATING_MS)
       }
+    } else if (step === INSIGHT_AFTER_STEP && !insightShown) {
+      setInsightShown(true)
+      setIsInsight(true)
     } else {
       setStep((s) => s + 1)
     }
+  }
+
+  const handleInsightContinue = () => {
+    setIsInsight(false)
+    setStep((s) => s + 1)
   }
 
   const handleBack = () => {
@@ -186,7 +270,14 @@ export default function LossCalculator() {
     setAnswers(EMPTY_CALCULATOR_ANSWERS)
     setFieldError(null)
     setIsCalculating(false)
+    setIsInsight(false)
+    setInsightShown(false)
     setStep(0)
+    try {
+      sessionStorage.removeItem(STORAGE_KEY)
+    } catch {
+      // best-effort only
+    }
   }
 
   const resolvedResult = useMemo(() => {
@@ -223,16 +314,22 @@ export default function LossCalculator() {
   return (
     <section id="business-audit" className="public-v2-calc-section overflow-hidden bg-bg-section pb-12 pt-4 sm:pb-16 sm:pt-6">
       <div className="container-px">
-        {step > 0 && !isCalculating && (
+        {step > 0 && !isCalculating && !isInsight && (
           <div className="mx-auto mb-3 flex max-w-2xl items-center justify-center gap-2" data-calculator-presence>
             <CalculatorAvatar state={fieldError ? 'error' : step === RESULT_STEP ? 'success' : 'active'} size={84} />
             <p className="text-sm font-medium text-text-muted">
-              {fieldError ? 'Проверьте указанное значение' : step === RESULT_STEP ? 'Ваш расчёт готов' : 'Восемь вопросов о вашем бизнесе'}
+              {fieldError
+                ? 'Проверьте указанное значение'
+                : step === RESULT_STEP
+                  ? 'Ваш расчёт готов'
+                  : showRestoredNotice
+                    ? 'Я сохранил ваш расчёт.'
+                    : 'Восемь вопросов о вашем бизнесе'}
             </p>
           </div>
         )}
 
-        {step <= TOTAL_STEPS && !isCalculating && (
+        {step <= TOTAL_STEPS && !isCalculating && !isInsight && (
           <div className="public-v2-calc-card">
           <div className="public-v2-calc-shell">
             <CalculatorStepNav steps={STEP_NAV_ITEMS} currentStep={Math.max(step, 1)} />
@@ -256,6 +353,8 @@ export default function LossCalculator() {
                   showLiveHint={step >= 5}
                   isLastQuestion={step === TOTAL_STEPS}
                   canProceed={canProceed}
+                  reaction={reaction}
+                  nextLabel={nextLabel}
                   onSelect={handleSelect}
                   onCustomTextChange={handleCustomTextChange}
                   onBack={handleBack}
@@ -264,9 +363,21 @@ export default function LossCalculator() {
               )}
             </div>
 
-            <CalculatorExplainerCard />
+            {memoryItems.length > 0 ? (
+              <CalculatorMemoryPanel items={memoryItems} insight={memoryInsight} />
+            ) : (
+              <CalculatorExplainerCard />
+            )}
           </div>
           </div>
+        )}
+
+        {isInsight && interimLoss && (
+          <CalculatorInsight
+            missedCount={interimLoss.missedCount}
+            cashLoss={interimLoss.lostLeads + interimLoss.cancellationLoss}
+            onContinue={handleInsightContinue}
+          />
         )}
 
         {isCalculating && <CalculatorCalculating />}

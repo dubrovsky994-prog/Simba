@@ -25,13 +25,16 @@
 .master-location{display:flex;gap:8px;align-items:center;margin-left:-18px;white-space:nowrap;font-size:8px;line-height:1.4;color:#c9d2d5}
 .master-location .master-icon{width:17px;height:20px;color:white}
 .master-canvas{position:relative;isolation:isolate;margin-left:164px;min-height:max(880px,100vh);overflow:hidden;background:#f5f3ed url('/images/public-v2/paper-grain.svg') repeat}
-.master-canvas-art{position:absolute;z-index:-1;inset:0 0 auto;height:870px;background:url('/images/master/editorial-scene-v1.png') center top/100% auto no-repeat;pointer-events:none}
+.master-canvas-art{position:absolute;z-index:-1;inset:0 0 auto;height:870px;background:url('/images/master/editorial-scene-paper-v2.png') center top/100% auto no-repeat;pointer-events:none}
 .master-topbar{position:absolute;z-index:12;top:27px;left:32px;right:28px;height:39px;display:flex;align-items:center;gap:14px}
 .master-topbar>p{margin:0 auto 0 0;font-size:10.5px;letter-spacing:1.65px;line-height:1.5;color:#141719}
 .master-button{display:inline-flex;align-items:center;justify-content:center;gap:20px;border:1px solid #172027;border-radius:8px;color:white;background:linear-gradient(130deg,#14212a,#070c10 65%);box-shadow:0 4px 11px #10182025,inset 0 1px 2px #7c9cad40;font-size:12px!important;line-height:1.1;min-height:34px;padding:8px 18px;text-decoration:none;white-space:nowrap;transition:filter .15s,transform .15s}
 .master-button:hover{filter:brightness(1.2);transform:translateY(-1px)}
 .master-button .master-icon{width:20px;height:20px}
 .master-topbar>.master-button{min-height:39px;min-width:174px;gap:23px;font-size:13px!important}
+.master-space-entry{display:inline-flex;align-items:center;justify-content:center;gap:14px;min-height:38px;padding:8px 15px;border:1px solid #d3d8d7;border-radius:9px;background:#ffffffd9;color:#14202a;text-decoration:none;font-size:12px;box-shadow:0 5px 14px #1e2d3712;transition:border-color .15s,background .15s,transform .15s}
+.master-space-entry:hover{border-color:#00aeba;background:#fff;transform:translateY(-1px)}
+.master-space-entry .master-icon{width:18px;height:18px;color:#00aeba}
 .master-search{position:relative;display:flex;align-items:center;width:282px;height:36px;gap:11px;padding:0 12px;border-radius:9px;background:#ffffffc4;border:1px solid #fff;box-shadow:0 5px 14px #1e2d3712}
 .master-search>.master-icon{width:18px;height:18px;color:#0c1b30}
 .master-search input{width:100%;min-width:0;background:none;border:0;font-size:10px;color:#30415b;outline-offset:7px}
@@ -135,7 +138,7 @@
 .master-panel--solutions .public-v2-solution-card li{margin:8px 0}
 .master-panel--solutions .public-v2-solution-card li::first-letter{color:#00adbd}
 .master-panel--solutions .public-v2-button{font-size:11px;min-height:32px;padding:7px 16px;background:#fff;border:1px solid #bcc8d6;border-radius:5px;color:#182e40;display:inline-flex;gap:25px}
-.master-panel--solutions .public-v2-solution-card__mock{height:213px;min-height:0;border:6px solid #13202a;border-radius:12px;background:linear-gradient(0deg,#0e242847,transparent 70%),url('/cases/laila-maalul/screen-1.jpg') center top/cover;box-shadow:7px 10px 13px #1b354e20;transform:perspective(500px) rotateY(-10deg) rotateZ(2deg);position:relative;overflow:hidden}
+.master-panel--solutions .public-v2-solution-card__mock{height:213px;min-height:0;border:6px solid #f6eee9;border-radius:12px;background:url('/images/master/simba-beauty-reference-v1.png') center top/cover;box-shadow:7px 10px 18px #1b354e25;transform:perspective(500px) rotateY(-8deg) rotateZ(1deg);position:relative;overflow:hidden}
 .master-panel--solutions .public-v2-solution-card__mock>*,.master-panel--solutions .public-v2-solution-card__mock::before{display:none}
 .master-panel--cases #for-whom{padding:18px 24px;background:none}
 .master-panel--cases #for-whom>.container-px>div:first-child:not(.public-v2-case-carousel){display:none}
@@ -176,6 +179,11 @@
 .master-beauty-product .public-v2-beauty-widget__list li span+span{color:#64778d;font-size:9px}
 .master-beauty-product .public-v2-beauty-widget__chips{grid-column:1/-1;display:flex;gap:6px;flex-wrap:wrap}
 .master-beauty-product .public-v2-beauty-widget__chips span{font-size:8px;padding:4px 7px;border:1px solid #dce7f1;border-radius:14px;color:#44728b;background:#fff}
+.master-beauty-reference{position:relative;display:block;aspect-ratio:1.55/1;min-height:0;border-color:#806f6b;background:#f7efeb;box-shadow:0 18px 55px #02090d55}
+.master-beauty-reference>img{display:block;width:100%;height:100%;object-fit:cover;object-position:center top}
+.master-beauty-reference__caption{position:absolute;left:16px;right:16px;bottom:14px;display:flex;align-items:center;justify-content:space-between;gap:16px;padding:12px 15px;border:1px solid #ffffff7a;border-radius:8px;background:#171a1dd9;color:#fff;backdrop-filter:blur(9px)}
+.master-beauty-reference__caption strong{font:17px/1.1 Georgia,serif;letter-spacing:.4px}
+.master-beauty-reference__caption span{font-size:10px;color:#f1ded6;text-align:right}
 .master-ai-preview{height:100%;display:grid;grid-template-columns:42% 1fr;gap:38px;align-items:center;padding:16px 45px;background:radial-gradient(ellipse at 20% 60%,#def8fa,transparent 50%),#fff}
 .master-ai-orbit{height:320px;display:flex;align-items:center;justify-content:center;position:relative}
 .master-ai-orbit>span{position:absolute;bottom:2px;font-size:8px;letter-spacing:2px;color:#62929c}

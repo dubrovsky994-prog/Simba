@@ -34,8 +34,8 @@ export default function CalculatorRecommendationsFlow({ niche }: CalculatorRecom
 
   return (
     <div className="calculator-pain-solutions">
-      <h3>Меньше ежедневных «надо». Больше времени на своё дело.</h3>
-      <p className="calculator-pain-intro">Вот как можно закрыть знакомые вашей сфере боли. Выберем подходящее вместе — без внедрения всего и сразу.</p>
+      <h3>Вот каким может быть ваш SBA</h3>
+      <p className="calculator-pain-intro">Для вашего бизнеса я бы начал с этих навыков. Выберем подходящее вместе — без внедрения всего и сразу.</p>
       <div className="calculator-pain-grid">
         {primary.map((label) => (
           <RecommendationRow key={label} niche={niche} label={label} />

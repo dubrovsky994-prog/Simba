@@ -1,23 +1,21 @@
-import { useState } from 'react'
 import SolutionsShowcase from '../SolutionsShowcase'
 import NicheCases from '../NicheCases'
 import LossCalculator from '../LossCalculator'
-import BeautyWidgetPreview from '../beauty/BeautyWidgetPreview'
-import PaperMorphAvatar, { type PaperMorphState } from '../avatar/PaperMorphAvatar'
+import SbaPreview from './SbaPreview'
 import { CONTACT_EMAIL, CONTACT_PHONE_DISPLAY, CONTACT_PHONE_HREF, CONTACT_TELEGRAM, CONTACT_TELEGRAM_URL } from '../../legal/content'
 import MasterIcon from './MasterIcon'
 import type { WorkspaceState } from './navigation'
 import type { BeautyDemoEntry } from '../../lib/beauty/demoBridge'
 
 const TABS: { id: WorkspaceState; label: string }[] = [
-  { id: 'solutions', label: 'Решения' }, { id: 'cases', label: 'Кейсы' }, { id: 'beauty', label: 'Beauty Core' }, { id: 'ai', label: 'SIMBA AI' }, { id: 'diagnostics', label: 'Диагностика' },
+  { id: 'solutions', label: 'Решения' }, { id: 'cases', label: 'Кейсы' }, { id: 'beauty', label: 'Beauty Core' }, { id: 'ai', label: 'SBA' }, { id: 'diagnostics', label: 'Диагностика' },
 ]
 const WORKSPACE_TITLES: Record<WorkspaceState, [string, string]> = {
   home: ['Ваш рост начинается здесь.', ''],
   solutions: ['Инструменты вашего роста.', 'От первого обращения — до системы, которая помогает продавать.'],
   cases: ['Реальные проекты. Живые истории.', 'Посмотрите, как разные бизнесы выстраивают свою цифровую систему.'],
   beauty: ['Красивый бизнес начинается с порядка.', 'Beauty Core · онлайн-запись, клиентская база и расписание в одном месте.'],
-  ai: ['Меньше рутины. Больше жизни.', 'SIMBA AI · визуальная концепция помощника для вашего бизнеса.'],
+  ai: ['Меньше рутины. Больше жизни.', 'SBA — Smart Business Assistant · powered by SIMBA AI'],
   diagnostics: ['Калькулятор возможностей', 'Найдите скрытый потенциал вашего бизнеса за несколько минут.'],
   library: ['Идеи, которые становятся системой.', 'Навигатор по возможностям SIMBA. Библиотека материалов готовится.'],
   pricing: ['Сначала задача. Затем решение.', 'Состав и стоимость системы определяются после знакомства с вашим бизнесом.'],
@@ -25,13 +23,8 @@ const WORKSPACE_TITLES: Record<WorkspaceState, [string, string]> = {
   contacts: ['Давайте создадим что-то большее.', 'Расскажите о задаче — найдём точку, с которой стоит начать.'],
 }
 
-function AiPreview() {
-  const [appearance, setAppearance] = useState<PaperMorphState>('idle')
-  return <div className="master-ai-preview"><div className="master-ai-orbit"><PaperMorphAvatar size={300} state={appearance} /><span>SIMBA AI / DEMO</span></div><div><span className="master-eyebrow">ПРЕЗЕНТАЦИЯ ВОЗМОЖНОСТЕЙ</span><h2>SIMBA следит за рутиной.<br />Вы подключаетесь только там,<br />где нужен человек.</h2><ul>{['Собирает заявки', 'Напоминает клиентам', 'Показывает потери', 'Предлагает следующий шаг'].map(text => <li key={text}><MasterIcon name="ai" />{text}</li>)}</ul><div className="master-ai-states" aria-label="Состояния аватара">{(['idle', 'listening', 'thinking', 'answering'] as const).map((state, i) => <button key={state} aria-pressed={appearance === state} onClick={() => setAppearance(state)}>{['Рядом', 'Слушает', 'Думает', 'Отвечает'][i]}</button>)}</div><small>Демонстрация интерфейса. Подключение к данным и автоматические действия здесь не реализованы.</small></div></div>
-}
-
 function BeautyPreview({ onOpen }: { onOpen: (entry: BeautyDemoEntry) => void }) {
-  return <div className="master-beauty-preview"><div className="master-beauty-intro"><span className="master-beauty-label"><MasterIcon name="flower" /> BEAUTY CORE</span><h2>Живое отраслевое ядро.</h2><p>Сайт, управление, рабочий день мастера и кабинет клиента — в одном реальном продукте.</p><span className="master-demo-label">LUMI Beauty Studio · LIVE DEMO</span><button className="master-button" onClick={() => onOpen({ mode: 'site', section: 'home' })}>Попробовать Beauty Core<MasterIcon name="arrow" /></button><div className="master-beauty-entrypoints"><button onClick={() => onOpen({ mode: 'site', section: 'booking' })}>Как происходит запись?</button><button onClick={() => onOpen({ mode: 'admin', section: 'analytics' })}>Как управляет владелец?</button><button onClick={() => onOpen({ mode: 'master', section: 'calendar' })}>Рабочий день мастера</button><button onClick={() => onOpen({ mode: 'client' })}>Что видит клиент?</button></div></div><div className="master-beauty-product"><BeautyWidgetPreview /></div></div>
+  return <div className="master-beauty-preview"><div className="master-beauty-intro"><span className="master-beauty-label"><MasterIcon name="flower" /> BEAUTY CORE</span><h2>Красивый бизнес начинается с порядка.</h2><p>Запись, клиенты, расписание и рост — в одном спокойном рабочем пространстве.</p><span className="master-demo-label">SIMBA Beauty · LIVE DEMO</span><button className="master-button" onClick={() => onOpen({ mode: 'site', section: 'home' })}>Попробовать Beauty Core<MasterIcon name="arrow" /></button><div className="master-beauty-entrypoints"><button onClick={() => onOpen({ mode: 'site', section: 'booking' })}>Как происходит запись?</button><button onClick={() => onOpen({ mode: 'admin', section: 'analytics' })}>Как управляет владелец?</button><button onClick={() => onOpen({ mode: 'master', section: 'calendar' })}>Рабочий день мастера</button><button onClick={() => onOpen({ mode: 'client' })}>Что видит клиент?</button></div></div><div className="master-beauty-product master-beauty-reference"><img src="/images/master/simba-beauty-reference-v1.png" alt="Интерфейс SIMBA Beauty: онлайн-запись, календарь, клиенты и аналитика" /><div className="master-beauty-reference__caption"><strong>SIMBA Beauty</strong><span>Онлайн-запись · календарь · клиенты · аналитика</span></div></div></div>
 }
 
 export default function SimbaWorkspace({ active, visited, onSelect, onBeauty, onLead, onIdea }: { active: WorkspaceState; visited: WorkspaceState[]; onSelect: (state: WorkspaceState) => void; onBeauty: (entry: BeautyDemoEntry) => void; onLead: () => void; onIdea: () => void }) {
@@ -43,7 +36,7 @@ export default function SimbaWorkspace({ active, visited, onSelect, onBeauty, on
         {tab.id === 'solutions' && <SolutionsShowcase />}
         {tab.id === 'cases' && <NicheCases />}
         {tab.id === 'beauty' && <BeautyPreview onOpen={onBeauty} />}
-        {tab.id === 'ai' && <AiPreview />}
+        {tab.id === 'ai' && <SbaPreview onSelect={onSelect} />}
         {tab.id === 'diagnostics' && <LossCalculator />}
       </div>)}
       {['library', 'pricing', 'about', 'contacts'].includes(active) && <div className="master-info-panel">
