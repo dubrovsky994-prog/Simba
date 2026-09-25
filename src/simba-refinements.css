@@ -302,6 +302,18 @@ body:has(.simba-master) [role=dialog][aria-label="Демо Beauty Core"] main{sc
 }
 @media(prefers-reduced-motion:reduce){.sba-avatar-wrap[data-sba-accent=insight]::after,.sba-avatar-wrap[data-sba-accent=signal]::after{animation:none;opacity:0;box-shadow:none}.calc-sba-reaction,.calc-memory-item{animation:none}}
 
+/* Mobile SBA order: avatar, then the live simulation, then the (now short)
+   intro copy — the shared master-ai-preview/master-beauty-preview mobile
+   rule stays untouched for Beauty; this promotes just the SBA panel's own
+   children so they can be reordered independently of that shared rule. */
+@media(max-width:760px){
+  .sba-preview{display:flex;flex-direction:column;gap:20px;padding:25px}
+  .sba-preview .master-ai-preview{display:contents}
+  .sba-avatar-wrap{order:1}
+  .sba-demo{order:2;padding:0}
+  .master-ai-preview>div:last-child{order:3}
+}
+
 /* Living-intelligence simulation: sparse, three layers around the avatar
    plus a tiny history trail. Reuses .sba-demo/.sba-demo-note as-is. */
 .sba-sim-event{margin:0;font-size:10px;letter-spacing:.07em;text-transform:uppercase;color:#62929c}

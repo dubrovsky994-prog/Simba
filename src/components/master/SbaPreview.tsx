@@ -92,6 +92,12 @@ export default function SbaPreview({ onSelect }: { onSelect: (state: WorkspaceSt
             <span>{frame.badge.text}</span>
           </div>
         )}
+        <div className="sba-sim-controls">
+          <button type="button" aria-pressed={paused} onClick={() => setPaused((p) => !p)}>
+            {paused ? 'Продолжить' : 'Пауза'}
+          </button>
+          <button type="button" onClick={handleNextExample}>Следующий пример</button>
+        </div>
         {history.length > 0 && (
           <ul className="sba-sim-history">
             {history.map((item, i) => (
@@ -99,12 +105,6 @@ export default function SbaPreview({ onSelect }: { onSelect: (state: WorkspaceSt
             ))}
           </ul>
         )}
-        <div className="sba-sim-controls">
-          <button type="button" aria-pressed={paused} onClick={() => setPaused((p) => !p)}>
-            {paused ? 'Продолжить' : 'Пауза'}
-          </button>
-          <button type="button" onClick={handleNextExample}>Следующий пример</button>
-        </div>
         <p className="sba-demo-note">Демонстрация принципа работы SBA. При внедрении события поступают из реальных систем бизнеса.</p>
       </div>
     </div>

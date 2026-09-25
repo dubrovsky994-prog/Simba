@@ -52,8 +52,8 @@ const SCENARIO_B_GENERIC: SimulationFrame[] = [
 // visitor's own completed diagnostic instead of a generic example.
 function scenarioBPersonalized(missedCount: number): SimulationFrame[] {
   return [
-    { id: 'b-signal-p', scenarioStart: true, event: 'Данные вашей диагностики', status: 'СОПОСТАВЛЯЮ ОТВЕТЫ', result: null, sbaState: 'listening', durationMs: SIGNAL_MS },
-    { id: 'b-insight-p', event: null, status: 'SBA ЗАМЕТИЛ', result: `Около ${missedCount} обращений в месяц находятся в зоне риска.`, sbaState: 'insight' },
+    { id: 'b-signal-p', scenarioStart: true, event: 'На основе вашей диагностики', status: 'СОПОСТАВЛЯЮ ОТВЕТЫ', result: null, sbaState: 'listening', durationMs: SIGNAL_MS },
+    { id: 'b-insight-p', event: null, status: 'ПО ВАШИМ ОТВЕТАМ', result: `Около ${missedCount} обращений в месяц находятся в зоне риска.`, sbaState: 'insight' },
     {
       id: 'b-decide-p',
       event: null,
