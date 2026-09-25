@@ -210,3 +210,27 @@ body:has(.simba-master) [role=dialog][aria-label="Демо Beauty Core"] main{sc
   .master-products{left:30px}
   .simba-master:not(.master-state--home)>.master-menu-toggle{display:none}
 }
+
+/* Live Beauty Core integration: SIMBA owns the paper window; LAILA owns the iframe. */
+.master-beauty-full-link{position:absolute;z-index:3;right:18px;bottom:12px;font-size:10px;font-weight:700;color:#58208d;text-decoration:underline;text-underline-offset:3px}
+.master-beauty-entrypoints{display:grid;gap:7px;margin-top:18px}
+.master-beauty-entrypoints button{min-height:36px;padding:7px 10px;border:1px solid #745c8b;background:#2a2534;color:#e9d9f9;border-radius:5px;text-align:left;font-size:12px}
+.beauty-live-preview>header{display:flex;justify-content:space-between;gap:12px;align-items:center;margin-bottom:12px}
+.beauty-live-preview>header span{font-weight:800;color:#272333}
+.beauty-live-preview>header i{font-style:normal;font-size:10px;font-weight:800;letter-spacing:.1em;color:#7d28b5}
+.beauty-live-nearest{display:grid;gap:4px;margin:12px 0;padding:13px;border:1px solid #d8c9e1;border-radius:12px;background:#fff9}
+.beauty-live-nearest span,.beauty-live-nearest small{font-size:11px;color:#6c6173}.beauty-live-nearest strong{font-size:14px;color:#302638}
+.beauty-live-backdrop{position:fixed;inset:0;z-index:90;display:grid;place-items:center;padding:20px;background:#071015d9;backdrop-filter:blur(6px)}
+.beauty-live-window{width:min(1220px,calc(100vw - 40px));height:min(760px,calc(100dvh - 40px));display:flex;flex-direction:column;overflow:hidden;border:1px solid #8e8498;border-radius:9px;background:linear-gradient(#171b21e8,#171b21e8),url('/images/master/dark-paper-v1.png') center/cover;box-shadow:0 30px 100px #0009}
+.beauty-live-bar{height:58px;flex:0 0 58px;display:flex;align-items:center;gap:20px;padding:9px 12px 9px 22px;border-bottom:1px solid #81738b;background:#171a20e8;color:#fff}
+.beauty-live-bar>div{display:flex;align-items:baseline;gap:13px}.beauty-live-bar strong{font-size:18px}.beauty-live-bar span{font-size:9px;letter-spacing:.18em;color:#d4a2fa}
+.beauty-live-bar a{margin-left:auto;color:#45e4e8;font-size:12px;font-weight:700;text-decoration:none}
+.beauty-live-bar button{width:38px;height:38px;border-radius:50%;border:1px solid #8b8493;background:#23252c;color:#fff;font-size:24px}
+.beauty-live-stage{position:relative;flex:1;min-height:0;background:#f4f0f6}
+.beauty-live-stage iframe{position:absolute;inset:0;width:100%;height:100%;border:0;opacity:0;transition:opacity .22s}.beauty-live-stage iframe.is-ready{opacity:1}
+.beauty-live-loading,.beauty-live-error{position:absolute;inset:0;z-index:2;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:30px;background:#f2eee8 url('/images/public-v2/paper-grain.svg');color:#1e2227}
+.beauty-live-loading span,.beauty-live-error span{font-size:10px;font-weight:800;letter-spacing:.14em;color:#8436b8}.beauty-live-loading strong,.beauty-live-error strong{font-size:24px;margin-top:12px}.beauty-live-loading i{width:min(330px,65%);height:3px;margin-top:22px;overflow:hidden;background:#cdd3d3}.beauty-live-loading i::after{content:'';display:block;width:45%;height:100%;background:#14cbd4;animation:beauty-load 1.4s ease-in-out infinite}
+.beauty-live-error p{max-width:530px;margin:12px auto 22px;color:#5c6268}.beauty-live-error>div{display:flex;gap:12px}.beauty-live-error button,.beauty-live-error a{min-height:44px;display:inline-flex;align-items:center;justify-content:center;padding:10px 20px;border-radius:5px;font-size:13px;font-weight:700}.beauty-live-error button{border:1px solid #21cad2;background:#21dce5;color:#092129}.beauty-live-error a{border:1px solid #444b50;color:#242a2f}
+@keyframes beauty-load{0%{transform:translateX(-110%)}100%{transform:translateX(240%)}}
+@media(max-width:760px){.beauty-live-backdrop{padding:0}.beauty-live-window{width:100vw;height:100dvh;border:0;border-radius:0}.beauty-live-bar{height:62px;flex-basis:62px;padding-left:14px}.beauty-live-bar>div{display:block}.beauty-live-bar strong{display:block;font-size:15px}.beauty-live-bar span{font-size:8px}.beauty-live-bar a{font-size:10px;text-align:right}.beauty-live-bar button{width:36px;height:36px}.master-beauty-entrypoints{grid-template-columns:1fr}.master-beauty-full-link{position:static;display:inline-block;margin-top:8px;font-size:11px}.beauty-live-loading strong,.beauty-live-error strong{font-size:20px}}
+@media(prefers-reduced-motion:reduce){.beauty-live-stage iframe{transition:none}.beauty-live-loading i::after{animation:none;width:100%}}
