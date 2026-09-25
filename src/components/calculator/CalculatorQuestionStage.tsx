@@ -21,6 +21,8 @@ type CalculatorQuestionStageProps = {
   showLiveHint: boolean
   isLastQuestion: boolean
   canProceed: boolean
+  reaction?: string | null
+  nextLabel?: string
   onSelect: (optionId: string) => void
   onCustomTextChange: (text: string) => void
   onBack: () => void
@@ -42,6 +44,8 @@ export default function CalculatorQuestionStage({
   showLiveHint,
   isLastQuestion,
   canProceed,
+  reaction,
+  nextLabel,
   onSelect,
   onCustomTextChange,
   onBack,
@@ -52,6 +56,7 @@ export default function CalculatorQuestionStage({
       <CalculatorProgress step={step} total={total} stageLabel={stageLabel} />
 
       <div key={step} className="mt-6 animate-calc-step" role="radiogroup" aria-labelledby="calculator-question">
+        {reaction && <p className="calc-sba-reaction" role="status">{reaction}</p>}
         <div className="flex items-start justify-between gap-3">
           <h3 id="calculator-question" tabIndex={-1} className="text-xl font-bold leading-snug text-text-main sm:text-2xl">
             {title}
@@ -100,7 +105,7 @@ export default function CalculatorQuestionStage({
           disabled={!canProceed}
           className="btn-primary inline-flex items-center gap-2 disabled:cursor-not-allowed disabled:opacity-40"
         >
-          {isLastQuestion ? 'Показать результат' : 'Продолжить'}
+          {nextLabel ?? (isLastQuestion ? 'Показать результат' : 'Продолжить')}
           <IconArrowRight className="h-4 w-4" />
         </button>
         <span className="reference-question-note reference-hand" aria-hidden="true">Чем точнее ответы,<br />тем полезнее результат!</span>

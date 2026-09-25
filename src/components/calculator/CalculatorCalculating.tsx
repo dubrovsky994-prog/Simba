@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react'
 import CalculatorAvatar from './CalculatorAvatar'
 
-const CAPTIONS = ['Анализируем обращения', 'Учитываем незавершённые заказы', 'Рассчитываем стоимость ручной работы']
+const CAPTIONS = ['Собираю картину', 'Сопоставляю ваши ответы', 'Учитываю ручную работу']
 const STEP_MS = 360
 
 // Transient state between the last question and the result — purely
