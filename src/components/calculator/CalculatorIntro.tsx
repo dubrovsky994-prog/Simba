@@ -18,10 +18,10 @@ export default function CalculatorIntro({ onStart, variant = 'full' }: Calculato
           <CalculatorAvatar size={260} onStart={onStart} />
           <img className="public-v2-calc-avatar-poster" src="/avatar/paper-morph/origami-lion-paper-v2.webp" alt="" />
         </button>
-        <h3 className="calculator-intro-title">Привет. Я SBA.<br />Smart Business Assistant</h3>
-        <p className="-mt-2 text-sm font-medium text-accent-dark">Я задам несколько простых вопросов, чтобы понять ваш бизнес, найти возможные потери и показать, что можно улучшить.</p>
+        <h3 className="calculator-intro-title">Начнём с вашей ниши?</h3>
+        <p className="-mt-2 text-sm font-medium text-accent-dark">Ответьте на несколько вопросов — и увидите, где можно освободить время и не упустить клиентов.</p>
         <button type="button" onClick={onStart} className="btn-primary mt-5 inline-flex items-center gap-2">
-          Познакомить SBA с бизнесом
+          Начать расчёт
           <IconArrowRight className="h-4 w-4" />
         </button>
         <a href="/avatar-preview.html" className="mt-3 text-xs font-medium text-accent-dark underline decoration-accent/40 underline-offset-4 hover:text-accent">
@@ -39,10 +39,10 @@ export default function CalculatorIntro({ onStart, variant = 'full' }: Calculato
       />
 
       <div className="relative mx-auto max-w-xl text-center lg:mx-0 lg:text-left">
-        <span className="section-eyebrow">Привет. Я SBA — Smart Business Assistant</span>
+        <span className="section-eyebrow">Бесплатная диагностика бизнеса</span>
         <h2 className="section-title mt-4">Узнайте, сколько заявок, денег и времени вы можете терять</h2>
         <p className="section-subtitle mx-auto lg:mx-0">
-          Я задам несколько простых вопросов, чтобы понять ваш бизнес, найти возможные потери и показать, что можно улучшить.
+          8 простых вопросов — и вы увидите, где клиенты выпадают из процесса и что можно автоматизировать.
         </p>
 
         <div className="mt-6 flex flex-wrap items-center justify-center gap-2.5 lg:justify-start">
@@ -58,7 +58,7 @@ export default function CalculatorIntro({ onStart, variant = 'full' }: Calculato
         </div>
 
         <button type="button" onClick={onStart} className="btn-primary mt-7 inline-flex items-center gap-2">
-          Познакомить SBA с бизнесом
+          Начать расчёт
           <IconArrowRight className="h-4 w-4" />
         </button>
         <p className="mt-3 text-xs text-text-muted">Расчёт ориентировочный и основан на указанных вами данных.</p>

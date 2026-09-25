@@ -15,7 +15,6 @@ export default function CalculatorProgress({ step, total, stageLabel }: Calculat
           Шаг {step} из {total} · {percent}%
         </span>
       </div>
-      <p className="mt-1 text-[11px] font-medium text-text-muted">SBA узнаёт ваш бизнес · {percent}%</p>
       <div
         role="progressbar"
         aria-valuenow={step}

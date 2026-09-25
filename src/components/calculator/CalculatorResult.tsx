@@ -1,5 +1,4 @@
 import { useRef, useState } from 'react'
-import CalculatorFinalInsights from './CalculatorFinalInsights'
 import CalculatorResultHero from './CalculatorResultHero'
 import CalculatorLossMap from './CalculatorLossMap'
 import CalculatorPotentialScale from './CalculatorPotentialScale'
@@ -32,7 +31,6 @@ export default function CalculatorResult({ niche, nicheCustomText, inputs, resul
         ['summary', 'Ваш расчёт'], ['solutions', 'Как закрыть потери'], ['plan', 'План действий'],
       ] as const).map(([id, label]) => <button key={id} type="button" role="tab" id={`result-tab-${id}`} aria-controls={`result-panel-${id}`} aria-selected={view === id} onClick={() => setView(id)}>{label}</button>)}</div>
       <div id="result-panel-summary" role="tabpanel" aria-labelledby="result-tab-summary" hidden={view !== 'summary'}>
-        <CalculatorFinalInsights inputs={inputs} result={result} />
         <div className="calculator-result-overview"><CalculatorResultHero displayNiche={displayNiche} totalBurden={result.totalBurden} /><CalculatorLossMap result={result} /></div>
         <details className="calculator-result-scenarios"><summary>Что потенциально можно вернуть бизнесу?</summary><CalculatorPotentialScale result={result} /></details>
         <button className="btn-primary calculator-result-next" onClick={() => setView('solutions')}>Посмотреть, как закрыть эти потери →</button>
