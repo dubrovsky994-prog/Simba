@@ -21,12 +21,14 @@ export function sbaToPaperMorph(state: SbaState): PaperMorphState {
   }
 }
 
-export type SbaAccent = 'insight' | 'human' | null
+export type SbaAccent = 'signal' | 'insight' | 'human' | null
 
-// A one-shot pulse on insight, a calm ring when a human is needed — nothing
-// that loops forever. See .sba-avatar-wrap in simba-refinements.css.
+// One-shot cues only, never a loop: a soft inward ring when a signal comes
+// in, an outward pulse when SBA concludes or acts, a calm held ring when a
+// human is needed. See .sba-avatar-wrap in simba-refinements.css.
 export function sbaAccent(state: SbaState): SbaAccent {
-  if (state === 'insight') return 'insight'
+  if (state === 'listening') return 'signal'
+  if (state === 'insight' || state === 'action') return 'insight'
   if (state === 'humanRequired') return 'human'
   return null
 }

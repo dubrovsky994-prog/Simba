@@ -59,7 +59,10 @@ const STEP_NAV_ITEMS: StepNavItem[] = [
   { step: 8, label: 'Стоимость часа' },
 ]
 
-const STORAGE_KEY = 'simba_sba_calculator_v1'
+// Exported so other SBA surfaces (e.g. the SBA simulation) can read the same
+// in-progress/completed diagnostic without a second storage format.
+export const CALCULATOR_STORAGE_KEY = 'simba_sba_calculator_v1'
+const STORAGE_KEY = CALCULATOR_STORAGE_KEY
 
 type PersistedProgress = { step: number; answers: CalculatorAnswers; insightShown: boolean }
 
