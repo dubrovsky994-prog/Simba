@@ -17,9 +17,10 @@ export default function CalculatorCalculating() {
   }, [index])
 
   return (
-    <div className="mx-auto max-w-2xl rounded-[28px] border border-black/[0.04] bg-white/60 p-8 text-center shadow-[0_20px_50px_rgba(31,37,43,0.06)] backdrop-blur-sm sm:p-10">
-      <div className="mx-auto flex max-w-md justify-center">
+    <div className="calc-insight-card mx-auto max-w-2xl rounded-[28px] p-8 text-center sm:p-10">
+      <div className="calc-avatar-frame mx-auto">
         <CalculatorAvatar state="thinking" size={200} />
+        <img className="calc-avatar-poster" src="/avatar/paper-morph/origami-lion-paper-v2.webp" alt="" />
       </div>
       <p key={index} className="mt-4 animate-calc-expand text-sm font-semibold text-accent-dark">
         {CAPTIONS[index]}…

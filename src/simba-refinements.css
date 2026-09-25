@@ -268,9 +268,9 @@ body:has(.simba-master) [role=dialog][aria-label="Демо Beauty Core"] main{sc
 .sba-demo-tabs button[aria-selected=true]{background:#dbf9fb;border-color:#5bd3df;color:#007280;font-weight:700}
 .sba-demo-tabs button i{font-style:normal;opacity:.5}
 .sba-demo-panel{min-height:56px;padding:16px 18px;border-radius:14px;background:#00a6b414;border:1px solid #00a6b42e}
-.sba-demo-panel p{margin:0;font-size:13.5px;line-height:1.55;color:#233a44}
-.sba-demo-panel strong{display:block;margin-top:6px;font-size:13px;color:#007280}
-.sba-demo-note{margin:14px 0 0;font-size:11px;line-height:1.5;color:#62929c}
+.sba-demo-panel p{margin:0;font-size:13.5px;line-height:1.55;color:#d8e3e6}
+.sba-demo-panel strong{display:block;margin-top:6px;font-size:13px;color:#40eaf1}
+.sba-demo-note{margin:14px 0 0;font-size:11px;line-height:1.5;color:#c4d2d6}
 @media(max-width:760px){.sba-demo{padding:0 25px 25px}}
 
 /* Calculator: SBA acknowledgements, living memory, final read-out. */
@@ -299,3 +299,32 @@ body:has(.simba-master) [role=dialog][aria-label="Демо Beauty Core"] main{sc
   .calc-memory-panel__mobile .calc-memory-list{margin-top:14px}
 }
 @media(prefers-reduced-motion:reduce){.sba-avatar-wrap[data-sba-accent=insight]::after{animation:none;box-shadow:none}.calc-sba-reaction,.calc-memory-item{animation:none}}
+
+/* Release fixes: keep the memory panel visible on mobile (the old static
+   explainer's display:none was written before this panel existed and would
+   otherwise hide it too), and keep the intro/insight avatar visible below
+   the reference stylesheet's 1025px opacity-restore gate. */
+.master-panel--diagnostics .public-v2-calc-shell__explainer.calc-memory-panel{display:block}
+.master-panel--diagnostics .public-v2-calc-avatar-button .simba-paper-avatar{opacity:1}
+
+/* Transient calculator cards (insight, calculating) reused the light-theme
+   card classes verbatim; give them the same dark treatment as the other
+   calculator screens instead of touching their markup/copy. */
+.calc-insight-card{border:1px solid #65808655;background:#0a14194d}
+.calc-insight-card__kicker{color:#22dce6}
+.calc-insight-card__text{color:#f1f6f7}
+.calc-insight-card__text strong{color:#fff}
+.calc-insight-card__note{color:#c4d2d6}
+.calc-avatar-frame{position:relative;display:inline-flex}
+.calc-avatar-poster{position:absolute;inset:0;width:100%;height:100%;object-fit:contain;border-radius:50%;pointer-events:none;transition:opacity .25s}
+.calc-avatar-frame:has([data-ready=true]) .calc-avatar-poster{opacity:0}
+@media(prefers-reduced-motion:reduce){.calc-avatar-poster{transition:none}}
+
+/* Lead form: the contact-method pills reused the light-theme unselected
+   state (white background) verbatim; the selected state already uses the
+   theme's --accent var and reads fine as-is. */
+.master-panel--diagnostics #result-panel-plan [role=radio][aria-checked=false]{background:#243840;border-color:#688994;color:#d9e8ed}
+
+/* SBA lion-click overlay: was anchored below the avatar, overlapping the
+   demo tabs beneath it. Center it over the avatar instead. */
+.sba-overlay{top:50%;left:50%;margin-top:0;transform:translate(-50%,-50%);width:230px}
