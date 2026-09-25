@@ -1,34 +1,30 @@
 import type { PaperMorphState } from '../../components/avatar/PaperMorphAvatar'
 
 // SBA's own state model (product concept — greeting/insight/action/humanRequired/done).
-// The approved avatar visual only understands 4 states, so this maps the richer
-// model onto it plus a restrained, one-shot CSS accent — never a new animation loop.
 export type SbaState = 'idle' | 'greeting' | 'listening' | 'thinking' | 'insight' | 'action' | 'humanRequired' | 'done'
 
+// Product decision after visual QA: the shared avatar's ~8.8s morph is much
+// longer than a simulation beat (2-3.6s), so the fox/owl/leopard swap never
+// reliably completes in step with the current event — SBA's visible identity
+// is locked to the lion. Internal states still exist and still drive the
+// surrounding presentation (accent ring/pulse, status/result copy); they just
+// no longer pick a different animal. The shared avatar implementation itself
+// is untouched — this only changes what SbaPreview asks it to show.
 export function sbaToPaperMorph(state: SbaState): PaperMorphState {
-  switch (state) {
-    case 'listening':
-      return 'listening'
-    case 'thinking':
-      return 'thinking'
-    case 'insight':
-    case 'action':
-      return 'answering'
-    case 'humanRequired':
-      return 'listening'
-    default:
-      return 'idle'
-  }
+  void state
+  return 'idle'
 }
 
-export type SbaAccent = 'signal' | 'insight' | 'human' | null
+export type SbaAccent = 'signal' | 'insight' | 'human' | 'idle' | null
 
-// One-shot cues only, never a loop: a soft inward ring when a signal comes
-// in, an outward pulse when SBA concludes or acts, a calm held ring when a
-// human is needed. See .sba-avatar-wrap in simba-refinements.css.
+// One-shot cues for most states, plus a continuous-but-very-subtle breathing
+// ring for true idle (spec: idle should feel present, not dead, without
+// inventing fake activity). Never a loop for the others. See .sba-avatar-wrap
+// in simba-refinements.css.
 export function sbaAccent(state: SbaState): SbaAccent {
   if (state === 'listening') return 'signal'
   if (state === 'insight' || state === 'action') return 'insight'
   if (state === 'humanRequired') return 'human'
+  if (state === 'idle') return 'idle'
   return null
 }

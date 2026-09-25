@@ -360,3 +360,25 @@ body:has(.simba-master) [role=dialog][aria-label="Демо Beauty Core"] main{sc
 /* SBA lion-click overlay: was anchored below the avatar, overlapping the
    demo tabs beneath it. Center it over the avatar instead. */
 .sba-overlay{top:50%;left:50%;margin-top:0;transform:translate(-50%,-50%);width:230px}
+
+/* Final polish pass: lion identity is locked (no avatar-level CSS change
+   needed — sbaToPaperMorph always resolves to 'idle' now), so intelligence
+   state reads entirely through this surrounding presentation instead. */
+
+/* Idle: a very slow, low-amplitude breathing ring — "still present", not a
+   new loop-forever effect layered on top of everything else (only idle gets
+   this; every other accent stays one-shot as before). */
+.sba-avatar-wrap[data-sba-accent=idle]::after{content:'';position:absolute;inset:3px;border-radius:50%;box-shadow:0 0 0 0 rgba(0,166,180,.18);animation:sba-idle-breathe 4.5s ease-in-out infinite}
+@keyframes sba-idle-breathe{0%,100%{box-shadow:0 0 0 0 rgba(0,166,180,.16)}50%{box-shadow:0 0 0 6px rgba(0,166,180,0)}}
+@media(prefers-reduced-motion:reduce){.sba-avatar-wrap[data-sba-accent=idle]::after{animation:none;box-shadow:none}}
+
+/* A restrained connecting rail through event -> status -> result so the eye
+   reads the sequence without literal arrows or a new card. */
+.sba-sim-flow{position:relative;padding-left:13px}
+.sba-sim-flow::before{content:'';position:absolute;left:2px;top:2px;bottom:6px;width:1px;background:linear-gradient(#22dce670,#22dce62a 55%,transparent)}
+.sba-sim-idle-note{margin:6px 0 0;font-size:12px;line-height:1.5;color:#7c939a}
+
+/* Seam between the live simulation and the static "what this could become"
+   copy — small kicker only, no new section. */
+.sba-capabilities-kicker{display:block;margin:16px 0 8px;font-size:10px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:#0c9299}
+@media(max-width:760px){.sba-capabilities-kicker{margin-top:14px}}

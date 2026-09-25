@@ -7,6 +7,10 @@ import type { WorkspaceState } from './navigation'
 
 const CAPABILITIES = ['Принимает и фиксирует заявки', 'Замечает потери', 'Напоминает клиентам', 'Предлагает следующий шаг']
 const MAX_HISTORY = 3
+// Shown under the result only on a true "nothing to do" beat (event
+// explicitly cleared) — a restrained sign SBA is still present, not a fake
+// activity counter. See spec: idle should feel present, not dead.
+const IDLE_NOTE = 'Продолжаю следить за изменениями.'
 
 // A single continuous, auto-advancing simulation is the primary SBA demo now
 // (spec: the visitor shouldn't have to operate SBA to understand it). The
@@ -69,6 +73,7 @@ export default function SbaPreview({ onSelect }: { onSelect: (state: WorkspaceSt
         <div>
           <span className="master-eyebrow">SBA · SMART BUSINESS ASSISTANT</span>
           <p className="sba-lead">SBA наблюдает за процессами и подключает человека только там, где он действительно нужен.</p>
+          <span className="sba-capabilities-kicker">ВОЗМОЖНОСТИ ПРИ ВНЕДРЕНИИ</span>
           <ul>
             {CAPABILITIES.map((text) => (
               <li key={text}><MasterIcon name="ai" />{text}</li>
@@ -78,6 +83,7 @@ export default function SbaPreview({ onSelect }: { onSelect: (state: WorkspaceSt
       </div>
 
       <div className="sba-demo" aria-live="polite">
+        <div className="sba-sim-flow">
         <p className="sba-sim-event">
           Событие
           {event && <span key={event} className="case-fade-in">{event}</span>}
@@ -86,6 +92,10 @@ export default function SbaPreview({ onSelect }: { onSelect: (state: WorkspaceSt
           <i>{frame.status}</i>
         </div>
         <p key={`result-${frame.id}`} className="sba-sim-result case-fade-in">{frame.result ?? ' '}</p>
+        {frame.sbaState === 'idle' && frame.event === '' && (
+          <p key={`note-${frame.id}`} className="sba-sim-idle-note case-fade-in">{IDLE_NOTE}</p>
+        )}
+        </div>
         {frame.badge && (
           <div className="sba-sim-badge">
             <span>{frame.badge.label}</span>
