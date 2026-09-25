@@ -1,0 +1,5 @@
+dist/
+output/
+control/
+simba-agent-bridge/
+.claude/
