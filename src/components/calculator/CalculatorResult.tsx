@@ -1,4 +1,4 @@
-import { useRef } from 'react'
+import { useRef, useState } from 'react'
 import CalculatorResultHero from './CalculatorResultHero'
 import CalculatorLossMap from './CalculatorLossMap'
 import CalculatorPotentialScale from './CalculatorPotentialScale'
@@ -15,30 +15,28 @@ type CalculatorResultProps = {
   onRestart: () => void
 }
 
-const Divider = () => <div className="mx-auto my-9 h-px w-full max-w-md bg-black/[0.06]" />
-
 export default function CalculatorResult({ niche, nicheCustomText, inputs, result, onRestart }: CalculatorResultProps) {
   const topRef = useRef<HTMLDivElement>(null)
+  const [view, setView] = useState<'summary' | 'solutions' | 'plan'>('summary')
   const displayNiche = niche === 'custom' ? nicheCustomText : nicheLabel(niche)
 
   const scrollToTop = () => {
+    setView('summary')
     topRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' })
   }
 
   return (
-    <div ref={topRef} className="mx-auto max-w-2xl">
-      <CalculatorResultHero displayNiche={displayNiche} totalBurden={result.totalBurden} />
-
-      <Divider />
-      <CalculatorLossMap result={result} />
-
-      <Divider />
-      <CalculatorPotentialScale result={result} />
-
-      <Divider />
-      <CalculatorRecommendationsFlow niche={niche} />
-
-      <div className="mt-9">
+    <div ref={topRef} className="calculator-editorial-result">
+      <div className="calculator-result-tabs" role="tablist" aria-label="Ваш результат">{([
+        ['summary', 'Ваш расчёт'], ['solutions', 'Как закрыть потери'], ['plan', 'План действий'],
+      ] as const).map(([id, label]) => <button key={id} type="button" role="tab" id={`result-tab-${id}`} aria-controls={`result-panel-${id}`} aria-selected={view === id} onClick={() => setView(id)}>{label}</button>)}</div>
+      <div id="result-panel-summary" role="tabpanel" aria-labelledby="result-tab-summary" hidden={view !== 'summary'}>
+        <div className="calculator-result-overview"><CalculatorResultHero displayNiche={displayNiche} totalBurden={result.totalBurden} /><CalculatorLossMap result={result} /></div>
+        <details className="calculator-result-scenarios"><summary>Что потенциально можно вернуть бизнесу?</summary><CalculatorPotentialScale result={result} /></details>
+        <button className="btn-primary calculator-result-next" onClick={() => setView('solutions')}>Посмотреть, как закрыть эти потери →</button>
+      </div>
+      <div id="result-panel-solutions" role="tabpanel" aria-labelledby="result-tab-solutions" hidden={view !== 'solutions'}><CalculatorRecommendationsFlow niche={niche} /><button className="btn-primary calculator-result-next" onClick={() => setView('plan')}>Обсудить решение для моего бизнеса →</button></div>
+      <div id="result-panel-plan" role="tabpanel" aria-labelledby="result-tab-plan" hidden={view !== 'plan'}>
         <CalculatorLeadGate
           niche={niche}
           nicheCustomText={nicheCustomText}
@@ -48,7 +46,7 @@ export default function CalculatorResult({ niche, nicheCustomText, inputs, resul
         />
       </div>
 
-      <div className="mt-6 text-center">
+      <div className="calculator-result-restart">
         <button
           type="button"
           onClick={onRestart}

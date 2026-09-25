@@ -18,7 +18,8 @@ export default function CalculatorIntro({ onStart, variant = 'full' }: Calculato
           <CalculatorAvatar size={260} onStart={onStart} />
           <img className="public-v2-calc-avatar-poster" src="/avatar/paper-morph/origami-lion-paper-v2.webp" alt="" />
         </button>
-        <p className="-mt-2 text-sm font-medium text-accent-dark">Нажмите на льва, чтобы начать</p>
+        <h3 className="calculator-intro-title">Начнём с вашей ниши?</h3>
+        <p className="-mt-2 text-sm font-medium text-accent-dark">Ответьте на несколько вопросов — и увидите, где можно освободить время и не упустить клиентов.</p>
         <button type="button" onClick={onStart} className="btn-primary mt-5 inline-flex items-center gap-2">
           Начать расчёт
           <IconArrowRight className="h-4 w-4" />

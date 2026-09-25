@@ -4,6 +4,7 @@ import App from './App'
 import './index.css'
 import './public-v2-reference.css'
 import './simba-master.css'
+import './simba-refinements.css'
 
 const routePath = window.location.pathname.replace(/\/+$/, '') || '/'
 const isOwnerRoute = routePath === '/owner'
