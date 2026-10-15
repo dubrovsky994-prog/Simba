@@ -179,9 +179,9 @@ const projectCases: ProjectCase[] = [
       'Структура готова для понятной обработки заявок и последующей аналитики',
     ],
     screenshots: [
-      { src: '/cases/honest-ceiling/screen-1.png', alt: 'Главный экран сайта «Честный потолок»' },
-      { src: '/cases/honest-ceiling/screen-2.png', alt: 'Пример готового решения для ванной в «Честный потолок»' },
-      { src: '/cases/honest-ceiling/screen-3.png', alt: 'Интерактивный подбор решения «Честный потолок»' },
+      { src: '/cases/honest-ceiling/screen-1.png', alt: 'Главный экран сайта «Честный потолок»', format: 'landscape' },
+      { src: '/cases/honest-ceiling/screen-2.png', alt: 'Пример готового решения для ванной в «Честный потолок»', format: 'landscape' },
+      { src: '/cases/honest-ceiling/screen-3.png', alt: 'Интерактивный подбор решения «Честный потолок»', format: 'landscape' },
     ],
   },
 ]

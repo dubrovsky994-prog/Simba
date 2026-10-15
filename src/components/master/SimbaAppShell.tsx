@@ -64,7 +64,7 @@ export default function SimbaAppShell() {
     <main className="master-canvas" id="top">
       <div className="master-canvas-art" aria-hidden="true" />
       {active !== 'home' && <header className="master-function-masthead"><button onClick={() => navigate('home')} className="master-function-brand" aria-label="SIMBA — вернуться на главную"><img src={lionMark} alt="" /><span><strong>SIMBA</strong><small>СИСТЕМЫ<br />РОСТА БИЗНЕСА</small></span></button><p>БОЛЬШЕ ВОЗМОЖНОСТЕЙ.<br />БОЛЬШЕ ЖИЗНИ.</p><button className="master-function-close" aria-label="Вернуться на главную" onClick={() => navigate('home')}>×</button></header>}
-      <header className="master-topbar"><p>СТРАТЕГИЧЕСКИЕ<br />БИЗНЕС РЕШЕНИЯ</p><a className="master-space-entry" href="https://app.simbasystems.ru/login">В моё пространство<MasterIcon name="arrow" /></a><button className="master-button" onClick={() => setDialog('lead')}>Оставить заявку<MasterIcon name="arrow" /></button></header>
+      <header className="master-topbar"><p>СИСТЕМЫ РОСТА<br />БИЗНЕСА</p><a className="master-space-entry" href="https://app.simbasystems.ru/login">В моё пространство<MasterIcon name="arrow" /></a><button className="master-button" onClick={() => setDialog('lead')}>Оставить заявку<MasterIcon name="arrow" /></button></header>
       <section className="master-home" hidden={active !== 'home'} aria-label="Главная SIMBA">
         <HeroEditorialScene />
         <span className="master-scene-note master-scene-note--system">Системный<br />бизнес сегодня.<br />Больше жизни<br />завтра.</span><span className="master-scene-note master-scene-note--horizons">Новые<br />горизонты<br />вашего бизнеса</span><span className="master-scene-index">ИДЕИ<br />ЛЮДИ<br />ТЕХНОЛОГИИ<br />РЕЗУЛЬТАТЫ</span>

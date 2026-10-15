@@ -4,6 +4,7 @@ import ImageModal from './ImageModal'
 export type CaseScreenshot = {
   src: string
   alt: string
+  format?: 'portrait' | 'landscape'
 }
 
 type CaseGalleryProps = {
@@ -12,6 +13,7 @@ type CaseGalleryProps = {
 }
 
 const PHONE_ASPECT = 'aspect-[9/19]'
+const LANDSCAPE_ASPECT = 'aspect-[2/1]'
 
 function PlaceholderIcon({ className = '' }: { className?: string }) {
   return (
@@ -73,13 +75,19 @@ export default function CaseGallery({ screenshots, resetKey }: CaseGalleryProps)
 
   const active = slots[activeIndex] ?? slots[0]
   const activeIsImage = !isBroken(active.src)
+  const activeIsLandscape = active.format === 'landscape'
+  const hasLandscapeScreens = slots.some((shot) => shot.format === 'landscape')
 
   return (
     <div>
       <button
         type="button"
         onClick={() => activeIsImage && setModalOpen(true)}
-        className={`relative mx-auto block h-[360px] ${PHONE_ASPECT} overflow-hidden rounded-[1.75rem] border border-white/15 bg-white/10 p-1.5 shadow-[0_18px_40px_rgba(20,24,28,0.28)] backdrop-blur-xl sm:h-[420px] ${
+        className={`relative mx-auto block overflow-hidden border border-white/15 bg-white/10 p-1.5 shadow-[0_18px_40px_rgba(20,24,28,0.28)] backdrop-blur-xl ${
+          activeIsLandscape
+            ? `w-full max-w-[560px] ${LANDSCAPE_ASPECT} rounded-[1rem]`
+            : `h-[360px] ${PHONE_ASPECT} rounded-[1.75rem] sm:h-[420px]`
+        } ${
           activeIsImage ? 'group cursor-zoom-in' : 'cursor-default'
         }`}
       >
@@ -108,7 +116,7 @@ export default function CaseGallery({ screenshots, resetKey }: CaseGalleryProps)
       </button>
 
       {slots.length > 1 && (
-        <div className="mt-3 flex justify-center gap-3">
+        <div className={`mt-3 flex justify-center ${hasLandscapeScreens ? 'flex-wrap gap-2' : 'gap-3'}`}>
           {slots.map((shot, index) => {
             const broken = isBroken(shot.src)
             return (
@@ -117,7 +125,9 @@ export default function CaseGallery({ screenshots, resetKey }: CaseGalleryProps)
                 type="button"
                 onClick={() => setActiveIndex(index)}
                 aria-label={shot.alt}
-                className={`relative h-24 ${PHONE_ASPECT} shrink-0 overflow-hidden rounded-xl border bg-white/10 p-1 backdrop-blur-md transition-all duration-200 sm:h-28 ${
+                className={`relative shrink-0 overflow-hidden rounded-xl border bg-white/10 p-1 backdrop-blur-md transition-all duration-200 ${
+                  shot.format === 'landscape' ? `h-12 w-20 ${LANDSCAPE_ASPECT} sm:h-20 sm:w-40` : `h-24 ${PHONE_ASPECT} sm:h-28`
+                } ${
                   index === activeIndex
                     ? 'border-accent shadow-neu-sm'
                     : 'border-white/15 opacity-70 hover:opacity-100'
