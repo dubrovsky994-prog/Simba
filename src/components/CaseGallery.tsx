@@ -11,7 +11,6 @@ type CaseGalleryProps = {
   resetKey: string
 }
 
-const PLACEHOLDER_COUNT = 3
 const PHONE_ASPECT = 'aspect-[9/19]'
 
 function PlaceholderIcon({ className = '' }: { className?: string }) {
@@ -51,7 +50,7 @@ export default function CaseGallery({ screenshots, resetKey }: CaseGalleryProps)
   const slots: CaseScreenshot[] =
     screenshots.length > 0
       ? screenshots
-      : Array.from({ length: PLACEHOLDER_COUNT }, (_, i) => ({ src: '', alt: `Скриншот ${i + 1}` }))
+      : [{ src: '', alt: 'Материалы проекта готовятся' }]
 
   const isBroken = (src: string) => src === '' || brokenSrcs.has(src)
   const isLoaded = (src: string) => loadedSrcs.has(src)
@@ -103,7 +102,7 @@ export default function CaseGallery({ screenshots, resetKey }: CaseGalleryProps)
               />
             </>
           ) : (
-            <PlaceholderTile label={`Скриншот ${activeIndex + 1}`} />
+            <PlaceholderTile label={active.alt} />
           )}
         </div>
       </button>

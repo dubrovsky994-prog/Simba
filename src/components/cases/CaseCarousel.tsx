@@ -55,7 +55,15 @@ export default function CaseCarousel({ cases, activeId, onSelect, onOpenCase, on
         )}
         <div className="public-v2-case-carousel__stage-inner">
           <div className="public-v2-case-carousel__image">
-            {cover && <img src={cover.src} alt={cover.alt} />}
+            {cover ? (
+              <img src={cover.src} alt={cover.alt} />
+            ) : (
+              <div className="flex h-full flex-col justify-end bg-[radial-gradient(circle_at_75%_15%,rgba(0,188,203,0.34),transparent_32%),linear-gradient(145deg,#17242a,#071315)] p-7 text-white sm:p-10">
+                <span className="text-xs font-bold uppercase tracking-[0.18em] text-[#61dce4]">SIMBA / CLIENT SPACE</span>
+                <strong className="mt-3 max-w-sm text-3xl leading-tight sm:text-5xl">{active.title}</strong>
+                <span className="mt-5 text-sm text-white/65">Фото проекта готовится</span>
+              </div>
+            )}
           </div>
           <div className="public-v2-case-carousel__body">
             <span className="public-v2-case-carousel__counter">
@@ -79,7 +87,11 @@ export default function CaseCarousel({ cases, activeId, onSelect, onOpenCase, on
           <div className="public-v2-case-carousel__thumbs">
             {cases.map((c) => (
               <button key={c.id} type="button" aria-current={c.id === activeId} aria-label={c.title} onClick={() => onSelect(c.id)}>
-                {c.screenshots[0] && <img src={c.screenshots[0].src} alt="" />}
+                {c.screenshots[0] ? (
+                  <img src={c.screenshots[0].src} alt="" />
+                ) : (
+                  <span className="flex h-full items-center justify-center bg-[#122126] px-1 text-center text-[9px] font-bold leading-tight text-[#61dce4]">{c.title}</span>
+                )}
               </button>
             ))}
           </div>
