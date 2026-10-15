@@ -143,7 +143,7 @@
 .master-panel--cases .public-v2-case-carousel__body p{font-size:15px;color:#cbdbe0}
 .master-panel--cases .public-v2-case-carousel__body h3{font-size:32px;color:white}
 .master-panel--cases .public-v2-case-carousel__tag,.master-panel--cases .public-v2-case-carousel__counter{color:#8ee8ea;font-size:12px}
-.master-panel--cases .public-v2-case-carousel__actions button{min-height:44px;font-size:13px;border-radius:6px;background:#20dce5;color:#081e25;border:1px solid #61eef1}
+.master-panel--cases .public-v2-case-carousel__actions button,.master-panel--cases .public-v2-case-carousel__actions a{min-height:44px;font-size:13px;border-radius:6px;background:#20dce5;color:#081e25;border:1px solid #61eef1}
 .master-panel--cases .public-v2-case-carousel__image{display:grid;place-items:center;padding:18px;background:radial-gradient(ellipse at 50% 90%,#34535d55,transparent 68%),#11232a}
 .master-panel--cases .public-v2-case-carousel__image img{position:static;inset:auto;width:100%;height:100%;max-width:100%;max-height:100%;object-fit:contain;object-position:center;border:1px solid #6b8b94;border-radius:5px;background:#f7f7f5;padding:4px;box-shadow:0 14px 28px #0005;transform:none}
 .master-panel--cases .public-v2-case-carousel__thumbs{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));max-width:none;margin:14px 20px 0;padding:0;gap:8px}
@@ -192,6 +192,8 @@ body:has(.simba-master) .public-v2-case-detail-overlay{background:#071015d9;back
 body:has(.simba-master) .public-v2-case-detail-overlay__panel{--text-main:#edf5f6;--text-muted:#bed1d9;--accent-dark:#4ae4ea;background:linear-gradient(#12212beb,#12212beb),url('/images/master/dark-paper-v1.png') center/cover;color:#edf5f6;border:1px solid #73929e;border-radius:9px;max-width:1160px;scrollbar-width:thin;scrollbar-color:#70949f #12212b}
 body:has(.simba-master) .public-v2-case-detail-overlay__switcher button{min-height:44px;color:#dbe9ed;background:#203c48;border-color:#7495a3}
 body:has(.simba-master) .public-v2-case-detail-overlay__switcher button[aria-selected=true]{color:#08222d;background:#31dfe5}
+body:has(.simba-master) .public-v2-case-detail-overlay__project-link{border-color:#61eef1;background:#20dce5;color:#081e25}
+body:has(.simba-master) .public-v2-case-detail-overlay__project-link:hover{background:#61eef1;color:#081e25}
 body:has(.simba-master) [role=dialog][aria-label="Демо Beauty Core"]{background:#071015dc}
 body:has(.simba-master) [role=dialog][aria-label="Демо Beauty Core"]>div{border-radius:9px;border-color:#8a819b;background:#f3edf7 url('/images/public-v2/paper-grain.svg')}
 body:has(.simba-master) [role=dialog][aria-label="Демо Beauty Core"] aside{background:linear-gradient(#171a29cc,#171a29cc),url('/images/master/dark-paper-v1.png') center/cover}

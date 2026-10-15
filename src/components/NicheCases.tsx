@@ -160,7 +160,14 @@ const projectCases: ProjectCase[] = [
       'Владелец видит операционную картину без ручной сборки данных',
       'Основа для развития клиентского сервиса и повторных заказов',
     ],
-    screenshots: [],
+    screenshots: [
+      {
+        src: '/cases/master-sharik/screen-1.png',
+        alt: 'Главный экран сайта «Мастер Шарик»',
+        format: 'landscape',
+      },
+    ],
+    projectUrl: 'https://penzamastersharik.ru/',
   },
   {
     id: 'honest-ceiling',
@@ -183,6 +190,7 @@ const projectCases: ProjectCase[] = [
       { src: '/cases/honest-ceiling/screen-2.png', alt: 'Пример готового решения для ванной в «Честный потолок»', format: 'landscape' },
       { src: '/cases/honest-ceiling/screen-3.png', alt: 'Интерактивный подбор решения «Честный потолок»', format: 'landscape' },
     ],
+    projectUrl: 'https://честный-потолок.рф/',
   },
 ]
 

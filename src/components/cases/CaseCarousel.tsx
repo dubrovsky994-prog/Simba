@@ -79,6 +79,11 @@ export default function CaseCarousel({ cases, activeId, onSelect, onOpenCase, on
               <button type="button" className="public-v2-button public-v2-button--quiet" onClick={onOpenAll}>
                 Все проекты
               </button>
+              {active.projectUrl && (
+                <a href={active.projectUrl} target="_blank" rel="noreferrer" className="public-v2-button public-v2-button--quiet">
+                  Сайт проекта <span aria-hidden="true">↗</span>
+                </a>
+              )}
             </div>
           </div>
         </div>

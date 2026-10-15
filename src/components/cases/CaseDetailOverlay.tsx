@@ -65,6 +65,16 @@ export default function CaseDetailOverlay({ cases, activeId, onSelect, onClose }
             </span>
 
             <h3 className="mt-5 text-2xl font-bold leading-tight text-text-main sm:text-3xl">{active.title}</h3>
+            {active.projectUrl && (
+              <a
+                href={active.projectUrl}
+                target="_blank"
+                rel="noreferrer"
+                className="public-v2-case-detail-overlay__project-link"
+              >
+                Открыть сайт проекта <span aria-hidden="true">↗</span>
+              </a>
+            )}
             <div className="mt-5 grid gap-4 sm:grid-cols-2">
               <div>
                 <h4 className="text-xs font-bold uppercase tracking-wider text-text-main">Контекст</h4>
