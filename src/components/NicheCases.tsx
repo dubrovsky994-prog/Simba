@@ -192,10 +192,58 @@ const projectCases: ProjectCase[] = [
     ],
     projectUrl: 'https://честный-потолок.рф/',
   },
+  {
+    id: 'versatility',
+    title: 'Версатилити',
+    category: 'Студия аппаратного массажа · Москва',
+    tag: 'Запись на процедуру',
+    shortText:
+      'Сайт студии аппаратного массажа: процедуры, прайс и запись на бесплатную пробную процедуру — заявка сразу приходит в Telegram студии.',
+    description:
+      '«Версатилити» — студия аппаратного массажа в Москве: сфера-терапия, прессотерапия и EMS. Для проекта мы собрали понятный путь клиента: посетитель смотрит процедуры и цены, находит студию рядом с метро и записывается на бесплатную пробную прессотерапию, а заявка сразу попадает в Telegram студии.',
+    highlights: [
+      'Процедуры с фото и подробностями, прайс с абонементами на 6 и 10 сеансов — клиент понимает предложение до звонка',
+      'Оффер первого визита — 15 минут прессотерапии бесплатно — на первом экране и в форме записи',
+      'Заявка из формы приходит в Telegram студии, а повторная отправка не создаёт дубль',
+      'Яндекс Метрика с целью «Заявка отправлена» включается только после согласия на cookie, рекламные метки передаются вместе с заявкой',
+      'Политика обработки данных, отдельное согласие и реквизиты оператора уже на сайте',
+    ],
+    screenshots: [
+      {
+        src: '/cases/versatility/screen-1.jpg',
+        alt: 'Процедуры студии «Версатилити»: сфера-терапия, прессотерапия и EMS',
+        format: 'landscape',
+      },
+      {
+        src: '/cases/versatility/screen-2.jpg',
+        alt: 'Главный экран сайта «Версатилити» с предложением первого визита',
+        format: 'landscape',
+      },
+      {
+        src: '/cases/versatility/screen-3.jpg',
+        alt: 'Прайс «Версатилити» с абонементами на 6 и 10 сеансов',
+        format: 'landscape',
+      },
+      {
+        src: '/cases/versatility/screen-4.jpg',
+        alt: 'Форма записи на процедуру на сайте «Версатилити»',
+        format: 'landscape',
+      },
+    ],
+    projectUrl: 'https://версатилити.art/',
+  },
 ]
 
 const DEFAULT_ACTIVE_ID = 'sweet-mommy'
-const FEATURED_CASE_IDS = new Set(['sweet-mommy', 'shashlyk-jan', 'kirmebel', 'aura', 'master-sharik', 'honest-ceiling'])
+const FEATURED_CASE_IDS = new Set([
+  'sweet-mommy',
+  'shashlyk-jan',
+  'kirmebel',
+  'aura',
+  'master-sharik',
+  'honest-ceiling',
+  'versatility',
+])
 const featuredCases = projectCases.filter((project) => FEATURED_CASE_IDS.has(project.id))
 
 export default function NicheCases() {
