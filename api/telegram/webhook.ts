@@ -417,7 +417,7 @@ async function handleMessage(message: TelegramMessage, env: BotEnv): Promise<voi
         const response = await fetch(url, {
           method: 'POST',
           headers: { Authorization: 'Bearer ' + secret, 'Content-Type': 'application/json' },
-          body: JSON.stringify({ code: billingInvite[1], chatId: String(chatId) }),
+          body: JSON.stringify({ code: billingInvite[1], chatId: String(chatId), username: message.from.username }),
           redirect: 'error',
           signal: AbortSignal.timeout(5000),
         })
