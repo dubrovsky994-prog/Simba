@@ -406,6 +406,31 @@ async function handleMessage(message: TelegramMessage, env: BotEnv): Promise<voi
   const text = typeof message.text === 'string' ? message.text.trim() : ''
   if (!text) return // ignore non-text messages (photos, stickers, etc.)
 
+  const billingInvite = text.match(/^\/start(?:@SimbaSystems_bot)?\s+bill_([A-Za-z0-9_-]{32})$/i)
+  if (billingInvite) {
+    if (message.chat.type !== 'private' || message.from?.id !== chatId || !Number.isSafeInteger(chatId) || chatId <= 0) return
+    const secret = process.env.BILLING_TELEGRAM_SECRET
+    const url = process.env.BILLING_TELEGRAM_CONNECT_URL
+    let reply = 'Сейчас подключение недоступно. Попробуйте открыть ссылку ещё раз чуть позже.'
+    if (secret && url?.startsWith('https://')) {
+      try {
+        const response = await fetch(url, {
+          method: 'POST',
+          headers: { Authorization: 'Bearer ' + secret, 'Content-Type': 'application/json' },
+          body: JSON.stringify({ code: billingInvite[1], chatId: String(chatId), username: message.from.username }),
+          redirect: 'error',
+          signal: AbortSignal.timeout(5000),
+        })
+        if (response.ok) reply = 'Напоминания об оплате подключены. Напишу за день и в день платежа.'
+        else if (response.status === 404) reply = 'Эта ссылка больше не действует. Попросите SIMBA прислать новую.'
+      } catch {
+        console.error('Telegram billing connection unavailable')
+      }
+    }
+    await sendMessage(env.botToken, chatId, reply)
+    return
+  }
+
   if (/^\/start(\s|@|$)/.test(text)) {
     clearChatState(chatId)
     await sendMessage(env.botToken, chatId, WELCOME_TEXT, mainMenuKeyboard())
