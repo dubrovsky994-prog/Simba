@@ -1,0 +1,140 @@
+<!doctype html>
+<html lang="ru"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>SIMBA · Живой интеллект</title>
+<style>
+:root{color-scheme:dark;font-family:Arial,Helvetica,sans-serif;background:#080c11;color:#e8eef1}*{box-sizing:border-box}body{margin:0;background:radial-gradient(ellipse at 50% 39%,#10212555,transparent 52%),#080c11;min-height:100svh}button{font:inherit;cursor:pointer}button:focus-visible{outline:2px solid #8affdf;outline-offset:6px}header{max-width:1280px;margin:auto;padding:32px 44px;display:flex;align-items:center;justify-content:space-between}.brand{font-size:16px;letter-spacing:5px;font-weight:600}.brand span{color:#67dcd4;font-weight:400}.edition{font-size:10px;letter-spacing:3px;color:#72848d}.layout{max-width:1140px;margin:auto;display:grid;grid-template-columns:1fr 290px;gap:70px;align-items:center;padding:12px 44px 40px}.hero{text-align:center;min-width:0}.eyebrow{font-size:10px;letter-spacing:3px;color:#7b9299;margin:13px 0 0}.orb{display:block;width:100%;max-width:560px;aspect-ratio:1;position:relative;padding:0;border:0;background:none;margin:-2px auto -24px;border-radius:50%;touch-action:manipulation}.orb canvas{display:block;width:100%;height:100%;border-radius:50%}.orb:hover{filter:brightness(1.07)}h1{font-size:28px;font-weight:400;letter-spacing:-.7px;margin:0 0 10px}.subtitle{color:#7f929b;font-size:13px;line-height:1.7;margin:0;min-height:42px}.activity{height:30px;display:flex;align-items:center;justify-content:center;gap:4px;margin:10px}.activity i{width:2px;border-radius:4px;background:#71e5d2;height:5px;transition:height .2s;opacity:.65}.choices{display:flex;justify-content:center;gap:6px;flex-wrap:wrap;margin-top:22px}.choices button{border:1px solid #223238;background:#0c141a;color:#899ca6;border-radius:24px;padding:11px 15px;font-size:12px;transition:all .3s}.choices button[aria-pressed=true]{border-color:#5bbaae;color:#b8fff0;background:#15312f}.actions{display:flex;justify-content:center;gap:18px;margin-top:22px}.actions button{background:none;border:0;color:#708b96;font-size:11px;padding:8px}.actions button[aria-pressed=true]{color:#9fefdb}.aside{border-left:1px solid #243036;padding-left:30px}.aside h2{font-weight:400;font-size:21px;line-height:1.4;letter-spacing:-.3px;margin:0 0 18px}.aside p{font-size:13px;line-height:1.85;color:#82939d}.mini-row{display:flex;align-items:center;gap:6px;margin:26px 0 16px}.mini{width:88px;height:88px;background:transparent;border:0;padding:0;flex:none}.mini canvas{width:100%;height:100%}.mini-text{font-size:12px;line-height:1.8;color:#c2d3d9}.mini-text small{display:block;color:#607984;font-size:10px}.hint{font-size:10px!important;color:#4e6874!important;line-height:1.6!important}.state-note{border-top:1px solid #223038;padding-top:20px;margin-top:30px}.state-note span{font-size:9px;letter-spacing:2px;color:#64c7b8}.state-note p{margin-bottom:0}footer{max-width:1140px;margin:auto;padding:12px 44px 24px;color:#425c68;font-size:10px;display:flex;justify-content:space-between;letter-spacing:1px}.export body{background:#080c11}.export header,.export .aside,.export .eyebrow,.export .choices,.export .actions,.export footer,.export .subtitle,.export .activity{display:none}.export .layout{padding:0;display:block;height:100vh}.export .orb{max-width:none;width:100vw;height:100vh;margin:0}.export h1{position:absolute;bottom:7%;width:100%;font-size:20px;pointer-events:none}.export .hero{height:100vh}@media(max-width:760px){header{padding:24px}.edition{font-size:8px;letter-spacing:1.5px}.layout{display:block;padding:12px 20px 30px}.orb{margin-bottom:-20px;max-width:460px}.aside{border-left:0;border-top:1px solid #243036;margin:34px auto 0;padding:24px 0 0;max-width:400px}.aside h2{font-size:19px}.aside>p,.state-note{display:none}.mini-row{margin:5px 0}.choices button{padding:10px 12px}footer{padding:16px 24px}.eyebrow{font-size:8px}h1{font-size:25px}}
+.export h1{display:none}.orb{margin:0 auto -8px}.aside a{color:#77cfc5;font-size:12px;text-decoration:none}.tuning{margin:20px 0}.tuning label{display:flex;justify-content:space-between;font-size:11px;color:#93aaaF}.tuning input{width:100%;accent-color:#72d9c5;margin:14px 0 0}
+html.embed,html.embed body{background:transparent!important;color-scheme:light!important;min-height:0;width:100%;height:100%;overflow:hidden}
+.embed header,.embed .aside,.embed .eyebrow,.embed .choices,.embed .actions,.embed footer,.embed .subtitle,.embed .activity,.embed h1{display:none!important}
+.embed .layout{width:100vw;height:100svh;min-height:0;margin:0;padding:0;display:block}
+.embed .hero{height:100%;display:flex;align-items:center;justify-content:center;overflow:hidden}
+.embed .orb{width:min(100vw,100svh);height:min(100vw,100svh);max-width:none;aspect-ratio:1;margin:0;border-radius:50%}
+.embed .orb{isolation:isolate;overflow:hidden}
+.embed .orb iframe{position:relative;z-index:1;border-radius:50%}
+.embed .orb canvas{width:100%;height:100%;border-radius:50%}
+@media(max-width:760px){.embed .layout{padding:0}.embed .orb{width:min(100vw,100svh);height:min(100vw,100svh);max-width:none;margin:0}}
+</style></head><body>
+<header><div class="brand">SIMBA <span>AI</span></div><div class="edition">БУМАЖНАЯ ПЛАСТИКА</div></header>
+<main class="layout"><section class="hero"><p class="eyebrow">ОДИН ИНТЕЛЛЕКТ · ЧЕТЫРЕ ХАРАКТЕРА</p><button class="orb" id="orb" aria-label="Начать демонстрацию разговора с SIMBA"><canvas id="sphere" aria-hidden="true"></canvas></button><h1 id="title" aria-live="polite">Я рядом</h1><p class="subtitle" id="subtitle">Коснитесь сферы, чтобы начать разговор</p><div class="activity" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></div><nav class="choices" aria-label="Состояния SIMBA"><button data-state="0" aria-pressed="true">Рядом</button><button data-state="3" aria-pressed="false">Слушаю</button><button data-state="1" aria-pressed="false">Думаю</button><button data-state="2" aria-pressed="false">Отвечаю</button></nav><div class="actions"><button id="auto" aria-pressed="false">Посмотреть все состояния ↗</button><button id="pause" aria-pressed="false">Приостановить движение</button></div></section>
+<aside class="aside"><h2>Интеллект,<br>у которого есть характер.</h2><p>Бумага дышит и мягко меняет объём. Уши, щёки и взгляд перетекают в новый образ, пока по граням проходит медленная волна сгиба.</p><div class="tuning"><label for="motion">Глубина движения <span id="motionValue">Выразительно</span></label><input id="motion" aria-label="Глубина движения" type="range" min="0.3" max="1.8" value="1.8" step="0.1"></div><div class="mini-row"><button class="mini" id="miniButton" aria-label="Начать демонстрацию разговора"><canvas id="mini" width="176" height="176" aria-hidden="true"></canvas></button><div class="mini-text">SIMBA<small id="miniStatus">Готов помочь</small></div></div><p class="hint">Так выглядит кнопка агента на сайте — 88 px.</p><div class="state-note"><span id="animal">ЛЕВ · ПРИСУТСТВИЕ</span><p id="meaning">Спокойная сила. Мягкое дыхание и тёплый бирюзовый свет.</p></div><p class="hint" style="margin-top:25px">Интерактивный визуальный прототип.<br>Разговор демонстрационный, микрофон не включается.</p><p><a href="SIMBA-three-hypotheses.html">← Предыдущие три варианта</a></p></aside></main><footer><span>SIMBA / PAPER MORPH</span><span>Коснитесь. Почувствуйте отклик.</span></footer>
+<script>
+(()=>{'use strict';
+const sources=['origami-lion-paper-v2.webp','origami-owl-paper-v2.webp','origami-fox-paper-v2.webp','origami-snow-leopard-paper-v2.webp'];const maskSources=['origami-lion-v1.webp','origami-owl-v1.webp','origami-fox-v1.webp','origami-snow-leopard-v1.webp'];let maskTextures=[];
+const states=[['Я рядом','Коснитесь сферы, чтобы начать разговор','Готов помочь','ЛЕВ · ПРИСУТСТВИЕ','Спокойная сила. Мягкое дыхание и тёплый бирюзовый свет.'],['Думаю над этим','Сопоставляю детали и нахожу решение','Размышляет','СОВА · РАЗМЫШЛЕНИЕ','Сосредоточенный взгляд. Свет медленно обходит сферу, пока складывается ответ.'],['Вот что я предлагаю','Превращаю идею в понятный ответ','Отвечает','ЛИСА · ОТВЕТ','Живая интонация. Световые волны сопровождают ответ.'],['Внимательно слушаю','Расскажите, с чем помочь','Слушает','СНЕЖНЫЙ БАРС · ВНИМАНИЕ','Точность и чуткость. Сфера мягко откликается на ритм разговора.']];
+const cv=document.querySelector('#sphere'),mini=document.querySelector('#mini'),mc=mini.getContext('2d'),gl=cv.getContext('webgl',{alpha:true,antialias:true,premultipliedAlpha:false,preserveDrawingBuffer:true});
+const reduced=matchMedia('(prefers-reduced-motion:reduce)').matches;
+if(!gl){document.querySelector('#subtitle').textContent='Для живой сферы требуется WebGL. Откройте страницу в современном браузере.';return}
+const vs='attribute vec2 pos;varying vec2 uv;void main(){uv=pos*.5+.5;gl_Position=vec4(pos,0.,1.);}';
+const fs=`precision highp float;
+varying vec2 uv;uniform sampler2D a;uniform sampler2D b;uniform float t;uniform float morph;uniform float state;uniform vec2 pointer;uniform float motion;
+float hash(vec2 p){return fract(sin(dot(p,vec2(127.1,311.7)))*43758.5453);}
+void main(){
+vec2 p=(uv-.5)/.365;float r=length(p);float breath=1.+.009*sin(t*.6283185307)*motion;p/=breath;r=length(p);float inside=1.-smoothstep(.994,1.008,r);
+float z=sqrt(max(0.,1.-r*r));vec3 n=vec3(p,z);vec3 teal=vec3(.18,.92,.79);vec3 blue=vec3(.29,.52,1.);float ang=atan(p.y,p.x);
+float fres=pow(1.-z,3.);float orbit=.5+.5*sin(ang*2.-t*.1570796327);vec3 rim=mix(teal,blue,.5+.5*sin(ang+t*.1570796327));
+vec3 col=mix(vec3(.69,.84,.82),vec3(.91,.97,.94),z);
+col+=rim*fres*(.14+.16*orbit);col+=vec3(.16,.34,.33)*exp(-length(p-vec2(-.35,-.4))*3.);
+float sheen=pow(max(0.,dot(n,normalize(vec3(-.55,.7,.45)))),30.);col+=vec3(.97,1.,1.)*sheen*.38;
+float light=pow(max(0.,cos(ang-2.25)),12.);float edge=exp(-pow((r-.984)*130.,2.));col+=edge*(rim*(.20+.30*orbit)+vec3(.73,1.,.96)*light*.72);
+float arc=exp(-pow((r-.91)*95.,2.))*pow(max(0.,cos(ang-2.20)),28.);col+=vec3(.78,1.,.97)*arc*.62;
+float reply=step(1.5,state)*(1.-step(2.5,state));float pulse=.5+.5*sin(t*1.2566370614+ang*5.);col+=teal*fres*pulse*(.035+reply*.08)*motion;
+float halo=exp(-max(0.,r-1.)*25.)*(.045+.03*orbit)*(1.-inside);float glassAlpha=inside*(.16+.12*fres+.045*orbit);float alpha=glassAlpha+halo*.55;vec3 outcol=col;
+gl_FragColor=vec4(outcol,alpha);
+}`;
+function shader(type,source){const sh=gl.createShader(type);gl.shaderSource(sh,source);gl.compileShader(sh);if(!gl.getShaderParameter(sh,gl.COMPILE_STATUS))throw Error(gl.getShaderInfoLog(sh));return sh}
+const program=gl.createProgram();gl.attachShader(program,shader(gl.VERTEX_SHADER,vs));gl.attachShader(program,shader(gl.FRAGMENT_SHADER,fs));gl.linkProgram(program);if(!gl.getProgramParameter(program,gl.LINK_STATUS))throw Error(gl.getProgramInfoLog(program));gl.useProgram(program);
+const buffer=gl.createBuffer();gl.bindBuffer(gl.ARRAY_BUFFER,buffer);gl.bufferData(gl.ARRAY_BUFFER,new Float32Array([-1,-1,1,-1,-1,1,-1,1,1,-1,1,1]),gl.STATIC_DRAW);const pos=gl.getAttribLocation(program,'pos');gl.enableVertexAttribArray(pos);gl.vertexAttribPointer(pos,2,gl.FLOAT,false,0,0);
+const uniforms={};for(const key of ['a','b','t','morph','state','pointer','motion'])uniforms[key]=gl.getUniformLocation(program,key);
+// A shared relief mesh: every vertex has corresponding positions in all four portraits.
+const meshVS=`attribute vec3 vertex;attribute vec2 uvA;attribute vec2 uvB;attribute vec2 param;attribute float light;varying vec2 aUV;varying vec2 bUV;varying vec2 coord;varying float lit;void main(){aUV=uvA;bUV=uvB;coord=param;lit=light;gl_Position=vec4(vertex.xy,0.,1.);}`;
+const meshFS=`precision highp float;uniform sampler2D paper;uniform sampler2D silhouette;uniform sampler2D nextPaper;uniform sampler2D nextSilhouette;uniform float progress;varying vec2 aUV;varying vec2 bUV;varying vec2 coord;varying float lit;
+float maskAt(sampler2D m,vec2 uv){float a=texture2D(m,uv).a;a=min(a,texture2D(m,uv+vec2(.006,0.)).a);a=min(a,texture2D(m,uv-vec2(.006,0.)).a);a=min(a,texture2D(m,uv+vec2(0.,.006)).a);return min(a,texture2D(m,uv-vec2(0.,.006)).a);}
+void main(){float delay=.22*coord.y+.04*cos(coord.x*6.283);float q=smoothstep(delay,delay+.74,progress);float exchange=smoothstep(.31,.69,q);vec4 a=texture2D(paper,aUV),b=texture2D(nextPaper,bUV);a.a*=maskAt(silhouette,aUV);b.a*=maskAt(nextSilhouette,bUV);float alpha=mix(a.a,b.a,exchange);if(alpha<.01)discard;vec3 color=mix(a.rgb*a.a,b.rgb*b.a,exchange)/max(alpha,.001);float crease=pow(sin(q*3.14159265),6.);color*=lit; color+=vec3(.035,.070,.061)*crease;gl_FragColor=vec4(color,alpha);}`;
+const meshProgram=gl.createProgram();gl.attachShader(meshProgram,shader(gl.VERTEX_SHADER,meshVS));gl.attachShader(meshProgram,shader(gl.FRAGMENT_SHADER,meshFS));gl.linkProgram(meshProgram);if(!gl.getProgramParameter(meshProgram,gl.LINK_STATUS))throw Error(gl.getProgramInfoLog(meshProgram));
+const meshBuffer=gl.createBuffer(),attrs=['vertex','uvA','uvB','param','light'].map(n=>gl.getAttribLocation(meshProgram,n)),samplers=['paper','silhouette','nextPaper','nextSilhouette'].map(n=>gl.getUniformLocation(meshProgram,n)),progressUniform=gl.getUniformLocation(meshProgram,'progress');
+const clamp=v=>Math.max(0,Math.min(1,v)),ease=v=>{v=clamp(v);return v*v*v*(v*(v*6-15)+10)},mix=(a,b,t)=>a+(b-a)*t;
+let morphTargets=[],meshIndices=[],motionAmount=1.8;
+// The eye, nose and chin rows are semantic correspondences, not an image crossfade.
+const canonical=[0,.12,.26,.43,.58,.74,.86,1];
+const rows=[
+ [0,.12,.25,.375,.535,.640,.79,1],
+ [.035,.17,.29,.415,.555,.655,.81,.965],
+ [0,.16,.37,.556,.695,.850,.935,1],
+ [0,.13,.27,.430,.585,.710,.815,1]
+];
+const eyeWidths=[.12,.155,.137,.16],N=28;
+function interpolateStops(stops,x){let i=0;while(i<canonical.length-2&&x>canonical[i+1])i++;return mix(stops[i],stops[i+1],clamp((x-canonical[i])/(canonical[i+1]-canonical[i])))}
+function initMorph(images){
+ const maskRows=images.slice(4).map(im=>{const c=document.createElement('canvas');c.width=c.height=256;const x=c.getContext('2d',{willReadFrequently:true});x.drawImage(im,0,0,256,256);const pix=x.getImageData(0,0,256,256).data;const widths=[];for(let y=0;y<256;y++){let l=128,r=128;for(let xx=0;xx<256;xx++)if(pix[(y*256+xx)*4+3]>150){l=Math.min(l,xx);r=Math.max(r,xx)}widths.push(Math.max(.045,Math.min(.499,Math.max(128-l,r-128)/256)))}return widths});
+ morphTargets=rows.map((stops,s)=>{
+  const verts=[];
+  for(let y=0;y<=N;y++)for(let x=0;x<=N;x++){
+   const u=x/N,v=y/N,iy=interpolateStops(stops,v),row=clamp(iy)*255;
+   const width=mix(maskRows[s][Math.floor(row)],maskRows[s][Math.ceil(row)],row%1)+.012;
+   const side=u*2-1,abs=Math.abs(side),ey=eyeWidths[s];
+   const eyeWeight=Math.exp(-Math.pow((v-.43)/.15,2)),eyePos=mix(width*.35,Math.min(ey,width*.72),eyeWeight);
+   const offset=abs<.35?abs/.35*eyePos:mix(eyePos,width,(abs-.35)/.65);
+   const ix=.5+Math.sign(side)*offset;
+   const px=(ix-.5)*1.19,py=(.5-iy)*1.19;
+   const z=.10*Math.max(0,1-side*side)*Math.sin(v*Math.PI)+.070*Math.exp(-Math.pow(side/.24,2)-Math.pow((v-.74)/.16,2));
+   verts.push({uv:[ix,1-iy],pos:[px,py,z],param:[u,v]});
+  }
+  return verts;
+ });
+ for(let y=0;y<N;y++)for(let x=0;x<N;x++){const a=y*(N+1)+x,b=a+1,c=a+N+1,d=c+1;if((x+y)%2)meshIndices.push([a,c,b],[b,c,d]);else meshIndices.push([a,c,d],[a,d,b])}
+}
+function rotateAxis(p,a,t){const c=Math.cos(t),s=Math.sin(t),dot=p[0]*a[0]+p[1]*a[1]+p[2]*a[2];return[p[0]*c+(a[1]*p[2]-a[2]*p[1])*s+a[0]*dot*(1-c),p[1]*c+(a[2]*p[0]-a[0]*p[2])*s+a[1]*dot*(1-c),p[2]*c+(a[0]*p[1]-a[1]*p[0])*s+a[2]*dot*(1-c)]}
+function drawOrigami(f){
+ if(!morphTargets.length)return;
+ const amplitude=reduced?0:motionAmount,phase=time*Math.PI/20,envelope=current===target?0:Math.sin(Math.PI*f),a=morphTargets[current],b=morphTargets[target];
+ const vertices=a.map((v,i)=>{
+  const [u,w]=v.param,delay=.22*w+.04*Math.cos(u*Math.PI*2),q=current===target?0:ease((f-delay)/.74);
+  let p=v.pos.map((n,j)=>mix(n,b[i].pos[j],q));
+  const edge=Math.pow(Math.abs(u*2-1),1.2),wave=phase*4+w*5+Math.abs(u-.5)*4;
+  const breathing=1+.022*Math.sin(phase*4)*amplitude;
+  p[0]*=breathing;p[1]*=1+.014*Math.sin(phase*4+.4)*amplitude;
+  // Adjacent faces share their vertices. The fold wave never opens random cracks.
+  p[2]+=(.020+.062*envelope)*Math.sin(wave)*(.35+edge*.65)*amplitude;
+  p[0]+=Math.sign(u-.5)*.014*envelope*Math.sin(wave)*edge*amplitude;
+  p[2]+=.016*envelope*Math.cos(u*Math.PI*8)*Math.sin(w*Math.PI)*amplitude;
+  p=rotateAxis(p,[0,1,0],(.105*Math.sin(phase)+pt[0]*.12)*amplitude);
+  p=rotateAxis(p,[1,0,0],(.045*Math.sin(phase*2+.6)-pt[1]*.08)*amplitude);
+  p=rotateAxis(p,[0,0,1],.015*Math.sin(phase*2)*amplitude);
+  p[1]+=.010*Math.sin(phase*2)*amplitude;
+  return {p,ua:v.uv,ub:b[i].uv,param:v.param};
+ });
+ const triangles=meshIndices.map(ids=>{
+  const p=ids.map(i=>vertices[i].p),a=p[1].map((v,j)=>v-p[0][j]),b=p[2].map((v,j)=>v-p[0][j]);
+  const n=[a[1]*b[2]-a[2]*b[1],a[2]*b[0]-a[0]*b[2],a[0]*b[1]-a[1]*b[0]],len=Math.hypot(...n)||1;
+  const light=.78+.27*Math.abs((n[0]*-.32+n[1]*.38+n[2]*.87)/len);
+  return {ids,z:p.reduce((s,v)=>s+v[2]/3,0),light};
+ }).sort((a,b)=>a.z-b.z);
+ const data=new Float32Array(triangles.length*3*10);let o=0;
+ for(const tri of triangles)for(const id of tri.ids){const v=vertices[id],scale=1/(1-v.p[2]*.28);data.set([v.p[0]*scale,v.p[1]*scale,0,...v.ua,...v.ub,...v.param,tri.light],o);o+=10}
+ gl.useProgram(meshProgram);gl.bindBuffer(gl.ARRAY_BUFFER,meshBuffer);gl.bufferData(gl.ARRAY_BUFFER,data,gl.DYNAMIC_DRAW);
+ [[3,0],[2,12],[2,20],[2,28],[1,36]].forEach(([count,offset],i)=>{gl.enableVertexAttribArray(attrs[i]);gl.vertexAttribPointer(attrs[i],count,gl.FLOAT,false,40,offset)});
+ [textures[current],maskTextures[current],textures[target],maskTextures[target]].forEach((tx,i)=>{gl.activeTexture(gl.TEXTURE0+i);gl.bindTexture(gl.TEXTURE_2D,tx);gl.uniform1i(samplers[i],i)});
+ gl.uniform1f(progressUniform,current===target?0:f);gl.enable(gl.BLEND);gl.blendFunc(gl.SRC_ALPHA,gl.ONE_MINUS_SRC_ALPHA);gl.drawArrays(gl.TRIANGLES,0,data.length/10);gl.disable(gl.BLEND);attrs.forEach(loc=>gl.disableVertexAttribArray(loc));
+}
+
+let textures=[],current=0,target=0,queued=null,start=-10,time=0,last=performance.now(),paused=reduced,auto=false,sequence=false,sequenceStart=0,manual=false,pt=[0,0],aim=[0,0];const duration=8.8;let pending=[];
+const finePointer=matchMedia('(any-hover: hover) and (any-pointer: fine)');let pointerExpires=0;
+function followPointer(x,y){if(!finePointer.matches||reduced||!Number.isFinite(x)||!Number.isFinite(y))return;aim=[Math.max(-1,Math.min(1,x)),Math.max(-1,Math.min(1,y))];pointerExpires=performance.now()+3000;}
+function copyUI(s){const data=states[s];['title','subtitle','miniStatus','animal','meaning'].forEach((id,i)=>document.getElementById(id).textContent=data[i]);document.querySelectorAll('[data-state]').forEach(el=>el.setAttribute('aria-pressed',String(+el.dataset.state===s)))}
+function setState(s){if(!Number.isInteger(s)||s<0||s>3)return;if(paused){current=target=s;queued=null;start=-10;copyUI(s);render();return}if(target!==current){queued=s;return}if(s===current)return;target=s;start=time;copyUI(s)}
+function stopSequence(){sequence=false;auto=false;document.querySelector('#auto').setAttribute('aria-pressed','false')}
+function conversation(){stopSequence();sequence=true;sequenceStart=time;setState(3)}
+function render(){if(!finePointer.matches||performance.now()>pointerExpires)aim=[0,0];const size=Math.round(Math.min(900,cv.clientWidth*Math.min(devicePixelRatio||1,2)));if(cv.width!==size){cv.width=cv.height=size;gl.viewport(0,0,size,size)}let f=current===target?0:Math.min(1,Math.max(0,(time-start)/duration));
+if(f>=1){current=target;f=0;if(queued!==null){let next=queued;queued=null;setState(next)}}
+gl.useProgram(program);gl.bindBuffer(gl.ARRAY_BUFFER,buffer);gl.enableVertexAttribArray(pos);gl.vertexAttribPointer(pos,2,gl.FLOAT,false,0,0);gl.activeTexture(gl.TEXTURE0);gl.bindTexture(gl.TEXTURE_2D,textures[current]);gl.uniform1i(uniforms.a,0);gl.activeTexture(gl.TEXTURE1);gl.bindTexture(gl.TEXTURE_2D,textures[target]);gl.uniform1i(uniforms.b,1);gl.uniform1f(uniforms.t,time);gl.uniform1f(uniforms.morph,f);gl.uniform1f(uniforms.state,target);gl.uniform1f(uniforms.motion,reduced?0:1);pt=pt.map((v,i)=>v+(aim[i]-v)*.06);gl.uniform2f(uniforms.pointer,...pt);gl.drawArrays(gl.TRIANGLES,0,6);gl.disableVertexAttribArray(pos);drawOrigami(f);if(!embedded){mc.clearRect(0,0,176,176);mc.drawImage(cv,0,0,176,176);}
+document.querySelectorAll('.activity i').forEach((bar,i)=>bar.style.height=(target===0?4:5+Math.abs(Math.sin(time*(target===1?1.6:4)+i*.9))*15)+'px');}
+function tick(now){if(!manual&&!paused&&!document.hidden){time+=Math.min(.1,(now-last)/1000);if(sequence){const elapsed=time-sequenceStart;let s=elapsed<10?3:elapsed<20?1:elapsed<30?2:0;setState(s);if(elapsed>=40){sequence=false}}if(auto){const v=time-sequenceStart,order=[0,3,1,2],seg=Math.floor(v/10)%4,local=v%10;current=order[seg];target=local<1.2?current:order[(seg+1)%4];start=time-local+1.2;copyUI(local<5.6?current:target)}}last=now;if(textures.length===4&&!document.hidden&&!manual)render();requestAnimationFrame(tick)}
+document.querySelectorAll('[data-state]').forEach(el=>el.onclick=()=>{stopSequence();queued=null;setState(+el.dataset.state)});document.querySelector('#orb').onclick=()=>{if(new URLSearchParams(location.search).has('embed')){parent.postMessage({kind:'simba-avatar-activate'},location.origin);return}conversation()};document.querySelector('#miniButton').onclick=conversation;
+document.querySelector('#orb').onpointermove=e=>{if(e.pointerType==='touch')return;const rect=cv.getBoundingClientRect();followPointer((e.clientX-rect.left)/rect.width*2-1,1-(e.clientY-rect.top)/rect.height*2)};document.querySelector('#orb').onpointerleave=()=>{aim=[0,0];pointerExpires=0};
+document.querySelector('#auto').onclick=()=>{auto=!auto;sequence=false;sequenceStart=time;document.querySelector('#auto').setAttribute('aria-pressed',String(auto));if(auto){paused=false;document.querySelector('#pause').textContent='Приостановить движение';document.querySelector('#pause').setAttribute('aria-pressed','false')}};
+document.querySelector('#pause').onclick=()=>{paused=!paused;document.querySelector('#pause').setAttribute('aria-pressed',String(paused));document.querySelector('#pause').textContent=paused?'Продолжить движение':'Приостановить движение'};
+if(reduced){document.querySelector('#pause').textContent='Продолжить движение';document.querySelector('#pause').setAttribute('aria-pressed','true')}
+const embedded=new URLSearchParams(location.search).has('embed');if(embedded)document.documentElement.classList.add('embed');if(new URLSearchParams(location.search).has('export')){document.documentElement.classList.add('export');manual=true}
+document.querySelector("#motion").oninput=e=>{motionAmount=+e.target.value;document.querySelector("#motionValue").textContent=motionAmount<.7?"Едва заметно":motionAmount>1.3?"Выразительно":"Мягко";render()};window.addEventListener("message",event=>{if(!embedded||event.source!==parent||event.origin!==location.origin||!event.data)return;if(event.data.kind==='simba-avatar-pointer'){followPointer(event.data.x,event.data.y);return}if(event.data.kind==='simba-avatar-pointer-leave'){aim=[0,0];pointerExpires=0;return}if(event.data.kind!=="simba-avatar-state")return;const index={idle:0,listening:3,thinking:1,answering:2}[event.data.state];if(index!==undefined){stopSequence();auto=false;queued=null;setState(index)}if(event.data.action==="pause")paused=true;if(event.data.action==="resume"){paused=false;manual=false}});window.SimbaSphere={setState,pause:()=>paused=true,resume:()=>{paused=false;manual=false},stats:()=>({current,target,ready:textures.length===4,paused,auto,time,triangles:meshIndices.length,motionAmount,pointer:[...pt]}),seek:(v)=>{manual=true;time=v;const order=[0,3,1,2],seg=Math.floor(v/10)%4,local=v%10;current=order[seg];target=local<1.2?current:order[(seg+1)%4];start=v-local+1.2;copyUI(local<5.6?current:target);render()}};
+Promise.all(sources.concat(maskSources).map(src=>new Promise((resolve,reject)=>{const im=new Image();im.onload=()=>resolve(im);im.onerror=reject;im.src=src}))).then(images=>{textures=images.map(im=>{let tx=gl.createTexture();gl.bindTexture(gl.TEXTURE_2D,tx);gl.pixelStorei(gl.UNPACK_FLIP_Y_WEBGL,true);gl.texImage2D(gl.TEXTURE_2D,0,gl.RGBA,gl.RGBA,gl.UNSIGNED_BYTE,im);gl.texParameteri(gl.TEXTURE_2D,gl.TEXTURE_MIN_FILTER,gl.LINEAR);gl.texParameteri(gl.TEXTURE_2D,gl.TEXTURE_MAG_FILTER,gl.LINEAR);gl.texParameteri(gl.TEXTURE_2D,gl.TEXTURE_WRAP_S,gl.CLAMP_TO_EDGE);gl.texParameteri(gl.TEXTURE_2D,gl.TEXTURE_WRAP_T,gl.CLAMP_TO_EDGE);return tx});maskTextures=textures.slice(4);textures=textures.slice(0,4);initMorph(images);render();window.SIMBA_SPHERE_READY=true;if(embedded)parent.postMessage({kind:'simba-avatar-ready'},location.origin);if(new URLSearchParams(location.search).has("demo")&&!reduced){auto=true;sequenceStart=time;document.querySelector("#auto").setAttribute("aria-pressed","true")}requestAnimationFrame(tick)}).catch(e=>{document.querySelector('#subtitle').textContent='Не удалось загрузить образы';console.error(e)});
+})();
+</script></body></html>

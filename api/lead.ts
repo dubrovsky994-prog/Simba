@@ -6,6 +6,43 @@ type LeadPayload = {
   message?: string
   company?: string // honeypot — must stay empty; a filled value flags an automated submission
   page?: string
+  consent?: unknown
+  // Loss-calculator lead fields — all optional so the plain contact form
+  // above stays untouched. `kind === 'calculator'` is what marks a
+  // submission as coming from the calculator rather than the plain form.
+  kind?: string
+  preferredContact?: string
+  niche?: string
+  nicheCustom?: string
+  businessLink?: string
+  pageUrl?: string
+  answers?: {
+    inquiries?: unknown
+    avgCheck?: unknown
+    missedRate?: unknown
+    conversionRate?: unknown
+    cancelRate?: unknown
+    manualHours?: unknown
+    hourValue?: unknown
+  }
+  results?: {
+    lostLeads?: unknown
+    cancellationLoss?: unknown
+    manualCost?: unknown
+    totalBurden?: unknown
+    conservative?: unknown
+    realistic?: unknown
+    potential?: unknown
+  }
+  utm?: unknown
+  // "Есть идея?" lead fields — all optional so the other lead kinds stay
+  // untouched. `kind === 'idea_review'` marks a submission as coming from
+  // this flow rather than the audit/calculator or the plain contact form.
+  email?: string
+  projectType?: string
+  targetAudience?: string
+  ideaDescription?: string
+  projectStage?: string
 }
 
 function escapeHtml(value: string): string {
@@ -15,6 +52,33 @@ function escapeHtml(value: string): string {
 function sanitize(value: unknown, maxLength: number): string {
   if (typeof value !== 'string') return ''
   return value.trim().slice(0, maxLength)
+}
+
+function sanitizeUtm(value: unknown): Record<string, string> {
+  if (!value || typeof value !== 'object') return {}
+  const allowedKeys = ['utm_source', 'utm_medium', 'utm_campaign', 'utm_content', 'utm_term']
+  const result: Record<string, string> = {}
+  for (const key of allowedKeys) {
+    const raw = (value as Record<string, unknown>)[key]
+    if (typeof raw === 'string' && raw.trim()) result[key] = sanitize(raw, 200)
+  }
+  return result
+}
+
+function sanitizeNumber(value: unknown): number {
+  return typeof value === 'number' && Number.isFinite(value) ? value : 0
+}
+
+const moneyFormatter = new Intl.NumberFormat('ru-RU', { style: 'currency', currency: 'RUB', maximumFractionDigits: 0 })
+
+function formatMoney(value: number): string {
+  return moneyFormatter.format(Math.round(value))
+}
+
+const PREFERRED_CONTACT_LABELS: Record<string, string> = {
+  telegram: 'Telegram',
+  phone: 'Телефон',
+  other: 'Другой способ',
 }
 
 // Minimal request/response shape — avoids depending on @vercel/node types.
@@ -93,31 +157,129 @@ export default async function handler(req: ApiRequest, res: ApiResponse) {
     return
   }
 
-  const name = sanitize(body?.name, 200)
-  const contact = sanitize(body?.contact, 200)
-  const businessType = sanitize(body?.businessType, 200)
-  const link = sanitize(body?.link, 500)
-  const message = sanitize(body?.message, 2000)
-  const page = sanitize(body?.page, 200)
-
-  if (!name || !contact || !businessType) {
-    res.status(400).json({ ok: false, error: 'Missing required fields' })
+  // Consent is mandatory for both the plain contact form and the calculator —
+  // reject anything that isn't an explicit, current `true` rather than
+  // trusting the client to have gated the request already.
+  if (body?.consent !== true) {
+    res.status(400).json({ ok: false, error: 'Consent required' })
     return
   }
 
+  const name = sanitize(body?.name, 200)
+  const contact = sanitize(body?.contact, 200)
+  const leadKind = sanitize(body?.kind, 20)
+  const isCalculatorLead = leadKind === 'calculator'
+  const isIdeaReviewLead = leadKind === 'idea_review'
+
   const submittedAt = new Date().toLocaleString('ru-RU', { timeZone: 'Europe/Moscow' })
 
-  const lines = [
-    '<b>Новая заявка с сайта SIMBA</b>',
-    '',
-    `<b>Имя:</b> ${escapeHtml(name)}`,
-    `<b>Телефон/Telegram:</b> ${escapeHtml(contact)}`,
-    `<b>Сфера/вид бизнеса:</b> ${escapeHtml(businessType)}`,
-  ]
-  if (link) lines.push(`<b>Ссылка:</b> ${escapeHtml(link)}`)
-  if (message) lines.push(`<b>Что нужно улучшить:</b> ${escapeHtml(message)}`)
-  lines.push('', `<b>Дата и время:</b> ${submittedAt} (МСК)`)
-  if (page) lines.push(`<b>Страница:</b> ${escapeHtml(page)}`)
+  let lines: string[]
+
+  if (isCalculatorLead) {
+    const niche = sanitize(body?.niche, 200)
+    if (!name || !contact || !niche) {
+      res.status(400).json({ ok: false, error: 'Missing required fields' })
+      return
+    }
+
+    const nicheCustom = sanitize(body?.nicheCustom, 200)
+    const businessLink = sanitize(body?.businessLink, 500)
+    const pageUrl = sanitize(body?.pageUrl, 500)
+    const preferredContactLabel = PREFERRED_CONTACT_LABELS[sanitize(body?.preferredContact, 20)] ?? 'Не указан'
+
+    const inquiries = sanitizeNumber(body?.answers?.inquiries)
+    const avgCheck = sanitizeNumber(body?.answers?.avgCheck)
+    const missedRate = sanitizeNumber(body?.answers?.missedRate)
+    const conversionRate = sanitizeNumber(body?.answers?.conversionRate)
+    const cancelRate = sanitizeNumber(body?.answers?.cancelRate)
+    const manualHours = sanitizeNumber(body?.answers?.manualHours)
+    const hourValue = sanitizeNumber(body?.answers?.hourValue)
+
+    const lostLeads = sanitizeNumber(body?.results?.lostLeads)
+    const cancellationLoss = sanitizeNumber(body?.results?.cancellationLoss)
+    const manualCost = sanitizeNumber(body?.results?.manualCost)
+    const totalBurden = sanitizeNumber(body?.results?.totalBurden)
+    const realistic = sanitizeNumber(body?.results?.realistic)
+
+    const utm = sanitizeUtm(body?.utm)
+    const utmSource = utm.utm_source ? `${utm.utm_source}${utm.utm_medium ? ` / ${utm.utm_medium}` : ''}` : 'direct'
+
+    lines = [
+      '🔥 <b>Новая заявка из калькулятора SIMBA</b>',
+      '',
+      `<b>Имя:</b> ${escapeHtml(name)}`,
+      `<b>Контакт:</b> ${escapeHtml(contact)} (${escapeHtml(preferredContactLabel)})`,
+      `<b>Ниша:</b> ${escapeHtml(niche)}${nicheCustom ? ` (${escapeHtml(nicheCustom)})` : ''}`,
+      '',
+      `<b>Обращения в месяц:</b> ${escapeHtml(String(inquiries))}`,
+      `<b>Средний чек:</b> ${formatMoney(avgCheck)}`,
+      `<b>Пропущенные обращения:</b> ${escapeHtml(String(missedRate))}%`,
+      `<b>Конверсия в продажу:</b> ${escapeHtml(String(conversionRate))}%`,
+      `<b>Отмены / незавершённые заказы:</b> ${escapeHtml(String(cancelRate))}%`,
+      `<b>Часы ручной работы в неделю:</b> ${escapeHtml(String(manualHours))}`,
+      `<b>Стоимость часа:</b> ${formatMoney(hourValue)}`,
+      '',
+      `<b>Потери на обращениях:</b> ${formatMoney(lostLeads)}`,
+      `<b>Потери на отменах:</b> ${formatMoney(cancellationLoss)}`,
+      `<b>Стоимость ручной работы:</b> ${formatMoney(manualCost)}`,
+      `<b>Общая нагрузка в месяц:</b> ${formatMoney(totalBurden)}`,
+      `<b>Реалистичный эффект автоматизации:</b> ${formatMoney(realistic)}`,
+    ]
+    if (businessLink) lines.push('', `<b>Ссылка на бизнес:</b> ${escapeHtml(businessLink)}`)
+    lines.push('', `<b>Источник:</b> ${escapeHtml(utmSource)}`, `<b>Дата и время:</b> ${submittedAt} (МСК)`)
+    if (pageUrl) lines.push(`<b>Страница:</b> ${escapeHtml(pageUrl)}`)
+  } else if (isIdeaReviewLead) {
+    const ideaDescription = sanitize(body?.ideaDescription, 2000)
+    const projectStage = sanitize(body?.projectStage, 200)
+    if (!name || !contact || !ideaDescription || !projectStage) {
+      res.status(400).json({ ok: false, error: 'Missing required fields' })
+      return
+    }
+
+    const email = sanitize(body?.email, 200)
+    const projectType = sanitize(body?.projectType, 200)
+    const targetAudience = sanitize(body?.targetAudience, 200)
+    const pageUrl = sanitize(body?.pageUrl, 500)
+
+    const utm = sanitizeUtm(body?.utm)
+    const utmSource = utm.utm_source ? `${utm.utm_source}${utm.utm_medium ? ` / ${utm.utm_medium}` : ''}` : 'direct'
+
+    lines = [
+      '💡 <b>Новая заявка «Есть идея?» с сайта SIMBA</b>',
+      '',
+      `<b>Имя:</b> ${escapeHtml(name)}`,
+      `<b>Контакт:</b> ${escapeHtml(contact)}`,
+    ]
+    if (email) lines.push(`<b>Email:</b> ${escapeHtml(email)}`)
+    lines.push('')
+    if (projectType) lines.push(`<b>Что хотят создать:</b> ${escapeHtml(projectType)}`)
+    if (targetAudience) lines.push(`<b>Для кого:</b> ${escapeHtml(targetAudience)}`)
+    lines.push(`<b>Что должен делать продукт:</b> ${escapeHtml(ideaDescription)}`, `<b>Этап проекта:</b> ${escapeHtml(projectStage)}`)
+    lines.push('', `<b>Источник:</b> ${escapeHtml(utmSource)}`, `<b>Дата и время:</b> ${submittedAt} (МСК)`)
+    if (pageUrl) lines.push(`<b>Страница:</b> ${escapeHtml(pageUrl)}`)
+  } else {
+    const businessType = sanitize(body?.businessType, 200)
+    const link = sanitize(body?.link, 500)
+    const message = sanitize(body?.message, 2000)
+    const page = sanitize(body?.page, 200)
+
+    if (!name || !contact || !businessType) {
+      res.status(400).json({ ok: false, error: 'Missing required fields' })
+      return
+    }
+
+    lines = [
+      '<b>Новая заявка с сайта SIMBA</b>',
+      '',
+      `<b>Имя:</b> ${escapeHtml(name)}`,
+      `<b>Телефон/Telegram:</b> ${escapeHtml(contact)}`,
+      `<b>Сфера/вид бизнеса:</b> ${escapeHtml(businessType)}`,
+    ]
+    if (link) lines.push(`<b>Ссылка:</b> ${escapeHtml(link)}`)
+    if (message) lines.push(`<b>Что нужно улучшить:</b> ${escapeHtml(message)}`)
+    lines.push('', `<b>Дата и время:</b> ${submittedAt} (МСК)`)
+    if (page) lines.push(`<b>Страница:</b> ${escapeHtml(page)}`)
+  }
 
   try {
     const telegramResponse = await fetch(`https://api.telegram.org/bot${botToken}/sendMessage`, {

@@ -1,0 +1,400 @@
+import { useEffect, useMemo, useState } from 'react'
+import CalculatorIntro from './calculator/CalculatorIntro'
+import CalculatorQuestionStage, { type StageOption } from './calculator/CalculatorQuestionStage'
+import CalculatorCalculating from './calculator/CalculatorCalculating'
+import CalculatorInsight from './calculator/CalculatorInsight'
+import CalculatorResult from './calculator/CalculatorResult'
+import CalculatorAvatar from './calculator/CalculatorAvatar'
+import CalculatorStepNav, { type StepNavItem } from './calculator/CalculatorStepNav'
+import CalculatorExplainerCard from './calculator/CalculatorExplainerCard'
+import CalculatorMemoryPanel from './calculator/CalculatorMemoryPanel'
+import {
+  NICHE_CUSTOM_INPUT_LABEL,
+  NICHE_CUSTOM_LABEL,
+  NICHE_CUSTOM_OPTION_ID,
+  NICHE_CUSTOM_PLACEHOLDER,
+  NICHE_OPTIONS,
+  NICHE_QUESTION,
+  NUMERIC_QUESTIONS,
+  TOTAL_STEPS,
+  resolveQuestionTitle,
+} from '../lib/calculator/questions'
+import { resolveNicheAnswer, resolveNumericAnswer } from '../lib/calculator/validate'
+import { calculateLoss, calculateInterimLoss } from '../lib/calculator/calculate'
+import { trackCalculatorEvent } from '../lib/calculator/analytics'
+import { formatMoney } from '../lib/calculator/format'
+import { buildMemoryItems } from '../lib/calculator/memory'
+import { getStageReaction } from '../lib/calculator/reactions'
+import { EMPTY_CALCULATOR_ANSWERS, type CalculatorAnswers, type NicheKey, type NumericQuestionId } from '../lib/calculator/types'
+
+const RESULT_STEP = TOTAL_STEPS + 1
+// Mirrors CalculatorCalculating's own caption cadence (3 captions, 360ms each)
+// plus a small buffer so the last caption is readable before the swap.
+const CALCULATING_MS = 1100
+// After cancelRate (step 6) is answered, SBA has enough to show one interim
+// number before the last two questions — see spec item 11.
+const INSIGHT_AFTER_STEP = 6
+
+const STAGE_LABELS: Record<number, string> = {
+  1: 'О бизнесе',
+  2: 'Заявки',
+  3: 'Заявки',
+  4: 'Потери',
+  5: 'Потери',
+  6: 'Потери',
+  7: 'Время',
+  8: 'Время',
+}
+
+// Short topic labels for the left step-nav, one per real question (1..8).
+// Visual only — see CalculatorStepNav.
+const STEP_NAV_ITEMS: StepNavItem[] = [
+  { step: 1, label: 'Ниша' },
+  { step: 2, label: 'Заявки' },
+  { step: 3, label: 'Средний чек' },
+  { step: 4, label: 'Без ответа' },
+  { step: 5, label: 'Конверсия' },
+  { step: 6, label: 'Отмены' },
+  { step: 7, label: 'Ручная работа' },
+  { step: 8, label: 'Стоимость часа' },
+]
+
+// Exported so other SBA surfaces (e.g. the SBA simulation) can read the same
+// in-progress/completed diagnostic without a second storage format.
+export const CALCULATOR_STORAGE_KEY = 'simba_sba_calculator_v1'
+const STORAGE_KEY = CALCULATOR_STORAGE_KEY
+
+type PersistedProgress = { step: number; answers: CalculatorAnswers; insightShown: boolean }
+
+// Session-only memory (spec item 15) — a full backend memory layer is out of
+// scope, but losing an in-progress diagnostic on an accidental reload isn't.
+function loadPersistedProgress(): PersistedProgress | null {
+  try {
+    const raw = sessionStorage.getItem(STORAGE_KEY)
+    if (!raw) return null
+    const parsed = JSON.parse(raw) as Partial<PersistedProgress>
+    if (typeof parsed.step !== 'number' || !parsed.answers) return null
+    return { step: parsed.step, answers: parsed.answers, insightShown: Boolean(parsed.insightShown) }
+  } catch {
+    return null
+  }
+}
+
+function prefersReducedMotion(): boolean {
+  return typeof window !== 'undefined' && window.matchMedia?.('(prefers-reduced-motion: reduce)').matches === true
+}
+
+function resolvedNumericValue(id: NumericQuestionId, answers: CalculatorAnswers): number | null {
+  const question = NUMERIC_QUESTIONS.find((q) => q.id === id)
+  if (!question) return null
+  const resolved = resolveNumericAnswer(question, answers[id])
+  return resolved.valid ? resolved.value : null
+}
+
+export default function LossCalculator() {
+  const [restored] = useState<PersistedProgress | null>(loadPersistedProgress)
+  const [step, setStep] = useState(restored?.step ?? 0)
+  const [answers, setAnswers] = useState<CalculatorAnswers>(restored?.answers ?? EMPTY_CALCULATOR_ANSWERS)
+  const [fieldError, setFieldError] = useState<string | null>(null)
+  const [isCalculating, setIsCalculating] = useState(false)
+  const [isInsight, setIsInsight] = useState(false)
+  const [insightShown, setInsightShown] = useState(Boolean(restored?.insightShown) || (restored?.step ?? 0) > INSIGHT_AFTER_STEP)
+  const [showRestoredNotice, setShowRestoredNotice] = useState(Boolean(restored && restored.step > 0))
+
+  useEffect(() => {
+    trackCalculatorEvent('calculator_view')
+  }, [])
+
+  useEffect(() => {
+    if (!showRestoredNotice) return
+    const timer = window.setTimeout(() => setShowRestoredNotice(false), 4000)
+    return () => window.clearTimeout(timer)
+  }, [showRestoredNotice])
+
+  useEffect(() => {
+    try {
+      sessionStorage.setItem(STORAGE_KEY, JSON.stringify({ step, answers, insightShown }))
+    } catch {
+      // sessionStorage unavailable (private mode, blocked storage) — progress just won't survive a reload
+    }
+  }, [step, answers, insightShown])
+
+  useEffect(() => {
+    if (step < 1 || isCalculating || isInsight) return
+    const frame = window.requestAnimationFrame(() => {
+      const heading = document.getElementById('calculator-question')
+      heading?.focus({ preventScroll: true })
+      document.getElementById('business-audit')?.scrollIntoView({ behavior: prefersReducedMotion() ? 'auto' : 'smooth', block: 'start' })
+    })
+    return () => window.cancelAnimationFrame(frame)
+  }, [step, isCalculating, isInsight])
+
+  const nicheResolution = resolveNicheAnswer(answers.niche)
+  const currentNiche: NicheKey = nicheResolution.valid ? nicheResolution.niche : 'custom'
+
+  const numericQuestion = step >= 2 && step <= TOTAL_STEPS ? NUMERIC_QUESTIONS[step - 2] : null
+
+  const stepOptions: StageOption[] = useMemo(() => {
+    if (step === 1) {
+      return [
+        ...NICHE_OPTIONS.map((o) => ({ id: o.id, label: o.label, kind: 'fixed' as const })),
+        { id: NICHE_CUSTOM_OPTION_ID, label: NICHE_CUSTOM_LABEL, kind: 'input' as const, placeholder: NICHE_CUSTOM_PLACEHOLDER },
+      ]
+    }
+    if (numericQuestion) {
+      return numericQuestion.options.map((o) => ({
+        id: o.id,
+        label: o.label,
+        kind: o.kind,
+        placeholder: o.kind === 'input' ? o.placeholder : undefined,
+      }))
+    }
+    return []
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [step])
+
+  const currentAnswer = step === 1 ? answers.niche : numericQuestion ? answers[numericQuestion.id] : null
+  const selectedOption = stepOptions.find((o) => o.id === currentAnswer?.optionId) ?? null
+  const canProceed = Boolean(currentAnswer?.optionId)
+
+  const currentTitle =
+    step === 1
+      ? NICHE_QUESTION.title
+      : numericQuestion
+        ? resolveQuestionTitle(numericQuestion.title, currentNiche)
+        : ''
+  const currentHint = step === 1 ? NICHE_QUESTION.hint : numericQuestion?.hint ?? ''
+  const customFieldLabel = step === 1 ? NICHE_CUSTOM_INPUT_LABEL : 'Ваше значение'
+  const customFieldInputMode: 'text' | 'decimal' = step === 1 ? 'text' : 'decimal'
+  const reaction = step >= 1 && step <= TOTAL_STEPS ? getStageReaction(step, answers) : null
+  const nextLabel = step === TOTAL_STEPS ? 'Собрать вывод' : undefined
+
+  const memoryItems = useMemo(() => buildMemoryItems(answers, Math.max(0, step - 1)), [answers, step])
+
+  // Shared by the one-time interstitial and, afterwards, by the living memory
+  // panel — both must show the exact same number (spec item 9 + item 11).
+  const interimLoss = useMemo(() => {
+    const inquiries = resolvedNumericValue('inquiries', answers)
+    const avgCheck = resolvedNumericValue('avgCheck', answers)
+    const missedRate = resolvedNumericValue('missedRate', answers)
+    const conversionRate = resolvedNumericValue('conversionRate', answers)
+    const cancelRate = resolvedNumericValue('cancelRate', answers)
+    if (inquiries === null || avgCheck === null || missedRate === null || conversionRate === null || cancelRate === null) return null
+    return calculateInterimLoss({ inquiries, avgCheck, missedRate, conversionRate, cancelRate })
+  }, [answers])
+
+  const memoryInsight = useMemo(() => {
+    if (step <= INSIGHT_AFTER_STEP || !interimLoss) return null
+    return {
+      title: 'Первый вывод',
+      text: `Даже ${Math.round(interimLoss.missedCount)} потерянных заявок могут стоить бизнесу примерно ${formatMoney(interimLoss.lostLeads + interimLoss.cancellationLoss)} в месяц.`,
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [step, interimLoss])
+
+  const handleStart = () => {
+    trackCalculatorEvent('calculator_start')
+    setStep(1)
+  }
+
+  const handleSelect = (optionId: string) => {
+    setFieldError(null)
+    if (step === 1) {
+      setAnswers((prev) => ({ ...prev, niche: { optionId, customText: prev.niche.customText } }))
+      return
+    }
+    if (numericQuestion) {
+      const id = numericQuestion.id
+      setAnswers((prev) => ({ ...prev, [id]: { optionId, customText: prev[id].customText } }))
+    }
+  }
+
+  const handleCustomTextChange = (text: string) => {
+    if (step === 1) {
+      setAnswers((prev) => ({ ...prev, niche: { ...prev.niche, customText: text } }))
+      return
+    }
+    if (numericQuestion) {
+      const id = numericQuestion.id
+      setAnswers((prev) => ({ ...prev, [id]: { ...prev[id], customText: text } }))
+    }
+  }
+
+  const handleNext = () => {
+    if (step === 1) {
+      const resolved = resolveNicheAnswer(answers.niche)
+      if (!resolved.valid) {
+        setFieldError(resolved.error)
+        return
+      }
+      if (answers.niche.optionId === NICHE_CUSTOM_OPTION_ID) trackCalculatorEvent('calculator_custom_answer', { step })
+    } else if (numericQuestion) {
+      const resolved = resolveNumericAnswer(numericQuestion, answers[numericQuestion.id])
+      if (!resolved.valid) {
+        setFieldError(resolved.error)
+        return
+      }
+      if (selectedOption?.kind === 'input') trackCalculatorEvent('calculator_custom_answer', { step })
+    }
+
+    setFieldError(null)
+    trackCalculatorEvent('calculator_step_completed', { step })
+
+    if (step === TOTAL_STEPS) {
+      trackCalculatorEvent('calculator_result_view')
+      if (prefersReducedMotion()) {
+        setStep(RESULT_STEP)
+      } else {
+        setIsCalculating(true)
+        window.setTimeout(() => {
+          setIsCalculating(false)
+          setStep(RESULT_STEP)
+        }, CALCULATING_MS)
+      }
+    } else if (step === INSIGHT_AFTER_STEP && !insightShown) {
+      setInsightShown(true)
+      setIsInsight(true)
+    } else {
+      setStep((s) => s + 1)
+    }
+  }
+
+  const handleInsightContinue = () => {
+    setIsInsight(false)
+    setStep((s) => s + 1)
+  }
+
+  const handleBack = () => {
+    setFieldError(null)
+    setStep((s) => Math.max(0, s - 1))
+  }
+
+  const handleRestart = () => {
+    setAnswers(EMPTY_CALCULATOR_ANSWERS)
+    setFieldError(null)
+    setIsCalculating(false)
+    setIsInsight(false)
+    setInsightShown(false)
+    setStep(0)
+    try {
+      sessionStorage.removeItem(STORAGE_KEY)
+    } catch {
+      // best-effort only
+    }
+  }
+
+  const resolvedResult = useMemo(() => {
+    if (step !== RESULT_STEP) return null
+    const niche = resolveNicheAnswer(answers.niche)
+    if (!niche.valid) return null
+
+    const values: Partial<Record<NumericQuestionId, number>> = {}
+    for (const question of NUMERIC_QUESTIONS) {
+      const resolved = resolveNumericAnswer(question, answers[question.id])
+      if (!resolved.valid) return null
+      values[question.id] = resolved.value
+    }
+
+    const inputs = {
+      inquiries: values.inquiries!,
+      avgCheck: values.avgCheck!,
+      missedRate: values.missedRate!,
+      conversionRate: values.conversionRate!,
+      cancelRate: values.cancelRate!,
+      manualHours: values.manualHours!,
+      hourValue: values.hourValue!,
+    }
+
+    return {
+      niche: niche.niche,
+      nicheCustomText: niche.customText,
+      inputs,
+      result: calculateLoss(inputs),
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [step])
+
+  return (
+    <section id="business-audit" className="public-v2-calc-section overflow-hidden bg-bg-section pb-12 pt-4 sm:pb-16 sm:pt-6">
+      <div className="container-px">
+        {step > 0 && !isCalculating && !isInsight && (
+          <div className="mx-auto mb-3 flex max-w-2xl items-center justify-center gap-2" data-calculator-presence>
+            <CalculatorAvatar state={fieldError ? 'error' : step === RESULT_STEP ? 'success' : 'active'} size={84} />
+            <p className="text-sm font-medium text-text-muted">
+              {fieldError
+                ? 'Проверьте указанное значение'
+                : step === RESULT_STEP
+                  ? 'Ваш расчёт готов'
+                  : showRestoredNotice
+                    ? 'Я сохранил ваш расчёт.'
+                    : 'Восемь вопросов о вашем бизнесе'}
+            </p>
+          </div>
+        )}
+
+        {step <= TOTAL_STEPS && !isCalculating && !isInsight && (
+          <div className="public-v2-calc-card">
+          <div className="public-v2-calc-shell">
+            <CalculatorStepNav steps={STEP_NAV_ITEMS} currentStep={Math.max(step, 1)} />
+
+            <div>
+              {step === 0 && <CalculatorIntro onStart={handleStart} variant="compact" />}
+
+              {step >= 1 && (
+                <CalculatorQuestionStage
+                  step={step}
+                  total={TOTAL_STEPS}
+                  stageLabel={STAGE_LABELS[step] ?? ''}
+                  title={currentTitle}
+                  hint={currentHint}
+                  options={stepOptions}
+                  answer={currentAnswer ?? { optionId: null, customText: '' }}
+                  selectedOption={selectedOption}
+                  fieldError={fieldError}
+                  customFieldLabel={customFieldLabel}
+                  customFieldInputMode={customFieldInputMode}
+                  showLiveHint={step >= 5}
+                  isLastQuestion={step === TOTAL_STEPS}
+                  canProceed={canProceed}
+                  reaction={reaction}
+                  nextLabel={nextLabel}
+                  onSelect={handleSelect}
+                  onCustomTextChange={handleCustomTextChange}
+                  onBack={handleBack}
+                  onNext={handleNext}
+                />
+              )}
+            </div>
+
+            {memoryItems.length > 0 ? (
+              <CalculatorMemoryPanel items={memoryItems} insight={memoryInsight} />
+            ) : (
+              <CalculatorExplainerCard />
+            )}
+          </div>
+          </div>
+        )}
+
+        {isInsight && interimLoss && (
+          <CalculatorInsight
+            missedCount={interimLoss.missedCount}
+            cashLoss={interimLoss.lostLeads + interimLoss.cancellationLoss}
+            onContinue={handleInsightContinue}
+          />
+        )}
+
+        {isCalculating && <CalculatorCalculating />}
+
+        {step === RESULT_STEP && resolvedResult && (
+          <CalculatorResult
+            niche={resolvedResult.niche}
+            nicheCustomText={resolvedResult.nicheCustomText}
+            inputs={resolvedResult.inputs}
+            result={resolvedResult.result}
+            onRestart={handleRestart}
+          />
+        )}
+      </div>
+    </section>
+  )
+}
