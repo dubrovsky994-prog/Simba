@@ -88,6 +88,60 @@ body {
   display: none; /* Chrome / Safari */
 }
 
+/* Loss calculator: step transitions, expanding fields, result fade-in. */
+@keyframes calc-step-in {
+  from {
+    opacity: 0;
+    transform: translateX(14px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+.animate-calc-step {
+  animation: calc-step-in 220ms ease-out;
+}
+
+@keyframes calc-expand {
+  from {
+    opacity: 0;
+    transform: translateY(-6px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-calc-expand {
+  animation: calc-expand 200ms ease-out;
+}
+
+@keyframes calc-result-in {
+  from {
+    opacity: 0;
+    transform: scale(0.97);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+.animate-calc-result {
+  animation: calc-result-in 450ms ease-out;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .animate-calc-step,
+  .animate-calc-expand,
+  .animate-calc-result {
+    animation: none;
+  }
+}
+
 /* Reusable component classes */
 @layer components {
   .container-px {

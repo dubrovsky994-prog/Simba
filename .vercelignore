@@ -1,0 +1,6 @@
+dist/
+output/
+control/
+simba-agent-bridge/
+.claude/
+vite-qa.log
